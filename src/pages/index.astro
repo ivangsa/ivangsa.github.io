@@ -1,0 +1,463 @@
+---
+import { getCollection } from 'astro:content';
+import ContactCTA from '../components/ContactCTA.astro';
+import Grid from '../components/Grid.astro';
+import Hero from '../components/Hero.astro';
+import Icon from '../components/Icon.astro';
+import Pill from '../components/Pill.astro';
+import Skills from '../components/Skills.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+
+const allArticles = await getCollection('articles');
+
+const allArticlesEn = allArticles
+	.filter((a) => !a.data.lang || a.data.lang === 'en')
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const featuredArticle = allArticlesEn.find((a) => a.data.featured) ?? allArticlesEn[0];
+const latestArticles = allArticlesEn
+	.filter((a) => a.id !== featuredArticle?.id)
+	.slice(0, 2);
+
+const allTutorials = (await getCollection('tutorials')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+const practicalExamples = allTutorials.slice(0, 3);
+
+const articlesEs = allArticles
+	.filter((a) => a.data.lang === 'es')
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+	.slice(0, 3);
+
+const talks = (await getCollection('talks'))
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+	.slice(0, 3);
+const projects = (await getCollection('projects'))
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+	.slice(0, 3);
+---
+
+<BaseLayout
+	title="Event Driven Architecture Expert | Ivan Garcia Sainz-Aja"
+	description="Designing, governing, and evolving event-driven systems, with a focus on Kafka ecosystems, domain modeling, and API-driven workflows."
+>
+	<div class="stack gap-8 lg:gap-15">
+		<div class="wrapper stack gap-8 lg:gap-20">
+			<header class="hero">
+				<Hero
+					title="I am Iván García Sainz-Aja."
+					tagline="I Model, Design, and Develop Event Driven Architectures."
+					align="start"
+				>
+					<p class="intro">
+					I help teams turn domain knowledge into well structured models, events and APIs, combining Domain Driven Design, 
+					API First and Event Driven Architecture and deep technical knowledge in the Java and Spring ecosystem.
+					</p>
+					<!-- <p class="intro">
+					Here you can find a collection of writings, talks, and open-source work around Event-Driven Architecture,
+					AsyncAPI, domain modeling, and platform governance.
+					</p> -->
+					
+					<div class="actions">
+						<a href="/projects/"><Pill><Icon icon="code" size="1.33em" /> Explore ZenWave360 &rarr;</Pill></a>
+						<a href="/articles/"><Pill><Icon icon="pencil-line" size="1.33em" /> Read Articles &rarr;</Pill></a>
+						<a href="/talks/"><Pill><Icon icon="microphone-stage" size="1.33em" /> Watch Talks &rarr;</Pill></a>
+					</div>
+				</Hero>
+
+				<picture>
+					<source srcset="/profile-picture-569x854.avif" type="image/avif">
+					<source srcset="/profile-picture-569x854.webp" type="image/webp">
+					
+					<img alt="Ivan Garcia Sainz-Aja" width="569" height="854" src="/profile-picture-569x854.png" loading="lazy"/>
+				</picture>
+			</header>
+
+			<Skills />
+		</div>
+
+		<main class="wrapper stack gap-8 lg:gap-15">
+
+			<section class="box stack gap-8">
+				<div class="section-head">
+					<h2>Latest Articles</h2>
+					<a href="/articles/">View all</a>
+				</div>
+				<div class="articles-layout">
+					{featuredArticle && (
+						<div class="card featured">
+							{featuredArticle.data.featuredImage && (
+								<img
+									class="card-image"
+									src={featuredArticle.data.featuredImage}
+									alt={featuredArticle.data.featuredImageAlt ?? ''}
+									loading="lazy"
+								/>
+							)}
+							<div class="card-tags">
+								{featuredArticle.data.tags.slice(0, 3).map((tag) => (
+									<span class="card-tag">#{tag}</span>
+								))}
+							</div>
+							<h3><a href={`/articles/${featuredArticle.id}/`}>{featuredArticle.data.title}</a></h3>
+							<div class="card-meta">
+								<time datetime={featuredArticle.data.date.toISOString()}>
+									{featuredArticle.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+								</time>
+								{featuredArticle.data.readingTime && <span>· {featuredArticle.data.readingTime}</span>}
+							</div>
+							<p class="card-description">{featuredArticle.data.summary}</p>
+							<a class="card-cta" href={`/articles/${featuredArticle.id}/`}>→ Read article</a>
+						</div>
+					)}
+					<div class="latest-stack">
+						{latestArticles.map((article) => (
+							<div class="card">
+								<div class="card-tags">
+									{article.data.tags.slice(0, 3).map((tag) => (
+										<span class="card-tag">#{tag}</span>
+									))}
+								</div>
+								<h3><a href={`/articles/${article.id}/`}>{article.data.title}</a></h3>
+								<div class="card-meta">
+									<time datetime={article.data.date.toISOString()}>
+										{article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+									</time>
+									{article.data.readingTime && <span>· {article.data.readingTime}</span>}
+								</div>
+								<p class="card-description">{article.data.summary}</p>
+								<a class="card-cta" href={`/articles/${article.id}/`}>→ Read article</a>
+							</div>
+						))}
+					</div>
+				</div>
+			</section>
+
+			<section class="box stack gap-8">
+				<div class="section-head">
+					<h2>Practical Examples</h2>
+					<a href="/tutorials/">View all</a>
+				</div>
+				<ul class="card-grid">
+					{
+						practicalExamples.map((tutorial) => (
+							<li class="card">
+								{tutorial.data.featuredImage && (
+									<img
+										class="card-image"
+										src={tutorial.data.featuredImage}
+										alt={tutorial.data.featuredImageAlt ?? ''}
+										loading="lazy"
+									/>
+								)}
+								<div class="card-tags">
+									{tutorial.data.tags.slice(0, 3).map((tag) => (
+										<span class="card-tag">#{tag}</span>
+									))}
+								</div>
+								<h3><a href={`/tutorials/${tutorial.id}/`}>{tutorial.data.title}</a></h3>
+								<div class="card-meta">
+									<time datetime={tutorial.data.date.toISOString()}>
+										{tutorial.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+									</time>
+									{tutorial.data.readingTime && <span>· {tutorial.data.readingTime}</span>}
+								</div>
+								<p class="card-description">{tutorial.data.summary}</p>
+								<a class="card-cta" href={`/tutorials/${tutorial.id}/`}>→ Read tutorial</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="box stack gap-8">
+				<div class="section-head">
+					<h2>Recent Talks</h2>
+					<a href="/talks/">View all</a>
+				</div>
+				<ul class="card-grid">
+					{
+						talks.map((talk) => (
+							<li class="card">
+								<div class="card-tags">
+									{talk.data.tags.slice(0, 3).map((tag) => (
+										<span class="card-tag">#{tag}</span>
+									))}
+								</div>
+								<h3><a href={`/talks/${talk.id}/`}>{talk.data.title}</a></h3>
+								<div class="card-meta">
+									<time datetime={talk.data.date.toISOString()}>
+										{talk.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+									</time>
+									{talk.data.duration && <span>· {talk.data.duration}</span>}
+								</div>
+								<p class="card-description">{talk.data.summary}</p>
+								<a class="card-cta" href={`/talks/${talk.id}/`}>→ Watch talk</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+
+			<section class="box stack gap-8">
+				<div class="section-head">
+					<h2>Artículos en Español</h2>
+					<a href="/articles/">Ver todos</a>
+				</div>
+				<ul class="card-grid">
+					{
+						articlesEs.map((article) => (
+							<li class="card">
+								<div class="card-tags">
+									{article.data.tags.slice(0, 3).map((tag) => (
+										<span class="card-tag">#{tag}</span>
+									))}
+								</div>
+								<h3><a href={`/articles/${article.id}/`}>{article.data.title}</a></h3>
+								<div class="card-meta">
+									<time datetime={article.data.date.toISOString()}>
+										{article.data.date.toLocaleDateString('es-ES', { year: 'numeric', month: 'short' })}
+									</time>
+									{article.data.readingTime && <span>· {article.data.readingTime}</span>}
+								</div>
+								<p class="card-description">{article.data.summary}</p>
+								<a class="card-cta" href={`/articles/${article.id}/`}>→ Leer artículo</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
+	</main>
+
+	<ContactCTA />
+	</div>
+</BaseLayout>
+
+<style>
+	header.hero {
+		display: flex;
+		flex-direction: column;
+		align-items: center;
+		gap: 2rem;
+	}
+
+	header.hero img {
+		aspect-ratio: 3 / 4;
+		object-fit: cover;
+		object-position: top;
+		border-radius: 1.5rem;
+		box-shadow: var(--shadow-md);
+	}
+
+	.hero {
+		padding: 1.5rem;
+		border: 1px solid var(--gray-800);
+		border-radius: 1.25rem;
+		background: var(--gradient-subtle);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.eyebrow {
+		font-size: var(--text-sm);
+		text-transform: uppercase;
+		letter-spacing: 0.08em;
+		color: var(--gray-400);
+	}
+
+	h1 {
+		font-size: var(--text-3xl);
+	}
+
+	.subtitle {
+		font-size: var(--text-lg);
+		max-width: 70ch;
+	}
+
+	.actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 1rem;
+	}
+
+	.actions a {
+		text-decoration: none;
+		/* padding: 0.7rem 1rem; */
+	}
+
+	.intro {
+		color: var(--gray-300);
+		max-width: 74ch;
+	}
+
+	.box {
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+		background-color: var(--gray-999_40);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.focus-grid {
+		display: grid;
+		gap: 0.75rem;
+		padding-inline-start: 1rem;
+	}
+
+	.section-head {
+		display: flex;
+		justify-content: space-between;
+		align-items: baseline;
+		gap: 1rem;
+	}
+
+	.card-grid {
+		list-style: none;
+		padding: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.articles-layout {
+		display: grid;
+		gap: 1rem;
+		grid-template-columns: 1fr;
+	}
+
+	.latest-stack {
+		display: flex;
+		flex-direction: column;
+		gap: 1rem;
+	}
+
+	.latest-stack .card {
+		flex: 1;
+	}
+
+	.card {
+		padding: 1rem 1.25rem 1.25rem;
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		background: var(--gradient-subtle);
+		display: flex;
+		flex-direction: column;
+		gap: 0.375rem;
+	}
+
+	.card-image {
+		width: 100%;
+		height: 16 / 9;
+		object-fit: cover;
+		border-radius: 0.5rem;
+		margin-bottom: 0.25rem;
+	}
+
+	.card.featured .card-description {
+		-webkit-line-clamp: 4;
+	}
+
+	.card-tags {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.375rem;
+		margin-bottom: 0.125rem;
+	}
+
+	.card-tag {
+		font-size: 0.7rem;
+		font-weight: 500;
+		letter-spacing: 0.06em;
+		text-transform: uppercase;
+		color: var(--accent-text-over);
+		border: 1px solid var(--accent-regular);
+		background-color: var(--accent-regular);
+		border-radius: 999px;
+		padding: 0.125rem 0.5rem;
+		line-height: 1.6;
+		white-space: nowrap;
+	}
+
+	.card h3 {
+		font-size: var(--text-lg);
+		margin: 0;
+		line-height: 1.25;
+	}
+
+	.card h3 a {
+		text-decoration: none;
+		color: inherit;
+	}
+
+	.card h3 a:hover {
+		color: var(--accent-dark);
+	}
+
+	.card-meta {
+		display: flex;
+		gap: 0.375rem;
+		font-size: var(--text-sm);
+		color: var(--gray-400);
+		margin: 0;
+	}
+
+	.card-description {
+		overflow: hidden;
+		display: -webkit-box;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+		color: var(--gray-400);
+		font-size: var(--text-sm);
+		margin: 0;
+	}
+
+	.card-cta {
+		display: inline-block;
+		margin-top: 0.5rem;
+		font-size: var(--text-sm);
+		font-weight: 500;
+		color: var(--accent-regular);
+		text-decoration: none;
+		transition: color var(--theme-transition);
+	}
+
+	.card-cta:hover {
+		color: var(--accent-dark);
+	}
+
+	@media (min-width: 50em) {
+		.box {
+			border-radius: 1.5rem;
+			padding: 2.5rem;
+		}
+
+		header.hero {
+			display: grid;
+			grid-template-columns: 6fr 4fr;
+			padding-inline: 2.5rem;
+			gap: 3.75rem;
+		}
+
+		header.hero img {
+			aspect-ratio: 3 / 4;
+			border-radius: 4.5rem;
+			object-fit: cover;
+		}
+
+		h1 {
+			font-size: var(--text-5xl);
+		}
+
+		.card-grid {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.articles-layout {
+			grid-template-columns: 2fr 1fr;
+		}
+	}
+</style>
+
+
+
+
+
+

@@ -1,0 +1,86 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+interface Props {
+	entry: CollectionEntry<'projects'>;
+}
+
+export async function getStaticPaths() {
+	const entries = await getCollection('projects');
+	return entries.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+---
+
+<BaseLayout title={`${entry.data.title} | Projects`} description={entry.data.summary}>
+	<main class="wrapper stack gap-8 detail-page">
+		<a href="/projects/" class="back-link">Back to projects</a>
+		<header class="stack gap-2">
+			<p class="meta">
+				<time datetime={entry.data.date.toISOString()}>
+					{entry.data.date.toLocaleDateString('en-US', {
+						year: 'numeric',
+						month: 'short',
+						day: 'numeric',
+					})}
+				</time>
+			</p>
+			<h1>{entry.data.title}</h1>
+			<p>{entry.data.summary}</p>
+		</header>
+		<article class="content">
+			<Content />
+		</article>
+	</main>
+</BaseLayout>
+
+<style>
+	.detail-page {
+		max-width: 72ch;
+		padding-bottom: 4rem;
+	}
+
+	.back-link {
+		font-size: var(--text-sm);
+	}
+
+	.meta {
+		color: var(--gray-400);
+	}
+
+	h1 {
+		font-size: var(--text-3xl);
+	}
+
+	header > p {
+		color: var(--gray-300);
+	}
+
+	:global(.detail-page .content * + *) {
+		margin-top: 1rem;
+	}
+
+	:global(.detail-page .content h2),
+	:global(.detail-page .content h3),
+	:global(.detail-page .content h4) {
+		margin-top: 2rem;
+	}
+
+	:global(.detail-page .content h2) {
+		font-size: var(--text-2xl);
+	}
+
+	:global(.detail-page .content h3) {
+		font-size: var(--text-xl);
+	}
+
+	:global(.detail-page .content h4) {
+		font-size: var(--text-lg);
+	}
+</style>

@@ -1,0 +1,121 @@
+---
+import Icon from './Icon.astro';
+import Pill from '../components/Pill.astro';
+---
+
+<div class="skills-container">
+
+
+<section class="box skills">
+  <h2 class="section-title">Open Source</h2>
+  <div class="stack gap-2 lg:gap-4">
+    <img class="skill-logo" src="/assets/icons/conceptual-model.svg" alt="Conceptual Model logo" loading="lazy" />
+    <h2>ZDL Modeling Language</h2>
+    <p>
+      Domain specific language for expressing <b>Bounded Contexts</b> for <b>Design Level Event Storming</b> with entities, aggregates, commands, events and APIs in a clear and structured form, that works well as an Ubiquitous Language format.
+    </p>
+  </div>
+
+  <div class="stack gap-2 lg:gap-4">
+    <img class="skill-logo" src="/assets/icons/zenwave-logo.svg" alt="ZenWave logo" loading="lazy" />
+    <h2>ZenWave SDK</h2>
+    <p>
+      Converts APIs and Domaind Models (ZDL) into executable code, API definitions, tests and documentation.<br />
+	  Allowing you to build complete Spring Boot Java (and Kotlin) projects from models and APIs.
+    </p>
+  </div>
+
+  <div class="stack gap-2 lg:gap-4">
+    <img class="skill-logo" src="/assets/icons/asyncapi-logo.png" alt="AsyncAPI logo" loading="lazy" />
+    <h2>AsyncAPI Initiative</h2>
+	<p>
+		Technical Steering Committee member. Contributor to projects including AsyncAPI Preview for VSCode, 
+		AsyncAPI Studio, and the ZenWaveSDK AsyncAPI Generator, which helps prevent API drift between AsyncAPI 
+		contracts and Java/Kotlin implementations.
+	</p>
+  </div>
+  <div class="section-cta">
+    <a href="/projects/"><Pill><Icon icon="code" size="1.33em" /> Explore Projects &rarr;</Pill></a>
+  </div>
+</section>
+</div>
+
+<style>
+	.skills-container {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
+	}
+
+	.box {
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+		background-color: var(--gray-999_40);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.skills {
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.skills h2 {
+		font-size: var(--text-lg);
+	}
+
+	.section-cta {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.section-cta a {
+		text-decoration: none;
+	}
+
+	.section-title {
+		font-size: var(--text-4xl);
+	}
+
+	.skills p {
+		color: var(--gray-400);
+	}
+
+	.skill-logo {
+		width: 5.2rem;
+		height: 5.2rem;
+		object-fit: contain;
+	}
+
+	@media (min-width: 50em) {
+		.skills-container {
+			gap: 3rem;
+		}
+
+		.box {
+			border-radius: 1.5rem;
+			padding: 2.5rem;
+		}
+
+		.skills {
+			display: grid;
+			grid-template-columns: repeat(3, 1fr);
+			column-gap: 5rem;
+			row-gap: 3rem;
+		}
+
+		.skills > h2,
+		.skills > .section-cta {
+			grid-column: 1 / -1;
+		}
+
+		.skills h2 {
+			font-size: var(--text-2xl);
+		}
+
+		.skills h2.section-title {
+			font-size: var(--text-4xl);
+		}
+	}
+</style>

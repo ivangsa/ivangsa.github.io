@@ -1,0 +1,155 @@
+---
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import Icon from '../../components/Icon.astro';
+import Pill from '../../components/Pill.astro';
+import type { iconPaths } from '../../components/IconPaths';
+
+const projects: { title: string; icon: keyof typeof iconPaths; description: string; url: string; linkText: string }[] = [
+	{
+		title: 'ZenWave SDK',
+		icon: 'rocket-launch',
+		description: `
+			Converts <strong>APIs</strong> and <strong>Domain Models (ZDL)</strong> into executable code,
+			API definitions, tests and documentation.<br/>
+			Allowing you to build complete <strong>Spring Boot Java (and Kotlin)</strong> projects from models and APIs.
+		`,
+		url: 'https://www.zenwave360.io/',
+		linkText: 'Visit ZenWave360',
+	},
+	{
+		title: 'AsyncAPI Generator for Java / Spring-Boot',
+		icon: 'rocket-launch',
+		description: `
+			Generates <strong>strongly-typed Java/Kotlin code</strong> from AsyncAPI specifications,
+			eliminating API drift through build-time regeneration and compile-time guarantees.<br/>
+			Produces non-editable interfaces, DTOs, and Spring Cloud Streams/Kafka bindings—keeping your
+			event-driven code perfectly aligned with AsyncAPI contracts.
+		`,
+		url: 'https://www.zenwave360.io/zenwave-sdk/plugins/asyncapi-generator/',
+		linkText: 'Read the Docs',
+	},
+	{
+		title: 'ZDL Modeling Language',
+		icon: 'strategy',
+		description: `
+			A domain specific language for expressing <strong>Bounded Contexts</strong> with entities, aggregates,
+			commands, events and APIs in a clear and structured form.<br/>
+			Works well as an <strong>Ubiquitous Language</strong> format shared across teams.
+		`,
+		url: 'https://www.zenwave360.io/docs/event-driven-design/zenwave-domain-language/',
+		linkText: 'Read the Docs',
+	},
+	{
+		title: 'AsyncAPI Initiative',
+		icon: 'paper-plane-tilt',
+		description: `
+			Contributing to the <strong>AsyncAPI initiative</strong>, including
+			<a href="https://marketplace.visualstudio.com/items?itemName=asyncapi.asyncapi-preview" target="_blank" rel="noopener noreferrer">AsyncAPI Preview for VSCode</a>
+			and AsyncAPI Studio.
+		`,
+		url: 'https://www.asyncapi.com/tools#IDE%20Extensions',
+		linkText: 'Explore AsyncAPI Tools',
+	},
+];
+---
+
+<BaseLayout
+	title="Projects | Ivan Garcia Sainz-Aja"
+	description="Projects focused on Domain-Driven Design, Event-Driven Architecture, AsyncAPI, and platform-level tooling."
+>
+	<main class="wrapper stack gap-8 list-page">
+		<h1>Projects</h1>
+		<ul class="items">
+			{projects.map((project) => (
+				<li>
+					<article class="item stack gap-4">
+						<div class="item-header">
+							<Icon icon={project.icon} color="var(--accent-regular)" size="2.5rem" gradient />
+							<h2>{project.title}</h2>
+						</div>
+						<p set:html={project.description} />
+						<div class="item-cta">
+							<a href={project.url} target="_blank" rel="noopener noreferrer">
+								<Pill><Icon icon="code" size="1.33em" /> {project.linkText} &rarr;</Pill>
+							</a>
+						</div>
+					</article>
+				</li>
+			))}
+		</ul>
+	</main>
+</BaseLayout>
+
+<style>
+	.list-page {
+		padding-bottom: 4rem;
+	}
+
+	h1 {
+		font-size: var(--text-3xl);
+	}
+
+	.items {
+		list-style: none;
+		padding: 0;
+		display: flex;
+		flex-direction: column;
+		gap: 1.5rem;
+	}
+
+	.item {
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		padding: 1.5rem;
+		background-color: var(--gray-999_40);
+		box-shadow: var(--shadow-sm);
+	}
+
+	.item-header {
+		display: flex;
+		align-items: center;
+		gap: 1rem;
+	}
+
+	h2 {
+		font-size: var(--text-xl);
+	}
+
+	p {
+		color: var(--gray-300);
+	}
+
+	p :global(a) {
+		color: var(--accent-regular);
+	}
+
+	p :global(strong) {
+		color: var(--gray-0);
+	}
+
+	.item-cta {
+		display: flex;
+		justify-content: flex-end;
+	}
+
+	.item-cta a {
+		text-decoration: none;
+		display: inline-flex;
+	}
+
+	@media (min-width: 50em) {
+		.item {
+			border-radius: 1.5rem;
+			padding: 2.5rem;
+		}
+
+		h2 {
+			font-size: var(--text-2xl);
+		}
+
+		.items {
+			gap: 2rem;
+		}
+	}
+</style>
+

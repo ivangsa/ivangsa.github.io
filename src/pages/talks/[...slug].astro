@@ -1,0 +1,120 @@
+---
+import { type CollectionEntry, getCollection, render } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+import YouTubeEmbed from '../../components/YouTubeEmbed.astro';
+
+interface Props {
+	entry: CollectionEntry<'talks'>;
+}
+
+export async function getStaticPaths() {
+	const entries = await getCollection('talks');
+	return entries.map((entry) => ({
+		params: { slug: entry.id },
+		props: { entry },
+	}));
+}
+
+const { entry } = Astro.props;
+const { Content } = await render(entry);
+
+function getYouTubeId(url: string): string | null {
+	const match = url.match(/[?&]v=([^&#]+)/) ?? url.match(/youtu\.be\/([^?&#]+)/);
+	return match ? match[1] : null;
+}
+
+const videoId = entry.data.video ? getYouTubeId(entry.data.video) : null;
+---
+
+<BaseLayout title={`${entry.data.title} | Talks`} description={entry.data.summary}>
+	<main class="wrapper stack gap-8 detail-page">
+		<a href="/talks/" class="back-link">Back to talks</a>
+		<header class="stack gap-2">
+			<p class="meta">
+				<time datetime={entry.data.date.toISOString()}>
+					{entry.data.date.toLocaleDateString('en-US', {
+						year: 'numeric',
+						month: 'short',
+						day: 'numeric',
+					})}
+				</time>
+			</p>
+			<h1>{entry.data.title}</h1>
+			<p>{entry.data.summary}</p>
+			<div class="links">
+				{entry.data.slides && <a href={entry.data.slides}>Slides</a>}
+				{entry.data.video && <a href={entry.data.video}>Video</a>}
+				{entry.data.event && <a href={entry.data.event}>Event</a>}
+			</div>
+		</header>
+		{videoId ? (
+			<YouTubeEmbed videoId={videoId} />
+		) : (
+			<p class="no-video">
+				Video not available.
+				{entry.data.event && (
+					<> <a href={entry.data.event}>View the event page</a>.</>
+				)}
+			</p>
+		)}
+		<article class="content">
+			<Content />
+		</article>
+	</main>
+</BaseLayout>
+
+<style>
+	.detail-page {
+		max-width: 72ch;
+		padding-bottom: 4rem;
+	}
+
+	.back-link {
+		font-size: var(--text-sm);
+	}
+
+	.meta {
+		color: var(--gray-400);
+	}
+
+	h1 {
+		font-size: var(--text-3xl);
+	}
+
+	header > p {
+		color: var(--gray-300);
+	}
+
+	.links {
+		display: flex;
+		gap: 1rem;
+		flex-wrap: wrap;
+	}
+
+	:global(.detail-page .content * + *) {
+		margin-top: 1rem;
+	}
+
+	:global(.detail-page .content h2),
+	:global(.detail-page .content h3),
+	:global(.detail-page .content h4) {
+		margin-top: 2rem;
+	}
+
+	:global(.detail-page .content h2) {
+		font-size: var(--text-2xl);
+	}
+
+	:global(.detail-page .content h3) {
+		font-size: var(--text-xl);
+	}
+
+	:global(.detail-page .content h4) {
+		font-size: var(--text-lg);
+	}
+
+	.no-video {
+		color: var(--gray-400);
+		font-style: italic;
+	}
+</style>

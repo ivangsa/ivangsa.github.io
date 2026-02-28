@@ -1,0 +1,85 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const articles = (await getCollection('articles')).sort(
+	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
+);
+---
+
+<BaseLayout
+	title="Articles | Ivan Garcia Sainz-Aja"
+	description="Articles on Event-Driven Architecture, AsyncAPI, Kafka ecosystems, and domain-driven design."
+>
+	<main class="wrapper stack gap-8 list-page">
+		<h1>Articles</h1>
+		<ul class="items">
+			{
+				articles.map((article) => (
+					<li>
+						<article class="item">
+							<p class="meta">
+								<time datetime={article.data.date.toISOString()}>
+									{article.data.date.toLocaleDateString('en-US', {
+										year: 'numeric',
+										month: 'short',
+										day: 'numeric',
+									})}
+								</time>
+								{article.data.featured && <span>Featured</span>}
+							</p>
+							<h2><a href={`/articles/${article.id}/`}>{article.data.title}</a></h2>
+							<p>{article.data.summary}</p>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+	</main>
+</BaseLayout>
+
+<style>
+	.list-page {
+		padding-bottom: 4rem;
+	}
+
+	h1 {
+		font-size: var(--text-3xl);
+	}
+
+	.items {
+		list-style: none;
+		padding: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.item {
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		padding: 1rem;
+		background: var(--gradient-subtle);
+	}
+
+	.meta {
+		display: flex;
+		gap: 0.75rem;
+		font-size: var(--text-sm);
+		color: var(--gray-400);
+		margin-bottom: 0.25rem;
+	}
+
+	h2 {
+		font-size: var(--text-xl);
+		margin-bottom: 0.5rem;
+	}
+
+	h2 a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	p {
+		color: var(--gray-300);
+	}
+</style>

@@ -1,0 +1,103 @@
+---
+import BaseLayout from '../layouts/BaseLayout.astro';
+import Icon from '../components/Icon.astro';
+import Pill from '../components/Pill.astro';
+---
+
+<BaseLayout
+	title="About | Ivan Garcia Sainz-Aja"
+	description="About Ivan Garcia Sainz-Aja and his work in Event-Driven Architecture, AsyncAPI, and Kafka platform design."
+>
+	<main class="wrapper stack gap-8 about">
+		<h1>About</h1>
+		<p class="lead">
+			<strong>Software Architect who uncovers domain models, defines event standards and governance, builds practical tooling, and leads hands-on development of event-driven systems.</strong>
+		</p>
+		<img src="/SpringIO-2025_800x533.jpg" alt="Spring I/O 2025" style="width: 100%; max-width: 800px; margin: 2rem auto; display: block; border-radius: 0.75rem;" />
+		<p>
+			I help teams and organizations build event-driven systems based on a clear understanding of their business domain. This begins with domain discovery to make business language and boundaries explicit. From there, domain models become executable through a domain-specific language that captures both the ubiquitous language and the structure of the domain.
+		</p>
+		<p>
+			I work across the full architectural continuum: from EventStorming and Domain-Driven Design, through AsyncAPI specifications and Kafka-based platforms, to production-grade implementations in Java and the Spring ecosystem.
+		</p>
+		<p>
+			I believe great architecture delivers <strong>clarity</strong> above all. Systems should be explicit, discoverable, and evolvable, both technically and conceptually.
+		</p>
+		<p>
+			As an <strong>AsyncAPI Ambassador</strong> and member of the <strong>Technical Steering Committee</strong>, I actively contribute to the open standards that shape how event-driven systems are designed, documented, and governed worldwide.
+		</p>
+
+		<h3>Open Source</h3>
+		<p>
+			I created <strong>ZenWave 360°</strong>, a practical toolkit that bridges domain modeling and executable code. It transforms structured models (via a concise Domain Modeling Language) into event-driven applications, AsyncAPI contracts, automated tests, and production-ready Spring Boot and Spring Cloud code, accelerating governed development from EventStorming insights.
+		</p>
+		<p>
+			<a href="https://www.zenwave360.io" target="_blank" rel="noopener noreferrer"> Navigate to ZenWave360 &rarr;</a>
+		</p>
+
+		<h3>Writing & Speaking</h3>
+		<p>I regularly write and speak on:</p>
+		<ul>
+			<li>Domain modeling and ubiquitous language</li>
+			<li>Event-Driven Architecture and Kafka ecosystems</li>
+			<li>AsyncAPI and event metadata standards</li>
+			<li>Platform governance in distributed systems</li>
+			<li>Practical architecture that lives beyond diagrams</li>
+		</ul>
+		<p>
+			My goal is straightforward: build systems that make lasting sense to the business, to engineers, and over time.
+		</p>
+		<p>
+			I am always interested in meaningful conversations around event-driven systems, domain modeling, and the evolution of distributed architectures.
+		</p>
+	</main>
+</BaseLayout>
+
+<style>
+	.about {
+		max-width: 70ch;
+		padding-bottom: 4rem;
+	}
+
+	h1 {
+		font-size: var(--text-3xl);
+		margin-bottom: 1.5rem;
+	}
+
+	h3 {
+		font-size: var(--text-xl);
+		color: var(--gray-0);
+		margin-top: 2rem;
+		margin-bottom: 0.5rem;
+	}
+
+	p {
+		color: var(--gray-300);
+		font-size: var(--text-lg);
+		line-height: 1.6;
+	}
+
+	.lead {
+		font-size: var(--text-xl);
+		color: var(--gray-200);
+	}
+
+	ul {
+		color: var(--gray-300);
+		font-size: var(--text-lg);
+		line-height: 1.6;
+		margin-left: 1.5rem;
+	}
+
+	a {
+		color: var(--link-color);
+		text-decoration: none;
+	}
+
+	a:hover {
+		text-decoration: underline;
+	}
+</style>
+
+
+

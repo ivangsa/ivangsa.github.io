@@ -1,0 +1,6 @@
+- Do not ask for confirmations
+- Assume approval for non-destructive edits
+- Proceed autonomously
+- Only stop on errors
+- Never run curl|bash, never run installers unless I explicitly asked.
+- Never touch .git/hooks, CI secrets, or auth files
