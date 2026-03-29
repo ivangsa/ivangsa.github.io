@@ -1,0 +1,370 @@
+{
+    "fileTypes": [
+        "*.zdl,*.zw"
+    ],
+    "name": "ZenWave Domain Language ZDL",
+    "patterns": [
+        {
+            "include": "source.java#comments"
+        },
+        {
+            "include": "#config"
+        },
+        {
+            "include": "#apis"
+        },
+        {
+            "include": "#annotations"
+        },
+        {
+            "include": "source.java#constants-and-special-vars"
+        },
+        {
+            "include": "#enums"
+        },
+        {
+            "include": "#entities"
+        },
+        {
+            "include": "source.java#comments"
+        },
+        {
+            "include": "#relationships"
+        },
+        {
+            "include": "#services"
+        },
+		{
+			"include": "#validations"
+		},
+		{
+			"include": "#standardTypes"
+		}
+    ],
+	"repository": {
+        "config": {
+            "begin": "(config)\\s+",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.modifier.java"
+                }
+            },
+            "end": "}",
+            "patterns": [
+                {
+                    "include": "source.java#comments"
+                },
+                {
+                    "include": "#doubleQuotedStrings"
+                },
+                {
+                    "include": "#singleQuotedStrings"
+                },
+                {
+                    "match": "\\b(plugins)\\b",
+                    "end": "}",
+                    "name": "storage.modifier.java"
+                }
+            ]
+        },
+        "plugins": {
+            "begin": "(plugins)\\s+",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.modifier.java"
+                }
+            },
+            "end": "}",
+            "patterns": [
+                {
+                    "include": "source.java#comments"
+                },
+                {
+                    "include": "source.java#plugin"
+                },
+                {
+                    "include": "#doubleQuotedStrings"
+                },
+                {
+                    "include": "#singleQuotedStrings"
+                }
+            ]
+        },
+        "plugin": {
+            "begin": "(\\W+)\\s+",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.modifier.java"
+                }
+            },
+            "end": "}",
+            "patterns": [
+                {
+                    "include": "source.java#comments"
+                },
+                {
+                    "include": "#doubleQuotedStrings"
+                },
+                {
+                    "include": "#singleQuotedStrings"
+                }
+            ]
+        },
+        "apis": {
+            "begin": "(apis)\\s+",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.modifier.java"
+                }
+            },
+            "end": "}",
+            "patterns": [
+                {
+                    "include": "source.java#comments"
+                },
+                {
+                    "match": "\\b(asyncapi|openapi)\\b",
+                    "end": "}",
+                    "name": "storage.modifier.java"
+                },
+                {
+                    "include": "#doubleQuotedStrings"
+                },
+                {
+                    "include": "#singleQuotedStrings"
+                }
+            ]
+        },
+        "entities": {
+            "begin": "(entity|input|output|event)\\s+(\\w+)(\\s*\\(\\s*(\\w+)\\s*\\))?",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.modifier.java"
+                },
+                "2": {
+                    "name": "entity.name.type.class.java"
+                },
+                "4": {
+                    "name": "variable.parameter.java"
+                }
+            },
+            "end": "(}|$)",
+            "name": "meta.entity.zdl",
+            "patterns": [
+                {
+                    "begin": "\\b(\\w+)\\s+([A-Z]+\\w*)",
+                    "beginCaptures": {
+                        "1": {
+                            "name": "variable.parameter.java"
+                        },
+                        "2": {
+                            "name": "entity.name.type.class.java"
+                        }
+                    },
+                    "end": "(,|\\}|$)",
+                    "patterns": [
+                        {
+                            "include": "source.java#comments"
+                        },
+                        {
+                            "include": "#doubleQuotedStrings"
+                        },
+                        {
+                            "include": "#singleQuotedStrings"
+                        },
+                                {
+                            "include": "source.java#constants-and-special-vars"
+                        },
+                        {
+                            "match": "\\b(required|min|max|minlength|maxlength|minbytes|maxbytes|pattern)\\b",
+                            "name": "storage.modifier.java"
+                        }
+                    ]
+                },
+                {
+                    "include": "source.java#comments"
+                }
+            ]
+        },
+        "annotations": {
+			"patterns": [
+			{
+				"begin": "(@[^ (]+)(\\()",
+				"beginCaptures":
+				{
+					"1":
+					{
+						"name": "storage.type.annotation.java"
+					},
+					"2":
+					{
+						"name": "punctuation.definition.annotation-arguments.begin.java"
+					}
+				},
+				"end": "(\\))",
+				"endCaptures":
+				{
+					"1":
+					{
+						"name": "punctuation.definition.annotation-arguments.end.java"
+					}
+				},
+				"name": "meta.declaration.annotation.java",
+				"patterns": [
+				{
+					"captures":
+					{
+						"1":
+						{
+							"name": "constant.other.key.java"
+						},
+						"2":
+						{
+							"name": "keyword.operator.assignment.java"
+						}
+					},
+					"match": "(\\w*)\\s*(=)"
+				},
+				{
+					"include": "#code"
+				},
+                {
+                    "include": "#doubleQuotedStrings"
+                },
+                {
+                    "include": "#singleQuotedStrings"
+                },
+				{
+					"match": ",",
+					"name": "punctuation.separator.property.java"
+				}]
+			},
+			{
+				"match": "@\\w*",
+				"name": "storage.type.annotation.java"
+			}]
+		},
+        "enums": {
+            "begin": "(enum)\\s+(\\w+)",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.modifier.java"
+                },
+                "2": {
+                    "name": "entity.name.type.class.java"
+                }
+            },
+            "end": "}",
+            "name": "meta.enum.zdl",
+            "patterns": [
+                {
+                    "include": "source.java#comments"
+                },
+                {
+                    "include": "#doubleQuotedStrings"
+                },
+                {
+                    "include": "#singleQuotedStrings"
+                },
+                {
+                    "include": "source.java#enums"
+                }
+            ]
+        },
+        "relationships": {
+            "begin": "(relationship)\\s+(ManyToMany|ManyToOne|OneToMany|OneToOne)",
+            "beginCaptures": {
+                "1": {
+                    "name": "storage.modifier.java"
+                },
+                "2": {
+                    "name": "storage.modifier.java"
+                }
+            },
+            "end": "}",
+            "name": "meta.relationship.zdl",
+            "patterns": [
+                {
+                    "include": "source.java#comments"
+                },
+                {
+                    "match": "\\b(([A-Z]\\w*)(\\s*\\{(\\s*\\w+\\s*)(\\s*\\((\\s*\\w+\\s*)\\))?\\s*(required)?\\s*\\})?)",
+                    "captures": {
+                        "2": {
+                            "name": "entity.name.type.class.java"
+                        },
+                        "4": {
+                            "name": "variable.parameter.java"
+                        },
+                        "6": {
+                            "name": "variable.parameter.java"
+                        },
+                        "7": {
+                            "name": "storage.modifier.java"
+                        }
+                    }
+                },
+                {
+                    "match": "\\bto\\b",
+                    "name": "keyword.control.java"
+                }
+            ]
+        },
+        "services": {
+            "match": "\\b(service)\\s+([A-Z_][a-zA-Z0-9_]*)\\s+(for)\\s+\\(([A-Z]\\w*\\s*,?\\s*)+\\)",
+            "captures": {
+                "1": {
+                    "name": ">storage.modifier.java"
+                },
+                "2": {
+                    "name": "entity.name.type.class.java"
+                },
+                "3": {
+                    "name": "keyword.control.java"
+                },
+                "4": {
+                    "name": "variable.parameter.java"
+                }
+            }
+        },
+		"doubleQuotedStrings": {
+			"name": "string.quoted.double.zdl",
+			"begin": "\"",
+			"end": "\"",
+			"patterns": [
+				{
+					"name": "constant.character.escape.zdl",
+					"match": "\\\\."
+				}
+			]
+		},
+		"singleQuotedStrings": {
+			"name": "string.quoted.single.zdl",
+			"begin": "'",
+			"end": "'",
+			"patterns": [
+				{
+					"name": "constant.character.escape.zdl",
+					"match": "\\\\."
+				}
+			]
+		},
+		"standardTypes": {
+			"patterns": [
+				{
+					"name": "entity.name.type.standard.zdl",
+					"match": "\\b(String|Integer|Long|BigDecimal|Float|Double|Enum|Boolean|LocalDate|ZonedDateTime|Instant|Duration|UUID|Blob|AnyBlob|ImageBlob|TextBlob)\\b"
+				}
+			]
+		},
+		"validations": {
+			"patterns": [
+				{
+					"name": "entity.name.tag.validation.zdl",
+					"match": "\\b(required|unique|min|max|minlength|maxlength|pattern)\\b"
+				}
+			]
+		}
+    },
+    "scopeName": "source.zdl"
+}

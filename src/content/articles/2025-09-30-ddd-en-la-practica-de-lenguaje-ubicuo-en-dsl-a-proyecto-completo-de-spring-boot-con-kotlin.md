@@ -10,6 +10,10 @@ tags:
 featured: false
 readingTime: "10 min read"
 lang: es
+externalUrl: https://adictosaltrabajo.com/2025/09/30/ddd-en-la-practica-de-lenguaje-ubicuo-en-dsl-a-proyecto-completo-de-spring-boot-con-kotlin/
+externalSite: 'adictosaltrabajo.com'
+externalOnly: true
 ---
 
-[Lee el artículo completo en Adictos a la Trabajo](https://adictosaltrabajo.com/2025/09/30/ddd-en-la-practica-de-lenguaje-ubicuo-en-dsl-a-proyecto-completo-de-spring-boot-con-kotlin/)
+[Read the full article on adictosaltrabajo.com](https://adictosaltrabajo.com/2025/09/30/ddd-en-la-practica-de-lenguaje-ubicuo-en-dsl-a-proyecto-completo-de-spring-boot-con-kotlin/)
+

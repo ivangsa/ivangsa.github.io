@@ -10,7 +10,10 @@ tags:
 featured: false
 readingTime: "7 min read"
 lang: es
+externalUrl: https://adictosaltrabajo.com/2025/04/23/evitando-el-api-drift-en-apis-asincronas-con-asyncapi-y-zenwave-sdk/
+externalSite: 'adictosaltrabajo.com'
+externalOnly: true
 ---
 
+[Read the full article on adictosaltrabajo.com](https://adictosaltrabajo.com/2025/04/23/evitando-el-api-drift-en-apis-asincronas-con-asyncapi-y-zenwave-sdk/)
 
-[Lee el artículo completo en Adictos a la Trabajo](https://adictosaltrabajo.com/2025/04/23/evitando-el-api-drift-en-apis-asincronas-con-asyncapi-y-zenwave-sdk/)

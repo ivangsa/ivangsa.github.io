@@ -10,6 +10,9 @@ tags:
 featured: false
 readingTime: "10 min read"
 lang: en
+externalUrl: https://www.zenwave360.io/posts/ZenWave-360-Business-Domain-Modeling/
+externalSite: 'ZenWave360'
+externalOnly: true
 ---
 
 [Read the full article on ZenWave360](https://www.zenwave360.io/posts/ZenWave-360-Business-Domain-Modeling/)

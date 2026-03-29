@@ -8,6 +8,9 @@ tags:
   - zenwave
 featured: false
 readingTime: "5 min read"
+externalUrl: https://medium.com/@ivangsa/jhipster-jdl-to-asyncapi-generator
+externalSite: 'Medium'
+externalOnly: true
 ---
 
 [Read the full article on Medium](https://medium.com/@ivangsa/jhipster-jdl-to-asyncapi-generator)

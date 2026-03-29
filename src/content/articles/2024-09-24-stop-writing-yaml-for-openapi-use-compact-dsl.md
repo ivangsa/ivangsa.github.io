@@ -8,6 +8,10 @@ tags:
   - zenwave
 featured: false
 readingTime: "7 min read"
+externalUrl: https://medium.com/@ivangsa/stop-writing-yaml-for-openapi-use-a-compact-dsl-and-save-time-and-typing
+externalSite: 'Medium'
+externalOnly: true
 ---
 
 [Read the full article on Medium](https://medium.com/@ivangsa/stop-writing-yaml-for-openapi-use-a-compact-dsl-and-save-time-and-typing)
+

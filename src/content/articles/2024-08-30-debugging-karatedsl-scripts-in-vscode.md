@@ -8,6 +8,10 @@ tags:
   - debugging
 featured: false
 readingTime: "6 min read"
+externalUrl: https://medium.com/@ivangsa/debugging-karatedsl-scripts-in-vscode-open-source
+externalSite: 'Medium'
+externalOnly: true
 ---
 
 [Read the full article on Medium](https://medium.com/@ivangsa/debugging-karatedsl-scripts-in-vscode-open-source)
+

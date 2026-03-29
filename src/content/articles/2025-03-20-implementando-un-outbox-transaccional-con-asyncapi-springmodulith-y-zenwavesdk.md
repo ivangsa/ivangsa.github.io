@@ -11,6 +11,10 @@ tags:
 featured: false
 readingTime: "9 min read"
 lang: es
+externalUrl: https://adictosaltrabajo.com/2025/03/20/implementando-un-outbox-transaccional-con-asyncapi-springmodulith-y-zenwavesdk/
+externalSite: 'adictosaltrabajo.com'
+externalOnly: true
 ---
 
-[Lee el artículo completo en Adictos a la Trabajo](https://adictosaltrabajo.com/2025/03/20/implementando-un-outbox-transaccional-con-asyncapi-springmodulith-y-zenwavesdk/)
+[Read the full article on adictosaltrabajo.com](https://adictosaltrabajo.com/2025/03/20/implementando-un-outbox-transaccional-con-asyncapi-springmodulith-y-zenwavesdk/)
+

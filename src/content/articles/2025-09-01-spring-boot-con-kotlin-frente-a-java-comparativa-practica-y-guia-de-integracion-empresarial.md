@@ -10,6 +10,10 @@ tags:
 featured: false
 readingTime: "12 min read"
 lang: es
+externalUrl: https://adictosaltrabajo.com/2025/09/01/spring-boot-con-kotlin-frente-a-java-comparativa-practica-y-guia-de-integracion-empresarial/
+externalSite: 'adictosaltrabajo.com'
+externalOnly: true
 ---
 
-[Lee el artículo completo en Adictos a la Trabajo](https://adictosaltrabajo.com/2025/09/01/spring-boot-con-kotlin-frente-a-java-comparativa-practica-y-guia-de-integracion-empresarial/)
+[Read the full article on adictosaltrabajo.com](https://adictosaltrabajo.com/2025/09/01/spring-boot-con-kotlin-frente-a-java-comparativa-practica-y-guia-de-integracion-empresarial/)
+

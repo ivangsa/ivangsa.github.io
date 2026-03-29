@@ -113,6 +113,14 @@ const projects = (await getCollection('projects'))
 					<div class="latest-stack">
 						{latestArticles.map((article) => (
 							<div class="card">
+								{article.data.featuredImage && (
+									<img
+										class="card-image"
+										src={article.data.featuredImage}
+										alt={article.data.featuredImageAlt ?? ''}
+										loading="lazy"
+									/>
+								)}
 								<div class="card-tags">
 									{article.data.tags.slice(0, 3).map((tag) => (
 										<span class="card-tag">#{tag}</span>

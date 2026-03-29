@@ -7,6 +7,9 @@ tags:
   - api-first
 featured: false
 readingTime: "6 min read"
+externalUrl: https://www.zenwave360.io/posts/API-First-with-AsyncAPI-And-ZenWave-SDK/
+externalSite: 'Medium'
+externalOnly: true
 ---
 
 [Read the full article on Medium](https://www.zenwave360.io/posts/API-First-with-AsyncAPI-And-ZenWave-SDK/)

@@ -9,6 +9,9 @@ tags:
 featured: false
 readingTime: "3 min read"
 lang: en
+externalUrl: https://www.zenwave360.io/posts/ZenWave-Spring-Kotlin-Announcement/
+externalSite: 'ZenWave360'
+externalOnly: true
 ---
 
 [Read the full article on ZenWave360](https://www.zenwave360.io/posts/ZenWave-Spring-Kotlin-Announcement/)

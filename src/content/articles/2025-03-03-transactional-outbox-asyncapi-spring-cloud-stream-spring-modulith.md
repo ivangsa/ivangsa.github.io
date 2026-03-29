@@ -8,6 +8,10 @@ tags:
   - event-driven
 featured: false
 readingTime: "9 min read"
+externalUrl: https://www.zenwave360.io/posts/TransactionalOutBoxWithAsyncAPIAndSpringModulith/
+externalSite: 'ZenWave360'
+externalOnly: true
 ---
 
 [Read the full article on ZenWave360](https://www.zenwave360.io/posts/TransactionalOutBoxWithAsyncAPIAndSpringModulith/)
+

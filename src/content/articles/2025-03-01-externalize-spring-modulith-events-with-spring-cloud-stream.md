@@ -11,6 +11,9 @@ tags:
 featured: false
 readingTime: "8 min read"
 lang: en
+externalUrl: https://www.zenwave360.io/posts/Spring-Modulith-Events-Spring-Cloud-Stream-Externalizer/
+externalSite: 'ZenWave360'
+externalOnly: true
 ---
 
 [Read the full article on ZenWave360](https://www.zenwave360.io/posts/Spring-Modulith-Events-Spring-Cloud-Stream-Externalizer/)

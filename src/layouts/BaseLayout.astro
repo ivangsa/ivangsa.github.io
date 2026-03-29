@@ -45,6 +45,49 @@ const { title, description, canonical } = Astro.props;
 			addEventListener('load', () => document.documentElement.classList.add('loaded'));
 		</script>
 
+		<script>
+			(function renderPlantUmlBlocks() {
+				function looksLikePlantUml(source) {
+					return source.includes('@startuml') && source.includes('@enduml');
+				}
+
+				function textToHex(value) {
+					const bytes = new TextEncoder().encode(value);
+					let hex = '';
+					for (const byte of bytes) hex += byte.toString(16).padStart(2, '0');
+					return hex;
+				}
+
+				function render() {
+					const blocks = document.querySelectorAll('pre');
+
+					for (const block of blocks) {
+						const source = block.textContent?.trim();
+						if (!source || !looksLikePlantUml(source)) continue;
+
+						const image = document.createElement('img');
+						image.alt = 'PlantUML diagram';
+						image.loading = 'lazy';
+						image.decoding = 'async';
+						image.src = `https://www.plantuml.com/plantuml/svg/~h${textToHex(source)}`;
+
+						const figure = document.createElement('figure');
+						figure.className = 'plantuml-diagram';
+						figure.appendChild(image);
+
+						block.replaceWith(figure);
+					}
+				}
+
+				if (document.readyState === 'loading') {
+					document.addEventListener('DOMContentLoaded', render, { once: true });
+					return;
+				}
+
+				render();
+			})();
+		</script>
+
 		<style>
 			:root {
 				--_placeholder-bg: linear-gradient(transparent, transparent);

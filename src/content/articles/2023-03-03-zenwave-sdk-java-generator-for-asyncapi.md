@@ -8,6 +8,10 @@ tags:
   - zenwave
 featured: false
 readingTime: "7 min read"
+externalUrl: https://www.zenwave360.io/posts/ZenWave-AsyncAPI-Code-Generator/
+externalSite: 'Medium'
+externalOnly: true
 ---
 
 [Read the full article on Medium](https://www.zenwave360.io/posts/ZenWave-AsyncAPI-Code-Generator/)
+

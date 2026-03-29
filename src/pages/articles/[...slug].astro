@@ -16,6 +16,11 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+
+function resolveImageSrc(path: string) {
+	if (/^(https?:)?\/\//.test(path) || path.startsWith('/')) return path;
+	return `/${path}`;
+}
 ---
 
 <BaseLayout title={`${entry.data.title} | Articles`} description={entry.data.summary} canonical={entry.data.canonical}>
@@ -33,10 +38,29 @@ const { Content } = await render(entry);
 			</p>
 			<h1>{entry.data.title}</h1>
 			<p>{entry.data.summary}</p>
+			{entry.data.externalUrl && (
+				<p class="external-link">
+					Published at{' '}
+					<a href={entry.data.externalUrl} target="_blank" rel="noopener noreferrer">
+						{entry.data.externalSite ?? new URL(entry.data.externalUrl).hostname}
+					</a>{' '}
+					· <a href={entry.data.externalUrl} target="_blank" rel="noopener noreferrer">Read original ↗</a>
+				</p>
+			)}
+			{entry.data.featuredImage && (
+				<img
+					class="article-image"
+					src={resolveImageSrc(entry.data.featuredImage)}
+					alt={entry.data.featuredImageAlt ?? ''}
+					loading="lazy"
+				/>
+			)}
 		</header>
-		<article class="content">
-			<Content />
-		</article>
+		{!entry.data.externalOnly && (
+			<article class="content">
+				<Content />
+			</article>
+		)}
 	</main>
 </BaseLayout>
 
@@ -59,6 +83,19 @@ const { Content } = await render(entry);
 
 	header > p {
 		color: var(--gray-300);
+	}
+
+	.article-image {
+		width: auto;
+		max-width: 100%;
+		height: auto;
+		border-radius: 0.75rem;
+		margin-top: 0.75rem;
+	}
+
+	.external-link {
+		color: var(--gray-300);
+		font-size: var(--text-sm);
 	}
 
 	:global(.detail-page .content * + *) {

@@ -8,6 +8,10 @@ tags:
   - contract-testing
 featured: false
 readingTime: "10 min read"
+externalUrl: https://medium.com/@ivangsa/high-fidelity-stateful-mocks-consumer-contracts-with-openapi-and-karatedsl
+externalSite: 'Medium'
+externalOnly: true
 ---
 
 [Read the full article on Medium](https://medium.com/@ivangsa/high-fidelity-stateful-mocks-consumer-contracts-with-openapi-and-karatedsl)
+
