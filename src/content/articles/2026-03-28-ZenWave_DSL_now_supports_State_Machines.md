@@ -12,35 +12,44 @@ featuredImageAlt: "ZenWave Domain Language (ZDL) now speaks State Machines"
 readingTime: "4 min read"
 ---
 
-ZenWave Domain Language (ZDL) started with a simple goal: help me think about software, talk about it, validate and create a shared understanding, and then generate the boring parts that are already present in the model.
+ZenWave Domain Language (ZDL) started with a simple goal: help me think about 
+software, talk about it, validate and create a shared understanding, and then 
+generate the boring parts that are already present in the model.
 
-Grounded on DDD principles for describing bounded contexts as part of event-driven architectures, including domain entities and their relationships, services with inbound commands and domain events, documenting business rules (policies), and even creating rich domain aggregates.
+Grounded on DDD principles, ZDL describes the building blocks of a bounded context:
+entities, services, commands, domain events, and business rules.
 
-The language was designed to be compact, readable and expressive. Developer friendly, machine friendly and business friendly in the sense that can be read and understood by all stakeholders.
+The language was designed to be compact, readable and expressive. Developer 
+friendly, machine friendly and business friendly in the sense that can be read 
+and understood by all stakeholders.
 
-The language is flexible enough to state machines for entities, rich aggregates, and services... so the decision was not to create dedicated syntax for state machines, but to reuse the existing annotations for entities, aggregates and services, but postprocess this lifecycle annotations on the parser itself.
+When I started thinking about state machine support, my first instinct was to add 
+dedicated syntax for it. But the existing annotations were already expressive enough. 
+Two decorators, `@lifecycle` and `@transition`, attached to the right places in the 
+model, and the parser does the rest.
 
 ## Why State Machines Matter?
 
-State Machines matters in DDD for a few reasons:
+State machines make behaviour explicit.
 
-- First, state machines make behaviour explicit. Without them, the lifecycle is hidden in scattered if statements across services, handlers, and validations. The rules exist, but nobody can see them in one place.
-- Second, they protect aggregate invariants. An aggregate is supposed to be the boundary that keeps business rules consistent. If transitions are modeled as state changes explicitly, it is easier to prevent invalid moves such as cancelling an already delivered order or shipping an unpaid one.
-- Also, they help connect commands and domain events. For example, `placeOrder` moves `Order` from `DRAFT` to `PLACED` and emits `OrderPlaced`. That makes the relation between state change and event much clearer.
-- And more important, because they create **shared understanding**. State machines are easy to discuss with business experts and other stakeholders because they describe behaviour in business terms: what state something is in, what can happen next, and what that means.
+Without them, lifecycle stays implicit. Every application has state machine-like
+transitions: an order that gets placed, paid, shipped, cancelled. But without
+explicit modelling, those transitions live only in the heads of the people who
+built the system, or buried in code that takes time to read.
 
-In short, state machines matter because they make lifecycle, invariants, transitions, and emitted business events explicit, which is exactly the kind of behaviour DDD tries to model well.
-
+Making them explicit in the model is already valuable on its own. The fact that
+ZDL then converts that model into code that enforces the transitions is just a
+very good bonus.
 
 ## How ZenWave ZDL supports State Machines
 
-The way ZenWave ZDL supports state machines is deceptively simple: it uses two decorators (annotations) `@lifecycle` and `@transition` that can be attached to entities/aggreates and commands respectively.
+Two annotations. `@lifecycle` on the entity or aggregate, `@transition` on the commands.
 
 ### With Services (Lightweight Aggregates pattern)
 
-If you are using the **Lightweight Aggregates** pattern, where your business logic is implemented in services, you can use the `@lifecycle` decorator on the entity and the `@transition` decorator on the service commands.
-
-If you follow a **service-based (lightweight aggregate)** approach, lifecycle is defined on the entity and transitions on service commands.
+If you follow a **Lightweight Aggregates** pattern (sometimes called anemic domain 
+model, which is perfectly fine for many use cases), lifecycle is defined on the 
+entity and transitions on service commands.
 
 
 ```zdl
@@ -85,9 +94,13 @@ If you choose to add `@transition` in to your service commands, ZenWave SDK will
 
 ## What This Enables
 
-With this model, the DSL becomes the place where lifecycle is defined once and then automatically enforced. The SDK generates transition validation, consistent state mutation, and domain events aligned with each state change. And as a bonus, lifecycle diagrams in PlantUML, so the model documents itself.
+With `@lifecycle` and `@transition` in the model, the SDK generates transition 
+validation, state mutation, and domain events aligned with each state change. 
+And lifecycle diagrams in PlantUML, so the model documents itself.
 
-But the thing I like most is this: it works without forcing a specific implementation style. You can start with services and lightweight aggregates today, and move to rich aggregates later, the lifecycle model stays the same.
+But the thing I like most is this: it works without forcing a specific 
+implementation style. You can start with lightweight aggregates today and move 
+to rich aggregates later. The lifecycle model stays the same.
 
 Define the rules once. Let the generator do the rest. That is the whole idea.
 
@@ -201,4 +214,3 @@ If you want to see the full example:
 - Sample project: https://github.com/ZenWave360/zenwave-playground/blob/main/examples/order-fulfillment-kotlin
 - Docs: https://www.zenwave360.io/docs/examples/ddd-examples/order-fullillment-kotlin/
 
-This is the idea: define the behaviour once in the model, and let the system enforce it everywhere.
