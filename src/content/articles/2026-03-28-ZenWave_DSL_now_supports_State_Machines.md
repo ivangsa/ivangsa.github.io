@@ -28,7 +28,7 @@ dedicated syntax for it. But the existing annotations were already expressive en
 Two decorators, `@lifecycle` and `@transition`, attached to the right places in the 
 model, and the parser does the rest.
 
-## Why State Machines Matter?
+## Why State Machines?
 
 State machines make behaviour explicit.
 
