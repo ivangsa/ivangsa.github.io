@@ -1,6 +1,6 @@
 ---
 title: "ZenWave Domain Language (ZDL) now speaks State Machines"
-summary: ZenWave Domain Language (ZDL) now supports State Machines.
+summary: "Every application has state machine-like transitions: an order that gets placed, paid, shipped, cancelled. Now you can model your state transitions and ZenWave SDK will implement and enforce them for you."
 date: 2026-03-28
 tags:
   - ddd
