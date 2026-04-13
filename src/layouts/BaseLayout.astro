@@ -19,19 +19,10 @@ const { title, description, canonical } = Astro.props;
 <html lang="en">
 	<head>
 		<MainHead title={title} description={description} canonical={canonical} />
-<script>
-  window.op=window.op||function(){var n=[];return new Proxy(function(){arguments.length&&n.push([].slice.call(arguments))},{get:function(t,r){return"q"===r?n:function(){n.push([r].concat([].slice.call(arguments)))}} ,has:function(t,r){return"q"===r}}) }();
-  window.op('init', {
-    clientId: '25ace585-3e4d-4a43-ae7f-c0f2e59657be',
-    trackScreenViews: true,
-    trackOutgoingLinks: true,
-    trackAttributes: true,
-    // sessionReplay: {
-    //   enabled: true,
-    // },
-  });
-</script>
-<script src="https://openpanel.dev/op1.js" defer async></script>
+		<script
+			data-goatcounter="https://ivangsa.goatcounter.com/count"
+			async
+			src="//gc.zgo.at/count.js"></script>
 	</head>
 	<body>
 		<div class="stack backgrounds">
