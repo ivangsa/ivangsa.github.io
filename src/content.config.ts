@@ -10,6 +10,7 @@ export const collections = {
 			summary: z.string(),
 			tags: z.array(z.string()),
 			featured: z.boolean(),
+			draft: z.boolean().or(z.undefined()).default(false),
 			readingTime: z.string().optional(),
 			featuredImage: z.string().optional(),
 			featuredImageAlt: z.string().optional(),

@@ -9,9 +9,9 @@ const xmlEscape = (value: string) =>
 		.replaceAll("'", '&apos;');
 
 export async function GET({ site }: { site: URL }) {
-	const articles = (await getCollection('articles')).sort(
-		(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-	);
+	const articles = (await getCollection('articles'))
+		.filter((article) => !article.data.draft)
+		.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 	const origin = site.origin;
 	const items = articles

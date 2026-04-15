@@ -2,9 +2,9 @@
 import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
-const articles = (await getCollection('articles')).sort(
-	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
-);
+const articles = (await getCollection('articles'))
+	.filter((article) => !article.data.draft)
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 function resolveImageSrc(path: string) {
 	if (/^(https?:)?\/\//.test(path) || path.startsWith('/')) return path;

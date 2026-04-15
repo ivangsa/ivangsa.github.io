@@ -8,7 +8,7 @@ import Pill from '../components/Pill.astro';
 import Skills from '../components/Skills.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
-const allArticles = await getCollection('articles');
+const allArticles = (await getCollection('articles')).filter((article) => !article.data.draft);
 
 const allArticlesEn = allArticles
 	.filter((a) => !a.data.lang || a.data.lang === 'en')
