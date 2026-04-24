@@ -8,6 +8,8 @@ const xmlEscape = (value: string) =>
 		.replaceAll('"', '&quot;')
 		.replaceAll("'", '&apos;');
 
+const cdataEscape = (value: string) => value.replaceAll(']]>', ']]]]><![CDATA[>');
+
 export async function GET({ site }: { site: URL }) {
 	const articles = (await getCollection('articles'))
 		.filter((article) => !article.data.draft)
@@ -17,18 +19,22 @@ export async function GET({ site }: { site: URL }) {
 	const items = articles
 		.map((entry) => {
 			const link = new URL(`/articles/${entry.id}/`, origin).toString();
+			const originalLink = entry.data.canonical ?? entry.data.externalUrl ?? link;
+			const summary = entry.data.summary;
+			const htmlContent = `<p>${xmlEscape(summary)}</p><p><a href="${xmlEscape(originalLink)}">Read the full article on ivangsa.com</a></p>`;
 			return `<item>
 <title>${xmlEscape(entry.data.title)}</title>
 <link>${link}</link>
 <guid>${link}</guid>
 <pubDate>${entry.data.date.toUTCString()}</pubDate>
-<description>${xmlEscape(entry.data.summary)}</description>
+<description>${xmlEscape(`${summary} Read the full article on ivangsa.com: ${originalLink}`)}</description>
+<content:encoded><![CDATA[${cdataEscape(htmlContent)}]]></content:encoded>
 </item>`;
 		})
 		.join('\n');
 
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0">
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
 <channel>
 <title>Ivan Garcia Sainz-Aja - Articles</title>
 <link>${origin}</link>
