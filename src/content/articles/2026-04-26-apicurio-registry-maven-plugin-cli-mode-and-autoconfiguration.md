@@ -1,6 +1,6 @@
 ---
-title: "How I Fixed Three Friction Points in the Apicurio Registry Maven Plugin"
-summary: ""
+title: "Apicurio Registry Maven Plugin: CLI Mode and Autoconfiguration"
+summary: "Three upstream fixes that make the Apicurio Registry Maven Plugin work from the CLI with minimal configuration"
 date: 2026-04-26
 tags:
   - Apicurio
@@ -8,7 +8,7 @@ tags:
   - AsyncAPI
   - OpenAPI
 featured: false
-featuredImage: assets/articles/2026-04-26-how-i-fixed-three-friction-points-in-the-apicurio-registry-maven-plugin/apicurio.png
+featuredImage: assets/articles/2026-04-26-apicurio-registry-maven-plugin-cli-mode-and-autoconfiguration/apicurio.png
 featuredImageAlt: ""
 readingTime: "12 min read"
 
