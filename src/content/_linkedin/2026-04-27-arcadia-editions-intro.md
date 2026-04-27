@@ -1,12 +1,10 @@
-
-
 Say hi to Arcadia Editions 🎲
 
 A fictional board game retailer. Real event-driven architecture.
 
-I am building in public a complete backend for a fictional specialty retailer. Limited edition board games, global collectors, omnichannel operations, and the kind of scarcity that makes every drop feel like the last copy on the shelf.
+I am building in public the full architecture of a fictional specialty retailer. Limited edition board games, global collectors, omnichannel operations, and the kind of scarcity that makes every drop feel like the last copy on the shelf.
 
-The whole stack, from discovery to running code:
+The whole stack, what I call the architectural world model of a business, from discovery to running code, all of it in the open:
 
 - Domain discovery with DDD
 - Process modeling with Event Storming
