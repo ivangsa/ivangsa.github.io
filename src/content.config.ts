@@ -1,9 +1,32 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
+import { basename, extname } from 'node:path';
+
+const dateFreeUrlStart = Date.UTC(2026, 3, 26);
+
+function dateValue(date: unknown) {
+	if (date instanceof Date) return Date.UTC(date.getUTCFullYear(), date.getUTCMonth(), date.getUTCDate());
+	if (typeof date === 'string') {
+		const [year, month, day] = date.split('-').map(Number);
+		if (year && month && day) return Date.UTC(year, month - 1, day);
+	}
+	return undefined;
+}
+
+function filenameId(entry: string, data: { date?: unknown }) {
+	const filename = basename(entry, extname(entry));
+	const shouldUseDateFreeUrl = (dateValue(data.date) ?? 0) >= dateFreeUrlStart;
+
+	return shouldUseDateFreeUrl ? filename.replace(/^\d{4}-\d{2}-\d{2}-/, '') : filename;
+}
 
 export const collections = {
 	articles: defineCollection({
-		loader: glob({ base: './src/content/articles', pattern: '**/*.md' }),
+		loader: glob({
+			base: './src/content/articles',
+			pattern: '**/*.md',
+			generateId: ({ entry, data }) => filenameId(entry, data),
+		}),
 		schema: z.object({
 			title: z.string(),
 			date: z.coerce.date(),
