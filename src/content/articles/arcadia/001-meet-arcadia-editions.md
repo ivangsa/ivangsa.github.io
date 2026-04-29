@@ -21,7 +21,7 @@ But the problems it has are very real. And that is exactly the point.
 
 ## Why a fictional company?
 
-I have been working with event-driven architectures for years. AsyncAPI, Kafka, domain-driven design, schema registries, API governance. The technology is fascinating. But explaining it with generic examples like `OrderPlaced`, `UserRegistered` or `PaymentProcessed` always feels hollow. You understand the concept but you miss the texture. The real decisions. The trade-offs that only appear when you have an actual business to model.
+I have been working with event-driven architectures for years. AsyncAPI, Kafka, domain-driven design, schema registries, Spring Boot microservices, API governance. The technology is fascinating. But explaining it with generic examples like `OrderPlaced`, `UserRegistered` or `PaymentProcessed` always feels hollow. You understand the concept but you miss the texture. The real decisions. The trade-offs that only appear when you have an actual business to model.
 
 So I built Arcadia Editions. A fictional company with a real domain, real complexity, and real architectural challenges. Something I can use to showcase how I think about event-driven systems, and specifically how tools like the [ZenWave Platform](https://zenwave360.io) help you build them without losing your mind.
 
@@ -39,13 +39,19 @@ Scarcity is intentional. Arcadia Editions does not restock. When a limited editi
 
 That last paragraph is the key.
 
-Scarcity plus global demand plus omnichannel operations is a combination you simply cannot handle well with synchronous REST APIs. Every product drop, every waitlist update, every sold-out notification, every cross-channel inventory sync. These are events. Things that happened in the business that other parts of the system need to react to.
+Scarcity plus global demand plus omnichannel operations is a combination where a good implementation can make or break the client experience. That is the core of the business.
 
-This is exactly the kind of domain where event-driven architecture earns its complexity. Not because it is trendy. Because the business demands it.
+The core idea of DDD is simple: understand the problem space first. Only then design a solution.
+
+The problem space is your client's problem. Your business is the solution.
+
+For Arcadia Editions that means every product drop, every waitlist update, every sold-out notification, every cross-channel inventory sync. Trust is the product. If a client reserves a copy, that copy has to hold. No surprises at checkout.
+
+That is where the domain earns its complexity. Not because it is trendy. Because the business demands it.
 
 ## The bounded contexts
 
-Arcadia Editions architecture is organized around six core domains:
+Arcadia Editions architecture is organized around six core domains, and we will discover how to find them later:
 
 - **Customer and Identity** — profiles, loyalty tiers, authentication
 - **Catalog and Inventory** — products, pricing, stock levels, drop management
