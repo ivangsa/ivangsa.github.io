@@ -10,6 +10,12 @@ const xmlEscape = (value: string) =>
 
 const cdataEscape = (value: string) => value.replaceAll(']]>', ']]]]><![CDATA[>');
 
+function absolutizeHtmlUrls(html: string, origin: string) {
+	return html.replace(/\b(href|src)="\/([^"]*)"/g, (_match, attribute: string, path: string) => {
+		return `${attribute}="${new URL(`/${path}`, origin).toString()}"`;
+	});
+}
+
 export async function GET({ site }: { site: URL }) {
 	const articles = (await getCollection('articles'))
 		.filter((article) => !article.data.draft)
@@ -21,7 +27,10 @@ export async function GET({ site }: { site: URL }) {
 			const link = new URL(`/articles/${entry.id}/`, origin).toString();
 			const originalLink = entry.data.canonical ?? entry.data.externalUrl ?? link;
 			const summary = entry.data.summary;
-			const htmlContent = `<p>${xmlEscape(summary)}</p><p><a href="${xmlEscape(originalLink)}">Read the full article on ivangsa.com</a></p>`;
+			const content = entry.data.externalOnly
+				? `<p>${xmlEscape(summary)}</p>`
+				: (entry.rendered?.html ?? `<p>${xmlEscape(summary)}</p>`);
+			const htmlContent = `${absolutizeHtmlUrls(content, origin)}<p><a href="${xmlEscape(originalLink)}">Read the article on ivangsa.com</a></p>`;
 			return `<item>
 <title>${xmlEscape(entry.data.title)}</title>
 <link>${link}</link>

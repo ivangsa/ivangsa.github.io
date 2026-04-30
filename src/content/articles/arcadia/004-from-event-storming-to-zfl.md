@@ -1,22 +1,21 @@
 ---
 title: "From Event Storming to ZFL: Translating Business Flows into Code"
 summary: "Event Storming gives you sticky notes. ZFL gives them a structured home. Here is how the concepts map."
-date: 2026-05-08
+date: 2026-05-18
 tags:
   - arcadia
   - eda
   - ddd
   - zenwave
 featured: false
-featuredImage: assets/articles/004-from-event-storming-to-zfl/arcadia.png
+featuredImage: assets/articles/arcadia-editions/zfl-flow.png
 featuredImageAlt: "Event Storming board for the PlaceOrder flow of Arcadia Editions"
 readingTime: "8 min read"
 draft: true
 ---
 
-# From Event Storming to ZFL: Translating Business Flows into Code
 
-In the [previous post](/blog/event-storming-arcadia-editions-discovering-the-order-flow) we ran an Event Storming session for the PlaceOrder flow of Arcadia Editions. We have the board. We have the sticky notes. We understand what happens when a collector clicks reserve during a hot drop.
+In the [previous post](/articles/arcadia/003-event-storming-arcadia-editions) we ran an Event Storming session for the PlaceOrder flow of Arcadia Editions. We have the board. We have the sticky notes. We understand what happens when a collector clicks reserve during a hot drop.
 
 Now we need to give those findings a home.
 
@@ -46,6 +45,8 @@ ZFL maps directly to these concepts. Once you see the mapping, reading and writi
 | Event | `event` |
 | Timer / time-based policy | `@time(...)` + `start` |
 | End states | `end { ... }` |
+
+![Event Storming board showing domain events and commands for the PlaceOrder flow](/assets/articles/arcadia-editions/eventstorming-events-commands.jpg)
  
 ## Starting point: the actor and the first command
  
@@ -61,6 +62,8 @@ start CustomerPlacesOrder { }
 `@actor` names who initiates the flow. `start` names the command that kicks it off. Simple.
  
 ## The happy path: policies all the way down
+
+![Event Storming board showing events, commands, and policies for the PlaceOrder flow](/assets/articles/arcadia-editions/eventstorming-events-commands-policies.jpg)
  
 This is where Event Storming and ZFL align most clearly. Every policy on the board — when this event happens, do this command — becomes a `when ... do ...` block in ZFL.
  

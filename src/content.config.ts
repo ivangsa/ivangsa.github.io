@@ -1,6 +1,6 @@
 import { defineCollection, z } from 'astro:content';
 import { glob } from 'astro/loaders';
-import { basename, extname } from 'node:path';
+import { basename, dirname, extname } from 'node:path/posix';
 
 const dateFreeUrlStart = Date.UTC(2026, 3, 26);
 
@@ -14,10 +14,17 @@ function dateValue(date: unknown) {
 }
 
 function filenameId(entry: string, data: { date?: unknown }) {
-	const filename = basename(entry, extname(entry));
+	const normalizedEntry = entry.replace(/\\/g, '/');
+	const filename = basename(normalizedEntry, extname(normalizedEntry));
+	const directory = dirname(normalizedEntry);
+	const directorySlug = directory
+		.split('/')
+		.filter((part) => part !== '.' && !/^\d+$/.test(part))
+		.join('/');
 	const shouldUseDateFreeUrl = (dateValue(data.date) ?? 0) >= dateFreeUrlStart;
+	const slug = shouldUseDateFreeUrl ? filename.replace(/^\d{4}-\d{2}-\d{2}-/, '') : filename;
 
-	return shouldUseDateFreeUrl ? filename.replace(/^\d{4}-\d{2}-\d{2}-/, '') : filename;
+	return directorySlug ? `${directorySlug}/${slug}` : slug;
 }
 
 export const collections = {
@@ -34,6 +41,7 @@ export const collections = {
 			tags: z.array(z.string()),
 			featured: z.boolean(),
 			draft: z.boolean().or(z.undefined()).default(false),
+			showSummaryInArticleBody: z.boolean().or(z.undefined()).default(true),
 			readingTime: z.string().optional(),
 			featuredImage: z.string().optional(),
 			featuredImageAlt: z.string().optional(),

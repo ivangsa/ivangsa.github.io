@@ -1,18 +1,19 @@
 ---
 title: "Meet Arcadia Editions: The Fictional Company I Built to Explore Event-Driven Architecture"
-summary: ""
-date: 2026-04-25
+summary: "Domain discovery, event modeling, API specs, and running code. All of it built in the open, through a domain complex enough to make the decisions interesting."
+showSummaryInArticleBody: true
+date: 2026-04-30
 tags:
   - arcadia
   - EDA
   - DDD
   - Governance
 featured: false
-featuredImage: assets/articles/01-meet-arcadia-editions/arcadia.png
-featuredImageAlt: ""
-readingTime: "8 min read"
+featuredImage: assets/articles/arcadia-editions/arcadia.png
+featuredImageAlt: "Arcadia Editions - Logo"
+readingTime: "4 min read"
 
-draft: true
+draft: false
 ---
 
 Arcadia Editions is not a real company. I made it up.
@@ -45,7 +46,7 @@ The core idea of DDD is simple: understand the problem space first. Only then de
 
 The problem space is your client's problem. Your business is the solution.
 
-For Arcadia Editions that means every product drop, every waitlist update, every sold-out notification, every cross-channel inventory sync. Trust is the product. If a client reserves a copy, that copy has to hold. No surprises at checkout.
+For Arcadia Editions that means every product launch, every waitlist update, every sold-out notification, every cross-channel inventory sync. Trust is the product. If a client reserves a copy, that copy has to hold. No surprises at checkout.
 
 That is where the domain earns its complexity. Not because it is trendy. Because the business demands it.
 
@@ -54,13 +55,26 @@ That is where the domain earns its complexity. Not because it is trendy. Because
 Arcadia Editions architecture is organized around six core domains, and we will discover how to find them later:
 
 - **Customer and Identity** — profiles, loyalty tiers, authentication
-- **Catalog and Inventory** — products, pricing, stock levels, drop management
+- **Catalog and Inventory** — products, pricing, stock levels, launch management
 - **Orders** — cart, checkout, order lifecycle
 - **Payments** — authorization, failure handling, refunds
 - **Fulfillment** — picking, packing, shipping, delivery tracking
 - **Notifications** — email, SMS, push, reacting to everything else
 
 Simple enough to understand in one sitting. Rich enough to surface real architectural problems.
+
+## From Discovery to Running Code
+
+The whole stack, what I call the architectural world model of a business, from discovery to running code, all of it in the open:
+
+- Domain discovery with DDD
+- Process modeling with Event Storming
+- Domain modeling with ZenWave ZDL
+- Business flows with ZFL
+- Event-driven as the architectural pattern
+- API-first with AsyncAPI and OpenAPI
+- Everything published to Apicurio and EventCatalog, the architectural world model of the business, readable by humans and AI agents
+- And of course running Spring Boot and Kotlin applications. Because working software is worth more than a thousand words.
 
 ## What comes next
 

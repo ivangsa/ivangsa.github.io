@@ -9,15 +9,35 @@ import Skills from '../components/Skills.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
 
 const allArticles = (await getCollection('articles')).filter((article) => !article.data.draft);
+const hasArcadiaTag = (article: (typeof allArticles)[number]) =>
+	article.data.tags.some((tag) => tag.toLowerCase() === 'arcadia');
 
 const allArticlesEn = allArticles
 	.filter((a) => !a.data.lang || a.data.lang === 'en')
 	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
-const featuredArticle = allArticlesEn.find((a) => a.data.featured) ?? allArticlesEn[0];
-const latestArticles = allArticlesEn
+const nonArcadiaArticlesEn = allArticlesEn.filter((article) => !hasArcadiaTag(article));
+const arcadiaArticles = allArticlesEn.filter(hasArcadiaTag);
+
+const featuredArticle = nonArcadiaArticlesEn.find((a) => a.data.featured) ?? nonArcadiaArticlesEn[0];
+const latestArticles = nonArcadiaArticlesEn
 	.filter((a) => a.id !== featuredArticle?.id)
 	.slice(0, 2);
+const arcadiaStartArticle = arcadiaArticles.find((article) => article.id.startsWith('arcadia/001-'));
+const fixedArcadiaArticle = arcadiaArticles.find((article) => article.id.startsWith('arcadia/002-'));
+const latestArcadiaStripArticles = arcadiaArticles
+	.filter((article) => !article.id.startsWith('arcadia/001-') && !article.id.startsWith('arcadia/002-'))
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
+	.slice(0, 3)
+	.sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+const arcadiaStripArticles = [fixedArcadiaArticle, ...latestArcadiaStripArticles].filter(
+	(article): article is (typeof arcadiaArticles)[number] => article !== undefined,
+);
+
+function getArcadiaSequence(article: (typeof arcadiaArticles)[number]) {
+	const sequence = article.id.match(/(?:^|\/)(\d+)/)?.[1];
+	return sequence ? String(Number(sequence)).padStart(2, '0') : '';
+}
 
 const allTutorials = (await getCollection('tutorials')).sort(
 	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
@@ -77,6 +97,61 @@ const projects = (await getCollection('projects'))
 		</div>
 
 		<main class="wrapper stack gap-8 lg:gap-15">
+
+			<section class="box arcadia-series stack gap-8">
+				<div class="arcadia-hero">
+					<img
+						class="arcadia-hero-image"
+						src="/assets/articles/arcadia-editions/arcadia.png"
+						alt="Arcadia Editions"
+						loading="lazy"
+					/>
+					<div class="arcadia-hero-body">
+						<p class="arcadia-eyebrow">The Arcadia Editions Series</p>
+						<h3>
+							{arcadiaStartArticle ? (
+								<a href={`/articles/${arcadiaStartArticle.id}/`}>The Fictional Company I Built to Explore Event-Driven Architecture</a>
+							) : (
+								'The Fictional Company I Built to Explore Event-Driven Architecture'
+							)}
+						</h3>
+						<p>
+							A fictional board game retailer built to explore event-driven architecture end-to-end.
+							Domain discovery, flow modeling, API generation, and running Spring Boot services - all in the open.
+						</p>
+						<div class="arcadia-actions">
+							{arcadiaStartArticle && (
+								<a class="arcadia-cta" href={`/articles/${arcadiaStartArticle.id}/`}>Start from the beginning &rarr;</a>
+							)}
+							<a class="arcadia-cta arcadia-cta-secondary" href="/articles/arcadia/">View all articles</a>
+						</div>
+					</div>
+				</div>
+				<ul class="arcadia-strip">
+					{
+						arcadiaStripArticles.map((article) => (
+							<li>
+								<a class="arcadia-card" href={`/articles/${article.id}/`}>
+									{article.data.featuredImage && (
+										<img
+											class="arcadia-card-image"
+											src={article.data.featuredImage.startsWith('/') ? article.data.featuredImage : `/${article.data.featuredImage}`}
+											alt={article.data.featuredImageAlt ?? ''}
+											loading="lazy"
+										/>
+									)}
+									<span class="arcadia-badge">#{getArcadiaSequence(article)}</span>
+									<h3>{article.data.title}</h3>
+									<time datetime={article.data.date.toISOString()}>
+										{article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+									</time>
+									<p>{article.data.summary}</p>
+								</a>
+							</li>
+						))
+					}
+				</ul>
+			</section>
 
 			<section class="box stack gap-8">
 				<div class="section-head">
@@ -140,6 +215,7 @@ const projects = (await getCollection('projects'))
 					</div>
 				</div>
 			</section>
+
 
 			<section class="box stack gap-8">
 				<div class="section-head">
@@ -318,6 +394,10 @@ const projects = (await getCollection('projects'))
 		gap: 1rem;
 	}
 
+	.section-head h2 {
+		font-size: var(--text-2xl);
+	}
+
 	.card-grid {
 		list-style: none;
 		padding: 0;
@@ -431,6 +511,181 @@ const projects = (await getCollection('projects'))
 		color: var(--accent-dark);
 	}
 
+	.arcadia-series {
+		background:
+			linear-gradient(135deg, color-mix(in srgb, var(--accent-regular) 16%, transparent), transparent 38%),
+			var(--gray-999_40);
+	}
+
+	.arcadia-hero {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1.25rem;
+		align-items: center;
+	}
+
+	.arcadia-hero-image {
+		width: 100%;
+		max-height: 320px;
+		aspect-ratio: 16 / 9;
+		object-fit: contain;
+		border-radius: 0.75rem;
+		border: 1px solid var(--gray-800);
+		background: white;
+	}
+
+	.arcadia-hero-body {
+		display: flex;
+		flex-direction: column;
+		justify-content: center;
+		gap: 0.75rem;
+		width: 100%;
+		min-width: 0;
+	}
+
+	.arcadia-eyebrow {
+		margin: 0;
+		color: var(--accent-regular);
+		font-size: var(--text-base);
+		font-weight: 700;
+		text-transform: uppercase;
+	}
+
+	.arcadia-hero-body h3 {
+		display: block;
+		overflow: visible;
+		width: 100%;
+		margin: 0;
+		max-width: 100%;
+		font-size: var(--text-2xl);
+		line-height: 1.1;
+		white-space: normal;
+		-webkit-line-clamp: unset;
+		-webkit-box-orient: initial;
+	}
+
+	.arcadia-hero-body h3 a {
+		color: var(--gray-0);
+		text-decoration: none;
+	}
+
+	.arcadia-hero-body h3 a:hover,
+	.arcadia-hero-body h3 a:focus-visible {
+		color: var(--accent-dark);
+	}
+
+	.arcadia-hero-body p:not(.arcadia-eyebrow) {
+		width: 100%;
+		margin: 0;
+		max-width: 100%;
+		color: var(--gray-300);
+	}
+
+	.arcadia-actions {
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.75rem;
+		margin-top: 0.5rem;
+	}
+
+	.arcadia-cta {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+		min-width: 7.5rem;
+		border: 1px solid var(--accent-regular);
+		border-radius: 999px;
+		padding: 0.65rem 1rem;
+		color: var(--accent-text-over);
+		background: var(--accent-regular);
+		font-weight: 700;
+		text-decoration: none;
+	}
+
+	.arcadia-cta-secondary {
+		border-color: color-mix(in srgb, var(--accent-regular) 70%, var(--gray-700));
+		color: var(--gray-200);
+		background: color-mix(in srgb, var(--gray-999) 65%, transparent);
+	}
+
+	.arcadia-cta-secondary:hover {
+		color: var(--accent-text-over);
+		background: var(--accent-regular);
+	}
+
+	.arcadia-strip {
+		list-style: none;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(170px, 1fr));
+		gap: 1rem;
+	}
+
+	.arcadia-card {
+		position: relative;
+		display: flex;
+		min-height: 100%;
+		flex-direction: column;
+		gap: 0.375rem;
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		padding: 0.75rem;
+		background: var(--gradient-subtle);
+		color: inherit;
+		text-decoration: none;
+	}
+
+	.arcadia-card:hover h3 {
+		color: var(--accent-dark);
+	}
+
+	.arcadia-card-image {
+		width: 100%;
+		aspect-ratio: 16 / 9;
+		object-fit: cover;
+		border-radius: 0.5rem;
+		margin-bottom: 0.25rem;
+	}
+
+	.arcadia-badge {
+		position: absolute;
+		top: 1rem;
+		left: 1rem;
+		border: 1px solid var(--accent-regular);
+		border-radius: 999px;
+		padding: 0.125rem 0.5rem;
+		color: var(--accent-text-over);
+		background: var(--accent-regular);
+		font-size: 0.75rem;
+		font-weight: 800;
+		line-height: 1.5;
+	}
+
+	.arcadia-card h3 {
+		overflow: hidden;
+		display: -webkit-box;
+		margin: 0.25rem 0 0;
+		font-size: var(--text-sm);
+		line-height: 1.2;
+		-webkit-line-clamp: 2;
+		-webkit-box-orient: vertical;
+	}
+
+	.arcadia-card time {
+		color: var(--gray-400);
+		font-size: 0.75rem;
+	}
+
+	.arcadia-card p {
+		overflow: hidden;
+		display: -webkit-box;
+		margin: 0;
+		color: var(--gray-400);
+		font-size: 0.75rem;
+		-webkit-line-clamp: 1;
+		-webkit-box-orient: vertical;
+	}
+
 	@media (min-width: 50em) {
 		.box {
 			border-radius: 1.5rem;
@@ -460,6 +715,24 @@ const projects = (await getCollection('projects'))
 
 		.articles-layout {
 			grid-template-columns: 2fr 1fr;
+		}
+
+		.arcadia-hero {
+			grid-template-columns: minmax(240px, 360px) minmax(0, 1fr);
+			gap: 2rem;
+		}
+
+		.arcadia-hero-image {
+			height: 100%;
+			max-height: 340px;
+		}
+
+		.arcadia-strip {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+
+		.arcadia-hero-body h3 {
+			font-size: 31px;
 		}
 	}
 </style>

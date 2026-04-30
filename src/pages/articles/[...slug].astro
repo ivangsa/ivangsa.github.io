@@ -16,6 +16,9 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const isArcadiaArticle = entry.data.tags.some((tag) => tag.toLowerCase() === 'arcadia');
+const backLinkHref = isArcadiaArticle ? '/articles/arcadia/' : '/articles/';
+const backLinkText = isArcadiaArticle ? 'Back to Arcadia Editions series...' : 'Back to articles';
 
 function resolveImageSrc(path: string) {
 	if (/^(https?:)?\/\//.test(path) || path.startsWith('/')) return path;
@@ -25,7 +28,7 @@ function resolveImageSrc(path: string) {
 
 <BaseLayout title={`${entry.data.title} | Articles`} description={entry.data.summary} canonical={entry.data.canonical}>
 	<main class="wrapper stack gap-8 detail-page">
-		<a href="/articles/" class="back-link">Back to articles</a>
+		<a href={backLinkHref} class="back-link">{backLinkText}</a>
 		<header class="stack gap-2">
 			<p class="meta">
 				<time datetime={entry.data.date.toISOString()}>
@@ -37,7 +40,7 @@ function resolveImageSrc(path: string) {
 				</time>
 			</p>
 			<h1>{entry.data.title}</h1>
-			<p>{entry.data.summary}</p>
+			{entry.data.showSummaryInArticleBody && <p>{entry.data.summary}</p>}
 			{entry.data.externalUrl && (
 				<p class="external-link">
 					Published at{' '}

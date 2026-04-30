@@ -1,7 +1,7 @@
 ---
 title: "From Events to Bounded Contexts: Finding Arcadia Editions' Architecture"
 summary: "Large systems become unmanageable when everyone shares the same model. This post walks through the heuristic we used to find those boundaries in Arcadia Editions, looking for the business objects that act as centers of gravity for commands and events, and using the consistency requirement to draw the line around each one"
-date: 2026-05-01
+date: 2026-05-25
 tags:
   - arcadia
   - EDA
@@ -77,6 +77,8 @@ Centers of gravity is not the only way to find boundaries. There are others.
 
 Language shifts. When people in a real workshop start arguing about what an event means, or use different words for the same concept, that friction is a boundary. Two mental models colliding. The `OrderConfirmed` pivot above is a textbook example: same event, completely different meaning to Fulfillment, Payments, and Notifications.
 
+![Hotspots on the Event Storming board highlighting friction and boundary signals in the PlaceOrder flow](/assets/articles/arcadia-editions/eventstorming-events-commands-policies-hotspots.jpg)
+
 Organizational boundaries. Conway's Law works in both directions. If two teams have been arguing about who owns something for months, that ownership dispute is telling you something real about the domain.
 
 Rate of change. If two things always change together, they probably belong together. If they change independently, they probably do not.
@@ -88,6 +90,8 @@ All of these are signals, not rules. They are useful when they confirm each othe
 ## What this gives us
 
 Six candidate bounded contexts: Customer and Identity, Catalog and Inventory, Orders, Payments, Fulfillment, Notifications.
+
+![Event Storming board showing the six bounded contexts as systems in Arcadia Editions](/assets/articles/arcadia-editions/eventstorming-systems.jpg)
 
 They were not invented. They emerged from one question applied consistently across the flow.
 

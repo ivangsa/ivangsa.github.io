@@ -1,0 +1,165 @@
+---
+import { getCollection } from 'astro:content';
+import BaseLayout from '../../layouts/BaseLayout.astro';
+
+const articles = (await getCollection('articles'))
+	.filter((article) => !article.data.draft)
+	.filter((article) => article.data.tags.some((tag) => tag.toLowerCase() === 'arcadia'))
+	.sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+
+function resolveImageSrc(path: string) {
+	if (/^(https?:)?\/\//.test(path) || path.startsWith('/')) return path;
+	return `/${path}`;
+}
+
+function getArticleHref(article: (typeof articles)[number]) {
+	if (article.data.externalOnly && article.data.externalUrl) return article.data.externalUrl;
+	return `/articles/${article.id}/`;
+}
+---
+
+<BaseLayout
+	title="Arcadia Series | Ivan Garcia Sainz-Aja"
+	description="The Arcadia Editions series, ordered chronologically from older to newer."
+>
+	<main class="wrapper stack gap-8 list-page">
+		<h1>Arcadia Series</h1>
+		<ul class="items">
+			{
+				articles.map((article) => (
+					<li>
+						<article class="item item-with-image">
+							{article.data.featuredImage && (
+								<img
+									class="item-image"
+									src={resolveImageSrc(article.data.featuredImage)}
+									alt={article.data.featuredImageAlt ?? ''}
+									loading="lazy"
+								/>
+							)}
+							{!article.data.featuredImage && <div class="item-image-placeholder" aria-hidden="true"></div>}
+							<div class="item-body">
+								<p class="meta">
+									<time datetime={article.data.date.toISOString()}>
+										{article.data.date.toLocaleDateString('en-US', {
+											year: 'numeric',
+											month: 'short',
+											day: 'numeric',
+										})}
+									</time>
+									{article.data.featured && <span>Featured</span>}
+									{article.data.readingTime && <span>&middot; {article.data.readingTime}</span>}
+									{article.data.externalUrl && (
+										<span>
+											&middot; Published at{' '}
+											<a
+												href={article.data.externalUrl}
+												target="_blank"
+												rel="noopener noreferrer"
+											>
+												{article.data.externalSite ?? new URL(article.data.externalUrl).hostname}
+											</a>
+										</span>
+									)}
+								</p>
+								<h2>
+									<a
+										href={getArticleHref(article)}
+										target={article.data.externalOnly && article.data.externalUrl ? '_blank' : undefined}
+										rel={article.data.externalOnly && article.data.externalUrl ? 'noopener noreferrer' : undefined}
+									>
+										{article.data.title}
+									</a>
+								</h2>
+								<p>{article.data.summary}</p>
+							</div>
+						</article>
+					</li>
+				))
+			}
+		</ul>
+	</main>
+</BaseLayout>
+
+<style>
+	.list-page {
+		padding-bottom: 4rem;
+	}
+
+	h1 {
+		font-size: var(--text-3xl);
+	}
+
+	.items {
+		list-style: none;
+		padding: 0;
+		display: grid;
+		gap: 1rem;
+	}
+
+	.item {
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		padding: 1rem;
+		background: var(--gradient-subtle);
+	}
+
+	.item-with-image {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.875rem;
+		align-items: start;
+	}
+
+	.item-image {
+		width: 100%;
+		height: 180px;
+		object-fit: cover;
+		border-radius: 0.5rem;
+	}
+
+	.item-image-placeholder {
+		width: 100%;
+		height: 180px;
+		border-radius: 0.5rem;
+		border: 1px dashed var(--gray-700);
+		background: color-mix(in srgb, var(--gray-900) 55%, transparent);
+	}
+
+	.item-body {
+		min-width: 0;
+	}
+
+	.meta {
+		display: flex;
+		gap: 0.75rem;
+		font-size: var(--text-sm);
+		color: var(--gray-400);
+		margin-bottom: 0.25rem;
+	}
+
+	h2 {
+		font-size: var(--text-xl);
+		margin-bottom: 0.5rem;
+	}
+
+	h2 a {
+		color: inherit;
+		text-decoration: none;
+	}
+
+	p {
+		color: var(--gray-300);
+	}
+
+	@media (min-width: 768px) {
+		.item-with-image {
+			grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+		}
+
+		.item-image,
+		.item-image-placeholder {
+			height: 120px;
+		}
+	}
+</style>
