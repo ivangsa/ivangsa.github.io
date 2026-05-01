@@ -1,7 +1,7 @@
 ---
 title: "Event Storming Arcadia Editions: Discovering the Order Flow"
 summary: "For Arcadia Editions during a launch, the failure paths are the normal cases. This is what Event Storming looks like when the domain actually demands it."
-date: 2026-05-11
+date: 2026-05-04
 tags:
   - arcadia
   - EDA
@@ -12,7 +12,7 @@ featuredImage: assets/articles/arcadia-editions/eventstorming-events-commands-po
 featuredImageAlt: ""
 readingTime: "5 min read"
 
-draft: true
+draft: false
 ---
 
 Before writing a single line of code, we need to understand what actually happens in the business.

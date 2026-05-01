@@ -1,7 +1,7 @@
 ---
 title: "DDD Problem Space vs Solution Space"
 summary: "The solution space is your business. But only if it needs to be discovered. If it is already known, you are not building a business, you are building a commodity."
-date: 2026-05-04
+date: 2026-05-01
 tags:
   - arcadia
   - EDA
