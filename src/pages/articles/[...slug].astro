@@ -19,10 +19,29 @@ const { Content } = await render(entry);
 const isArcadiaArticle = entry.data.tags.some((tag) => tag.toLowerCase() === 'arcadia');
 const backLinkHref = isArcadiaArticle ? '/articles/arcadia/' : '/articles/';
 const backLinkText = isArcadiaArticle ? 'Back to Arcadia Editions series...' : 'Back to articles';
+const articlePool = (await getCollection('articles'))
+	.filter((article) => !article.data.draft)
+	.filter((article) =>
+		isArcadiaArticle
+			? article.data.tags.some((tag) => tag.toLowerCase() === 'arcadia')
+			: !article.data.tags.some((tag) => tag.toLowerCase() === 'arcadia'),
+	)
+	.sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
+const currentArticleIndex = articlePool.findIndex((article) => article.id === entry.id);
+const previousArticle = currentArticleIndex > 0 ? articlePool[currentArticleIndex - 1] : undefined;
+const nextArticle =
+	currentArticleIndex >= 0 && currentArticleIndex < articlePool.length - 1
+		? articlePool[currentArticleIndex + 1]
+		: undefined;
 
 function resolveImageSrc(path: string) {
 	if (/^(https?:)?\/\//.test(path) || path.startsWith('/')) return path;
 	return `/${path}`;
+}
+
+function getArticleHref(article: CollectionEntry<'articles'>) {
+	if (article.data.externalOnly && article.data.externalUrl) return article.data.externalUrl;
+	return `/articles/${article.id}/`;
 }
 ---
 
@@ -64,6 +83,20 @@ function resolveImageSrc(path: string) {
 				<Content />
 			</article>
 		)}
+		{(previousArticle || nextArticle) && (
+			<nav class="article-nav" aria-label="Article navigation">
+				{previousArticle && (
+					<a class="article-nav-link previous" href={getArticleHref(previousArticle)}>
+						<span class="article-nav-title"><span class="article-nav-arrow">&larr;</span> {previousArticle.data.title}</span>
+					</a>
+				)}
+				{nextArticle && (
+					<a class="article-nav-link next" href={getArticleHref(nextArticle)}>
+						<span class="article-nav-title">{nextArticle.data.title} <span class="article-nav-arrow">&rarr;</span></span>
+					</a>
+				)}
+			</nav>
+		)}
 	</main>
 </BaseLayout>
 
@@ -98,8 +131,48 @@ function resolveImageSrc(path: string) {
 	}
 
 	.external-link {
-		color: var(--gray-300);
+		color: var(--link-color);
 		font-size: var(--text-sm);
+	}
+
+	.article-nav {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 1rem;
+		border-top: 1px solid var(--gray-800);
+		padding-top: 2rem;
+	}
+
+	.article-nav-link {
+		display: flex;
+		flex-direction: column;
+		gap: 0.375rem;
+		padding: 0.25rem 0;
+		color: var(--link-color);
+		text-decoration: underline;
+		text-decoration-color: var(--link-color);
+	}
+
+	.article-nav-link:hover .article-nav-title {
+		color: var(--accent-dark);
+	}
+
+	.article-nav-link.next {
+		text-align: right;
+	}
+
+	.article-nav-arrow {
+		color: var(--link-color);
+		font-size: 1.3em;
+		font-weight: 700;
+	}
+
+	.article-nav-title {
+		color: var(--link-color);
+		font-size: 1rem;
+		font-weight: 400;
+		line-height: 1.7;
+		transition: color var(--theme-transition);
 	}
 
 	:global(.detail-page .content * + *) {
@@ -122,5 +195,15 @@ function resolveImageSrc(path: string) {
 
 	:global(.detail-page .content h4) {
 		font-size: var(--text-lg);
+	}
+
+	@media (min-width: 50em) {
+		.article-nav {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.article-nav-link.next {
+			grid-column: 2;
+		}
 	}
 </style>

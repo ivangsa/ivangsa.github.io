@@ -12,7 +12,7 @@ featuredImage: assets/articles/arcadia-editions/eventstorming-events-commands-po
 featuredImageAlt: ""
 readingTime: "5 min read"
 
-draft: false
+draft: true
 ---
 
 Before writing a single line of code, we need to understand what actually happens in the business.
