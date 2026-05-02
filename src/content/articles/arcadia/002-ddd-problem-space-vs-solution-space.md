@@ -18,9 +18,9 @@ The core idea of DDD is simple: understand the problem space first.
 
 The problem space is your client's problem. Not your architecture. Not your stack. Your client's problem.
 
-The solution space is your business.
+You need to discover your client's problem first. Then design a solution. That solution is your business.
 
-But your business needs to be discovered. If the solution space is already known, you are not building a business. You are building a commodity.
+If the solution space is already known, you are not building a business. You are building a commodity.
 
 This is not a technical distinction. It is a business one.
 
