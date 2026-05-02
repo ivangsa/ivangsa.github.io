@@ -25,17 +25,60 @@ In the [previous post](/articles/arcadia/002-ddd-problem-space-vs-solution-space
 
 This is what that looks like in practice.
 
-## What is Event Storming?
 
-[Event Storming](https://www.eventstorming.com/) is a workshop technique invented by Alberto Brandolini. You get domain experts and developers in the same room, you cover a wall with paper, and you start writing down domain events on orange sticky notes. Things that happened. Past tense. `OrderPlaced`. `PaymentFailed`. `StockReserved`.
+## Discovering the Order Flow
 
-No database schemas. No class diagrams. No API specs. Just events, in the order they happen, telling the story of the business.
+We start with events. Things that happened, in past tense. 
+`OrderPlaced`. `PaymentFailed`. `StockReserved`. No database schemas, 
+no API specs. Just the story of the business told in business terms.
+
+You sort them chronologically. And you pay attention to the pivotal 
+ones. The events that mark a transition. A point of no return. Those 
+are worth noticing.
+
+
 
 ![Event Storming board showing the sequence of domain events for the PlaceOrder flow](/assets/articles/arcadia-editions/eventstorming-events-sequence.jpg)
 
-From those events we discover commands, the things that trigger them. Aggregates, the things that own them. Policies, the business rules that connect them. And boundaries, the natural lines where one team's responsibility ends and another begins.
 
-It sounds simple but it is not. This is not about sticky notes, it's about building a shared understanding of the problem space your business is trying to solve.
+
+Every event has something that triggers it: an intent, someone or 
+something deciding to do something. That is what a command is. So we 
+add them. One next to each event.
+
+Commands are blue sticky notes. You place them just before the event 
+they trigger. The board starts to read like a story. Command, event, 
+command, event. A timeline of decisions and their consequences.
+
+
+
+![Event Storming board showing events and commands for the PlaceOrder flow](/assets/articles/arcadia-editions/eventstorming-events-commands.jpg)
+
+
+
+Then we look for what connects them. Between an event and the next 
+command, there is always something. A business rule that says: when 
+this happens, do that. That is a policy.
+
+Policies are what hold the flow together. They are the business logic 
+that was never written down. We all carry implicit knowledge about how 
+we operate. Surfacing that knowledge is one of the most valuable things 
+Event Storming does. And it is where the hot spots appear.
+
+
+
+![Event Storming board showing events, commands, and policies for the PlaceOrder flow](/assets/articles/arcadia-editions/eventstorming-events-commands-policies.jpg)
+
+
+
+For every policy you discover, Alberto Brandolini suggests asking two 
+questions:
+
+- Does this rule apply always, or only in certain conditions?
+- Does it apply immediately, or is there a delay?
+
+When someone explains a business rule and you ask those two questions, 
+the conversation starts. Every time. That is the point.
 
 ## Why Event Storming for Arcadia Editions?
 
