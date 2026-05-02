@@ -92,17 +92,34 @@ What happens if two customers try to buy the last copy at the same time? What ha
 
 These are not edge cases. For Arcadia Editions, during a launch, these are the normal cases.
 
+
+
 ## The flow we discovered
 
-Starting from the customer placing an order, we discovered a flow that touches five different bounded contexts. Catalog, Orders, Payments, Fulfillment, and Notifications.
+Starting from the customer placing an order, we discovered a flow that 
+touches five different bounded contexts. Catalog, Orders, Payments, 
+Fulfillment, and Notifications.
 
-The happy path is straightforward. Stock is reserved, order is created, payment is authorized, fulfillment is scheduled, customer gets a confirmation. Done.
+The first path is straightforward. Stock is reserved, order is created, 
+payment is authorized, fulfillment is scheduled, customer gets a 
+confirmation.
 
-But the interesting parts are the failure paths. Stock gone during a hot launch. Payment declined after reservation. A customer who starts checkout and disappears. Each one of these needs a compensation. Stock released, order cancelled, customer notified.
+But the policies and the hot spots tell a richer story. What happens 
+if two customers hit the same item at the same time? What if payment 
+fails after stock is already reserved? What if a customer starts 
+checkout and never finishes? These are the questions that surfaced 
+during the session.
 
-And there is a timeout. If payment is not completed within ten minutes, the reservation is automatically released. Because holding stock for a customer who walked away is business damage during a launch where others are waiting.
+
 
 ![Event Storming board showing events, commands, policies, and hotspots for the PlaceOrder flow](/assets/articles/arcadia-editions/eventstorming-events-commands-policies-hotspots.jpg)
+
+
+
+We are building the first path first. A solid foundation. The failure 
+paths, the compensation flows, the timeout rules: those are real and 
+we know they are coming. That is intentional. Thanks to the discovery 
+work, we know what to build now and what to save for later.
 
 ## From Event Storming to ZFL
 
