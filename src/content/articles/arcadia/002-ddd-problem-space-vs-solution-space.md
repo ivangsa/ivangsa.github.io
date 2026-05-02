@@ -38,11 +38,22 @@ DDD calls these core subdomains, supporting subdomains, and generic subdomains. 
 
 Arcadia Editions is a specialty retailer of limited-edition board games. I use it as a showcase domain for ZenWave Platform and event-driven architecture.
 
-The problem space: a rare launch goes live. The window is short. Trust is fragile. Clients have been waiting months for this copy. If the checkout fails, they are gone.
+The problem space: a rare launch goes live. The window is short. 
+Collectors have been waiting months for this copy. Trust is the 
+business. If the buying experience breaks that trust, they are gone.
 
-The solution space: how do you reserve stock globally, in real time, across channels, before payment is confirmed? What happens if payment fails? What if two clients hit the same item at the same millisecond?
+We know what we want to deliver. Collectors should feel at home at 
+Arcadia Editions. Long-time buyers should feel recognized. Some 
+customers might get early access before a launch goes public. Others 
+might pre-order weeks in advance. The tiers, the rules, the exact 
+flow: we do not know yet.
 
-No off-the-shelf answer. That is the point. That is the business.
+The solution space is still being discovered. That is the point.
+
+What we do know is that the checkout is not just a transaction. It is 
+the moment where Arcadia delivers on its promise or breaks it.
+
+That is a problem worth discovering properly.
 
 ## Event Storming is how you discover it
 
