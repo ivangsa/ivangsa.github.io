@@ -1,6 +1,8 @@
 ---
 title: "Event Storming Arcadia Editions: Discovering the Order Flow"
-summary: "For Arcadia Editions during a launch, the failure paths are the normal cases. This is what Event Storming looks like when the domain actually demands it."
+summary: "We know what Arcadia Editions wants to deliver. Now we need to discover 
+how. Event Storming is how you turn that conversation into a shared 
+understanding of the business. This is what that looks like in practice."
 date: 2026-05-04
 tags:
   - arcadia
