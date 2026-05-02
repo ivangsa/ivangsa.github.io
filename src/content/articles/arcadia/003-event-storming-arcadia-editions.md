@@ -25,6 +25,15 @@ In the [previous post](/articles/arcadia/002-ddd-problem-space-vs-solution-space
 
 This is what that looks like in practice.
 
+## Why Event Storming for Arcadia Editions?
+
+Arcadia Editions is a limited edition board game retailer. Scarcity is not a side effect of their business model. It is the core of it. When a new launch goes live, hundreds of collectors hit the site at the same time, chasing the same twenty copies of a hand-illustrated collector edition.
+
+**Trust is the product.** A client who clicks reserve needs to know that copy is theirs until they finish. If it is not, they are gone. Not just from this launch. For good.
+
+Event Storming puts business experts and technical experts in the same room to talk about exactly that. How do you build trust in the checkout process? What has to be true for a client to feel safe? What happens when it breaks?
+
+What happens if two customers try to buy the last copy at the same time? What happens if payment fails after we already reserved the stock? What happens if a customer starts checkout and never finishes?
 
 ## Discovering the Order Flow
 
@@ -80,20 +89,6 @@ questions:
 When someone explains a business rule and you ask those two questions, 
 the conversation starts. Every time. That is the point.
 
-## Why Event Storming for Arcadia Editions?
-
-Arcadia Editions is a limited edition board game retailer. Scarcity is not a side effect of their business model. It is the core of it. When a new launch goes live, hundreds of collectors hit the site at the same time, chasing the same twenty copies of a hand-illustrated collector edition.
-
-**Trust is the product.** A client who clicks reserve needs to know that copy is theirs until they finish. If it is not, they are gone. Not just from this launch. For good.
-
-Event Storming puts business experts and technical experts in the same room to talk about exactly that. How do you build trust in the checkout process? What has to be true for a client to feel safe? What happens when it breaks?
-
-What happens if two customers try to buy the last copy at the same time? What happens if payment fails after we already reserved the stock? What happens if a customer starts checkout and never finishes?
-
-These are not edge cases. For Arcadia Editions, during a launch, these are the normal cases.
-
-
-
 ## The flow we discovered
 
 When a customer places an order, the first thing that matters is stock. 
@@ -114,7 +109,6 @@ process that collectors can trust.
 
 
 ![Event Storming board showing events, commands, policies, and hotspots for the PlaceOrder flow](/assets/articles/arcadia-editions/eventstorming-events-commands-policies-hotspots.jpg)
-
 
 
 
