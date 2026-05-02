@@ -96,19 +96,20 @@ These are not edge cases. For Arcadia Editions, during a launch, these are the n
 
 ## The flow we discovered
 
-Starting from the customer placing an order, we discovered a flow that 
-touches five different bounded contexts. Catalog, Orders, Payments, 
-Fulfillment, and Notifications.
+When a customer places an order, the first thing that matters is stock. 
+Reserve it immediately. Not after payment. The moment they commit to 
+buying, that copy is theirs.
 
-The first path is straightforward. Stock is reserved, order is created, 
-payment is authorized, fulfillment is scheduled, customer gets a 
-confirmation.
+But reservations cannot last forever. If payment is not completed, the 
+stock needs to come back. That is the timeout rule. Hold it long enough 
+for the customer to finish. Release it if they walk away.
 
-But the policies and the hot spots tell a richer story. What happens 
-if two customers hit the same item at the same time? What if payment 
-fails after stock is already reserved? What if a customer starts 
-checkout and never finishes? These are the questions that surfaced 
-during the session.
+And two customers can hit the same copy at the same millisecond. That 
+is not an edge case for Arcadia. That is a launch day.
+
+This is the flow we are building first. Stock reservation, timeout 
+management, race condition handling. A solid foundation for a checkout 
+process that collectors can trust.
 
 
 
@@ -116,10 +117,6 @@ during the session.
 
 
 
-We are building the first path first. A solid foundation. The failure 
-paths, the compensation flows, the timeout rules: those are real and 
-we know they are coming. That is intentional. Thanks to the discovery 
-work, we know what to build now and what to save for later.
 
 ## From Event Storming to ZFL
 
