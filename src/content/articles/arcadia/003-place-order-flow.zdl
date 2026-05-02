@@ -29,15 +29,23 @@ systems {
  * Place Order Flow
  *
  * Models the full lifecycle of a customer placing an order during a limited edition drop.
- * Stock reservation comes before payment — scarcity is the core business constraint.
- * Includes compensation flows for stock unavailability, payment failure, and payment timeout.
+ * Stock reservation comes before payment. Scarcity is the core business constraint.
+ *
+ * Payment is split into two phases. Authorization at checkout holds funds without moving money.
+ * Capture at fulfillment moves money when the order is ready to ship. If fulfillment fails,
+ * the authorization is voided rather than refunded. No charge appears on the customer statement.
+ *
+ * The reservation timeout is fired by an explicit Scheduler actor, not the payment service.
  */
 flow PlaceOrderFlow {
 
     @actor(Customer)
     start CustomerPlacesOrder { }
 
-    // Stock is reserved first — during a hot drop this is the critical constraint
+    /**
+     * Stock is reserved before payment is attempted.
+     * During a hot drop, stock is the scarce resource. Reserve immediately or lose it.
+     */
     when CustomerPlacesOrder do reserveStock {
         service CatalogProducts.CatalogProductsService
         event StockReserved
@@ -49,9 +57,15 @@ flow PlaceOrderFlow {
         event OrderCreated
     }
 
+    /**
+     * Authorization only. Funds are held but no money moves yet.
+     * Declined means the processor rejected the card. Failed means a technical error occurred.
+     * Both trigger the same stock release compensation but have different retry semantics.
+     */
     when OrderCreated do authorizePayment {
         service PaymentsProcessing.PaymentsProcessingService
         event PaymentAuthorized
+        event PaymentDeclined
         event PaymentFailed
     }
 
@@ -63,6 +77,7 @@ flow PlaceOrderFlow {
     when OrderConfirmed do scheduleFulfillment {
         service FulfillmentShipping.FulfillmentShippingService
         event FulfillmentScheduled
+        event FulfillmentFailed
     }
 
     when OrderConfirmed do sendOrderConfirmation {
@@ -70,37 +85,72 @@ flow PlaceOrderFlow {
         event OrderConfirmationSent
     }
 
-    // Failure path: stock gone during a hot drop
+    /**
+     * Capture happens at fulfillment time, not checkout.
+     * Money moves only when the order is ready to ship.
+     */
+    when FulfillmentScheduled do capturePayment {
+        service PaymentsProcessing.PaymentsProcessingService
+        event PaymentCaptured
+    }
+
     when StockUnavailable do sendStockUnavailableNotification {
         service NotificationsConsumer.NotificationsConsumerService
         event StockUnavailableNotificationSent
     }
 
-    // Failure path: payment declined — release reserved stock
-    when PaymentFailed do cancelOrder {
+    when PaymentDeclined do releaseStockOnDecline {
         service CatalogProducts.CatalogProductsService
+        event StockReleased
         event OrderCancelled
+    }
+
+    when PaymentFailed do releaseStockOnFailure {
+        service CatalogProducts.CatalogProductsService
+        event StockReleased
+        event OrderCancelled
+    }
+
+    when OrderCancelled do sendPaymentFailedNotification {
+        service NotificationsConsumer.NotificationsConsumerService
         event PaymentFailedNotificationSent
     }
 
-    when OrderCancelled do releaseStock {
-        service NotificationsConsumer.NotificationsConsumerService
-        event StockReleased
+    /**
+     * Fulfillment failed after payment was authorized but before capture.
+     * Void the authorization. A void is cheaper and cleaner than a refund at this stage.
+     */
+    when FulfillmentFailed do voidPayment {
+        service PaymentsProcessing.PaymentsProcessingService
+        event PaymentVoided
     }
 
-    // Timeout path: customer started checkout but never completed payment
-    @time("10 minutes after OrderCreated and not PaymentAuthorized or PaymentFailed")
-    start PaymentTimeout {
+    when PaymentVoided do releaseStockOnFulfillmentFailure {
+        service CatalogProducts.CatalogProductsService
+        event StockReleased
+        event OrderCancelled
+    }
+
+    /**
+     * The Scheduler fires ReservationExpired if payment is not resolved within the window.
+     * This releases stock back to the pool without waiting for the payment service to act.
+     */
+    @actor(Scheduler)
+    @time("10 minutes after OrderCreated and not PaymentAuthorized or PaymentDeclined or PaymentFailed")
+    start ReservationExpired {
         orderId String
     }
 
-    when PaymentTimeout do cancelOrder {
+    when ReservationExpired do releaseStockOnTimeout {
         service CatalogProducts.CatalogProductsService
+        event StockReleased
+        event OrderCancelled
     }
 
     end {
-        completed: OrderConfirmationSent
+        completed: PaymentCaptured
         stockGone: StockUnavailableNotificationSent
         paymentDeclined: PaymentFailedNotificationSent
+        fulfillmentFailed: OrderCancelled
     }
 }
