@@ -57,14 +57,35 @@ That is a problem worth discovering properly.
 
 ## Event Storming is how you discover it
 
-Event Storming asks people to tell the story of the business in events. Not in tables. Not in APIs. In things that happen.
+Event Storming puts business experts and technical experts in the same 
+room. They talk about the business in business terms. Not APIs. Not 
+databases. Not Kubernetes. Just things that happen.
 
-When a client places an order, what happens? What can go wrong? Who reacts?
+It is a deliberately low-tech workshop with minimal friction so anyone 
+can participate. The goal is dialogue. Exploring the business together, 
+out loud, before committing to a solution.
 
-Each event reveals a decision. Each decision reveals a rule. Each rule reveals something that was not obvious at the start.
+When a client places an order, what happens? You start with the obvious. 
+The happy path. Stock is available, payment goes through, order is confirmed.
 
-The PlaceOrder flow for Arcadia Editions is above. Stock reservation, payment authorization, confirmation, failure paths. The diagram is not the output. The understanding is.
+But then the real conversation starts. What if two clients hit the same 
+item at the same time? What happens when a pre-order window closes? Do 
+long-time buyers get priority? Nobody has written down the answers yet.
 
-The business is in the discovery. Not in the delivery.
+These moments of confusion and disagreement are called hot spots in Event 
+Storming. You mark them visibly and you keep going. You are not trying to 
+resolve them on the spot. You are making them visible.
+
+Hot spots are not problems. They are the business. For Arcadia, the hot 
+spots are where the trust gets built or broken. Stock reservation rules, 
+early access windows, buyer tiers. That is what we want to deliver. That 
+is what we are discovering.
+
+We start with the PlaceOrder flow. A strong happy path: stock 
+reservation, payment, confirmation. Not the full vision yet. But a 
+real foundation to build on and iterate from there.
+
+This is intentional. Thanks to the discovery work, we know what to 
+build now and what to save for later.
 
 In the next post we walk through the full PlaceOrder flow for Arcadia Editions. Sticky notes to bounded contexts.
