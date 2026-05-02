@@ -76,10 +76,10 @@ These moments of confusion and disagreement are called hot spots in Event
 Storming. You mark them visibly and you keep going. You are not trying to 
 resolve them on the spot. You are making them visible.
 
-Hot spots are not problems. They are the business. For Arcadia, the hot 
-spots are where the trust gets built or broken. Stock reservation rules, 
-early access windows, buyer tiers. That is what we want to deliver. That 
-is what we are discovering.
+Hot spots are where the dialogue gets interesting. Business experts 
+and technical experts start talking about what makes Arcadia memorable 
+for its customers. What is feasible now. What needs more thought. 
+What comes later.
 
 We start with the PlaceOrder flow. A strong happy path: stock 
 reservation, payment, confirmation. Not the full vision yet. But a 
