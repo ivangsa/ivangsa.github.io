@@ -24,6 +24,16 @@ But your business needs to be discovered. If the solution space is already known
 
 This is not a technical distinction. It is a business one.
 
+Not every piece of your business deserves the same investment.
+
+Some things you do are what make you different. Clients choose you because of them. These are worth every hour of discovery and design.
+
+Other things keep the lights on. Billing, notifications, user accounts. Critical, yes. But not what clients are paying for. A good implementation is enough here.
+
+And some things you should not build at all. Off-the-shelf solves them. Your energy is better spent elsewhere.
+
+DDD calls these core subdomains, supporting subdomains, and generic subdomains. The core is where your competitive advantage lives. Supporting subdomains enable the core but are not unique to you. Generic subdomains are solved problems.
+
 ## Arcadia Editions
 
 Arcadia Editions is a specialty retailer of limited-edition board games. I use it as a showcase domain for ZenWave Platform and event-driven architecture.
