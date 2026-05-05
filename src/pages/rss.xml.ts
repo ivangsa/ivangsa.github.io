@@ -16,6 +16,11 @@ function absolutizeHtmlUrls(html: string, origin: string) {
 	});
 }
 
+function absoluteUrl(path: string, origin: string) {
+	if (/^(https?:)?\/\//.test(path)) return path;
+	return new URL(path.startsWith('/') ? path : `/${path}`, origin).toString();
+}
+
 export async function GET({ site }: { site: URL }) {
 	const articles = (await getCollection('articles'))
 		.filter((article) => !article.data.draft)
@@ -27,15 +32,22 @@ export async function GET({ site }: { site: URL }) {
 			const link = new URL(`/articles/${entry.id}/`, origin).toString();
 			const originalLink = entry.data.canonical ?? entry.data.externalUrl ?? link;
 			const summary = entry.data.summary;
-			const content = entry.data.externalOnly
-				? `<p>${xmlEscape(summary)}</p>`
-				: (entry.rendered?.html ?? `<p>${xmlEscape(summary)}</p>`);
-			const htmlContent = `${absolutizeHtmlUrls(content, origin)}<p><em>Originally published at <a href="${xmlEscape(originalLink)}">ivangsa.com</a>.</em></p>`;
+			const content = entry.data.externalOnly ? '' : (entry.rendered?.html ?? '');
+			const imageUrl = entry.data.featuredImage ? absoluteUrl(entry.data.featuredImage, origin) : undefined;
+			const imageAlt = entry.data.featuredImageAlt ?? '';
+			const rssHeader = [
+				`<h1>${xmlEscape(entry.data.title)}</h1>`,
+				entry.data.showSummaryInArticleBody ? `<p>${xmlEscape(summary)}</p>` : '',
+				imageUrl ? `<p><img src="${xmlEscape(imageUrl)}" alt="${xmlEscape(imageAlt)}" /></p>` : '',
+			].join('');
+			const htmlContent = `${rssHeader}${absolutizeHtmlUrls(content, origin)}<p><em>Originally published at <a href="${xmlEscape(originalLink)}">ivangsa.com</a>.</em></p>`;
 			return `<item>
 <title>${xmlEscape(entry.data.title)}</title>
 <link>${link}</link>
 <guid>${link}</guid>
 <pubDate>${entry.data.date.toUTCString()}</pubDate>
+${imageUrl ? `<media:content url="${xmlEscape(imageUrl)}" medium="image" />
+<media:thumbnail url="${xmlEscape(imageUrl)}" />` : ''}
 <description>${xmlEscape(`${summary} Originally published at ivangsa.com: ${originalLink}`)}</description>
 <content:encoded><![CDATA[${cdataEscape(htmlContent)}]]></content:encoded>
 </item>`;
@@ -43,7 +55,7 @@ export async function GET({ site }: { site: URL }) {
 		.join('\n');
 
 	const xml = `<?xml version="1.0" encoding="UTF-8"?>
-<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/">
+<rss version="2.0" xmlns:content="http://purl.org/rss/1.0/modules/content/" xmlns:media="http://search.yahoo.com/mrss/">
 <channel>
 <title>Ivan Garcia Sainz-Aja - Articles</title>
 <link>${origin}</link>
