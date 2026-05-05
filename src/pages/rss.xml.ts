@@ -30,13 +30,13 @@ export async function GET({ site }: { site: URL }) {
 			const content = entry.data.externalOnly
 				? `<p>${xmlEscape(summary)}</p>`
 				: (entry.rendered?.html ?? `<p>${xmlEscape(summary)}</p>`);
-			const htmlContent = `${absolutizeHtmlUrls(content, origin)}<p><a href="${xmlEscape(originalLink)}">Read the article on ivangsa.com</a></p>`;
+			const htmlContent = `${absolutizeHtmlUrls(content, origin)}<p><em>Originally published at <a href="${xmlEscape(originalLink)}">ivangsa.com</a>.</em></p>`;
 			return `<item>
 <title>${xmlEscape(entry.data.title)}</title>
 <link>${link}</link>
 <guid>${link}</guid>
 <pubDate>${entry.data.date.toUTCString()}</pubDate>
-<description>${xmlEscape(`${summary} Read the full article on ivangsa.com: ${originalLink}`)}</description>
+<description>${xmlEscape(`${summary} Originally published at ivangsa.com: ${originalLink}`)}</description>
 <content:encoded><![CDATA[${cdataEscape(htmlContent)}]]></content:encoded>
 </item>`;
 		})
