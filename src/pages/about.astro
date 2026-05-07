@@ -1,90 +1,175 @@
 ---
+import ContactCTA from '../components/ContactCTA.astro';
+import Hero from '../components/Hero.astro';
 import BaseLayout from '../layouts/BaseLayout.astro';
-import Icon from '../components/Icon.astro';
-import Pill from '../components/Pill.astro';
 ---
 
 <BaseLayout
-	title="About | Ivan Garcia Sainz-Aja"
-	description="About Ivan Garcia Sainz-Aja and his work in Event-Driven Architecture, AsyncAPI, and Kafka platform design."
+	title="About | Iván García Sainz-Aja"
+	description="About Iván García Sainz-Aja and his work in Event-Driven Architecture, AsyncAPI, and Kafka platform design."
 >
-	<main class="wrapper stack gap-8 about">
-		<h1>About</h1>
-		<p class="lead">
-			<strong>I help teams and organizations create software easy to understand at scale.</strong>
-		</p>
-			<img src="/SpringIO-2025_800x533.jpg" alt="Spring I/O 2025" style="width: 100%; max-width: 800px; margin: 2rem auto; display: block; border-radius: 0.75rem;" />
-		<p>
-			Over the past years I've worked with Java, Spring, and API-first approaches (OpenAPI and AsyncAPI) to help teams move from domain models and events to running code: from the first Event Storming sticky notes to services, messages, and tests in CI/CD. I enjoy the full path: modeling the business, shaping the architecture, and then going deep into the implementation details so the design doesn't get lost on its way to production.
-		</p>
-		<p>
-			I'm the creator of <strong>ZenWave 360º</strong>, a set of tools to bridge that gap between domain and code. With it, I try to encode the patterns I've seen working: ubiquitous language distilled into DSLs, specs as a single source of truth, and generated code that is useful instead of getting in your way. My goal is simple: fewer accidental complexities and more time spent on real business problems.
-		</p>
-		<p>
-			I care a lot about the human side of software: how we talk about domains, how we make decisions as a team, how we make complex systems feel less intimidating and more learnable. My background outside pure computer science (economics, anthropology, education, mental training) quietly shapes how I design workshops, write documentation, and structure architectures so that people can reason about them.
-		</p>
-		<p>
-			Most of my day-to-day work happens in large, regulated environments where asynchronous APIs and events are not just a technical choice, but an organizational commitment. There I focus on event governance: helping define how events are named, evolved, validated, tested, and deployed; how pipelines, contracts, and tooling support this; and how business events become actual growth opportunities instead of just another topic in a broker. I don't usually talk about specific companies or projects, but the constraints and lessons from those contexts heavily influence the ideas and tools I share publicly.
-		</p>
-		<p>I speak and write about topics like:</p>
-		<ul>
-			<li>Domain-driven design and event-driven architectures</li>
-			<li>API-first development with OpenAPI and AsyncAPI</li>
-			<li>Event governance, contracts, and testing (Karate, Pact, Testcontainers, etc.)</li>
-			<li>Monoliths, moduliths, and microservices in Java/Spring</li>
-			<li>From model to code: turning domain conversations into running systems</li>
-		</ul>
-		<p>
-			If any of this resonates with the problems you and your team are facing, you'll find something useful in my talks, examples, or in ZenWave 360º itself. And if not, at least I hope you walk away with a slightly clearer mental model of how events, domains, and APIs can fit together in the real world.
-		</p>
-	</main>
+	<div class="stack gap-20">
+		<main class="wrapper about">
+			<Hero
+				title="About"
+				tagline="I help teams and organizations create software easy to understand at scale."
+			>
+				<img
+					width="800"
+					height="533"
+					src="/SpringIO-2025_800x533.jpg"
+					alt="Iván García Sainz-Aja at Spring I/O 2025"
+				/>
+			</Hero>
+
+			<section>
+				<h2 class="section-title">Background</h2>
+				<div class="content">
+					<p>
+						I am a programmer. That is where I start and where I always come back to.
+					</p>
+					<p>
+						I have been a technical leader for most of my career. The kind of engineer who asks
+						why before writing any code, close enough to the business to understand what matters,
+						technical enough to make it real. Mentoring engineers and building teams has always
+						been part of how I work.
+					</p>
+					<p>
+						I spent several years on a hands-on API-first strategy team at a large retail
+						organization, going deep on AsyncAPI and event-driven systems at scale. That work
+						brought me into the AsyncAPI community, where I became a TSC member and Ambassador.
+					</p>
+					<p>
+						Now I bring all of that into designing the governance office for asynchronous APIs
+						at a large regulated organization. Because I have the knowledge and the insight to
+						do it. Not because I moved away from technology. I never did.
+					</p>
+				</div>
+			</section>
+
+			<section>
+				<h2 class="section-title">ZenWave SDK</h2>
+				<div class="content">
+					<p>
+						I built ZenWave SDK because I like creating software and enjoying it.
+					</p>
+					<p>
+						I like thinking about software. Talking about software. Making a blueprint so compact
+						and visible that a business analyst can validate it and a junior engineer can build
+						from it. When you can describe a bounded context in a DSL that fits on one screen,
+						something clicks. The domain becomes legible. The team can reason about it together.
+					</p>
+					<p>
+						I don't like copy-pasting the previous feature and changing names all over the place.
+						I don't like repeating the same patterns that can be automated. That is not software
+						development. That is clerical work.
+					</p>
+					<p>
+						I like mentoring. Watching someone junior perform as senior because they have a tool
+						that makes good architecture visible and accessible. That is worth something.
+					</p>
+					<p>
+						I want the good life in software development. Creating software that is easy to
+						understand, easy to maintain, easy to evolve because its blueprint is so visible
+						it can be questioned, validated, and improved. And then moving on to the next
+						interesting problem instead of repeating the boring patterns again.
+					</p>
+				</div>
+			</section>
+
+			<section>
+				<h2 class="section-title">ZenWave Platform</h2>
+				<div class="content">
+					<p>
+						The Platform is the natural next step. Once you have bounded contexts modeled
+						and code generated from them, the next problem is connecting those contexts:
+						navigating from a business flow to a bounded context to an API to a schema,
+						all from the editor.
+					</p>
+					<p>
+						ZenWave Platform is a machine-readable architectural world model for your domain,
+						kept structured and aligned as the system grows. Not with AI code generation.
+						With a deterministic SDK and a navigation layer that keeps your team,
+						your tools, and eventually your AI agents working from the same source of truth.
+					</p>
+					<p>
+						You can find ZenWave at <a href="https://zenwave360.io" target="_blank">zenwave360.io</a>.
+					</p>
+				</div>
+			</section>
+
+			<section>
+				<h2 class="section-title">Topics I speak and write about</h2>
+				<div class="content">
+					<p>
+						Domain-driven design and event-driven architectures. API-first development
+						with OpenAPI and AsyncAPI. Event governance, contracts, and testing.
+						Monoliths, moduliths, and microservices in Java and Spring.
+						From model to code: turning domain conversations into running systems.
+					</p>
+				</div>
+			</section>
+
+		</main>
+
+		<ContactCTA />
+	</div>
 </BaseLayout>
 
 <style>
 	.about {
-		max-width: 70ch;
-		padding-bottom: 4rem;
+		display: flex;
+		flex-direction: column;
+		gap: 3.5rem;
 	}
 
-	h1 {
-		font-size: var(--text-3xl);
-		margin-bottom: 1.5rem;
+	img {
+		margin-top: 1.5rem;
+		border-radius: 1.5rem;
+		box-shadow: var(--shadow-md);
 	}
 
-	h3 {
-		font-size: var(--text-xl);
-		color: var(--gray-0);
-		margin-top: 2rem;
-		margin-bottom: 0.5rem;
-	}
-
-	p {
-		color: var(--gray-300);
-		font-size: var(--text-lg);
-		line-height: 1.6;
-	}
-
-	.lead {
-		font-size: var(--text-xl);
+	section {
+		display: flex;
+		flex-direction: column;
+		gap: 0.5rem;
 		color: var(--gray-200);
 	}
 
-	ul {
-		color: var(--gray-300);
-		font-size: var(--text-lg);
-		line-height: 1.6;
-		margin-left: 1.5rem;
+	.section-title {
+		grid-column-start: 1;
+		font-size: var(--text-xl);
+		color: var(--gray-0);
 	}
 
-	a {
-		color: var(--link-color);
-		text-decoration: none;
+	.content {
+		grid-column: 2 / 4;
 	}
 
-	a:hover {
-		text-decoration: underline;
+	.content :global(a) {
+		text-decoration: 1px solid underline transparent;
+		text-underline-offset: 0.25em;
+		transition: text-decoration-color var(--theme-transition);
+	}
+
+	.content :global(a:hover),
+	.content :global(a:focus) {
+		text-decoration-color: currentColor;
+	}
+
+	@media (min-width: 50em) {
+		.about {
+			display: grid;
+			grid-template-columns: 1fr 60% 1fr;
+		}
+
+		.about > :global(:first-child) {
+			grid-column-start: 2;
+		}
+
+		section {
+			display: contents;
+			font-size: var(--text-lg);
+		}
 	}
 </style>
-
-
-
