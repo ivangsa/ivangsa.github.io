@@ -6,6 +6,9 @@ import sitemap from '@astrojs/sitemap';
 const zdlGrammar = JSON.parse(
 	readFileSync(new URL('./src/syntaxes/zdl.tmLanguage.json', import.meta.url), 'utf-8'),
 );
+const zflGrammar = JSON.parse(
+	readFileSync(new URL('./src/syntaxes/zfl.tmLanguage.json', import.meta.url), 'utf-8'),
+);
 
 // https://astro.build/config
 export default defineConfig({
@@ -20,6 +23,12 @@ export default defineConfig({
 					scopeName: 'source.zdl',
 					aliases: ['zdl', 'zw'],
 					grammar: zdlGrammar,
+				},
+				{
+					id: 'zfl',
+					scopeName: 'source.zfl',
+					aliases: ['zfl'],
+					grammar: zflGrammar,
 				},
 			],
 			langAlias: {

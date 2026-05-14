@@ -170,6 +170,18 @@ pre.astro-code {
 	overflow-x: auto;
 }
 
+:not(pre) > code {
+	border-radius: 0.25rem;
+	background: var(--accent-subtle-overlay);
+	color: var(--accent-regular);
+	padding: 0.1em 0.3em;
+	font-size: 1.05em;
+}
+
+:root.theme-dark :not(pre) > code {
+	color: var(--accent-dark);
+}
+
 a {
 	color: var(--link-color);
 }

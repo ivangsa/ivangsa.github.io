@@ -1,7 +1,7 @@
 ---
 title: "From Event Storming to ZFL: Translating Business Flows into Code"
 summary: "Event Storming gives you sticky notes. ZFL gives them a structured home. Here is how the concepts map."
-date: 2026-05-18
+date: 2026-05-14
 tags:
   - arcadia
   - eda
@@ -11,233 +11,280 @@ featured: false
 featuredImage: assets/articles/arcadia-editions/zfl-flow.png
 featuredImageAlt: "Event Storming board for the PlaceOrder flow of Arcadia Editions"
 readingTime: "8 min read"
-draft: true
+draft: false
 ---
-
 
 In the [previous post](/articles/arcadia/003-event-storming-arcadia-editions) we ran an Event Storming session for the PlaceOrder flow of Arcadia Editions. We have the board. We have the sticky notes. We understand what happens when a collector clicks reserve during a hot drop.
 
-Now we need to give those findings a home.
+Now we need to give those findings a structured home.
 
-Event Storming sessions live on Miro boards and photos. Useful in the moment. Hard to share. Impossible to version control. ZFL, the flow modeling language of the ZenWave Platform, is a text format that captures the same concepts in a way that is readable by humans and processable by tools.
+Event Storming sessions often end as Miro boards, photos, and shared memory. Useful in the workshop. Hard to version. Hard to search. Hard to connect to generated APIs, services, tests, documentation, or architecture views.
 
-This post is a tutorial. We are going to walk through the PlaceOrder flow and translate it from Event Storming concepts to ZFL, piece by piece.
+ZFL, the flow modeling language of the ZenWave Platform, captures the same findings as text: readable by humans, parseable by tools, and stable enough to save, link, review, and navigate.
+
+This post is about that translation. Not discovering the flow again, but taking the board we already have and turning it into a structured language.
 
 ## The core idea: Event Storming and ZFL speak the same language
- 
+
 Event Storming has four core concepts that we care about here.
- 
-An **event** is something that happened in the business. Past tense. `OrderPlaced`. `StockReserved`. `PaymentFailed`. Orange sticky notes.
- 
-A **command** is something that triggers an event. An intention. `ReserveStock`. `AuthorizePayment`. Blue sticky notes.
- 
-A **policy** is a business rule that connects an event to a command. When this happens, do that. Lilac sticky notes. This is where the business logic lives.
- 
-An **actor** is who or what initiates the first command. A customer. A timer. An external system.
- 
+
+- An **event** is something that happened in the business. Past tense. `OrderCreated`. `StockReserved`. `PaymentFailed`. Orange sticky notes.
+
+- A **command** is something that asks the system to do work. An intention. `ReserveStock`. `AuthorizePayment`. `SendOrderConfirmation`. Blue sticky notes.
+
+- A **policy** is a business rule that connects an event to a command. When this happens, do that. Lilac sticky notes. This is where the business logic lives.
+
+- An **actor** is who or what initiates the first command. A customer. A timer. An external system.
+
 ZFL maps directly to these concepts. Once you see the mapping, reading and writing ZFL from an Event Storming board becomes mechanical.
- 
+
 | Event Storming | ZFL |
 |---|---|
 | Actor | `@actor` |
-| Starting command | `start` |
-| Policy: when event, do command | `when ... do ...` |
-| Event | `event` |
+| Starting trigger / user intent | `start` |
+| Policy: when trigger or event, do command | `when ... do ...` |
+| Command outcome | `emits ...` |
 | Timer / time-based policy | `@time(...)` + `start` |
 | End states | `end { ... }` |
 
 ![Event Storming board showing domain events and commands for the PlaceOrder flow](/assets/articles/arcadia-editions/eventstorming-events-commands.jpg)
- 
-## Starting point: the actor and the first command
- 
-On the Miro board, the flow starts with a customer clicking reserve. That is an actor triggering a command.
- 
+
+## Start with the actor
+
+On the board, the flow starts with a customer beginning checkout. That is an actor triggering the first command.
+
 In ZFL:
- 
+
 ```zfl
 @actor(Customer)
-start CustomerPlacesOrder { }
+start StartOrderCheckout {
+    items SKU[]
+}
 ```
- 
-`@actor` names who initiates the flow. `start` names the command that kicks it off. Simple.
- 
-## The happy path: policies all the way down
+
+`@actor` names who initiates the flow. `start` names the trigger or user intent that opens it. The body contains the data that enters the flow.
+
+The actual command still appears in the first policy:
+
+```zfl
+when StartOrderCheckout do startOrderCheckout {
+    ...
+}
+```
+
+`StartOrderCheckout` is why the flow begins. `startOrderCheckout` is the command that reacts to it.
+
+## Policies are the main building block
 
 ![Event Storming board showing events, commands, and policies for the PlaceOrder flow](/assets/articles/arcadia-editions/eventstorming-events-commands-policies.jpg)
- 
-This is where Event Storming and ZFL align most clearly. Every policy on the board — when this event happens, do this command — becomes a `when ... do ...` block in ZFL.
- 
-Stock reservation comes first. Scarcity is the core business constraint for Arcadia Editions. Before an order exists, the stock has to be held.
- 
-On the board: when `CustomerPlacesOrder`, do `ReserveStock`. That command produces either `StockReserved` or `StockUnavailable`.
- 
-In ZFL:
- 
+
+This is where Event Storming and ZFL align most clearly. Every policy on the board, "when this event happens, do this command", becomes a `when ... do ...` block.
+
+For example, once an order has been created, payment needs to be authorized:
+
 ```zfl
-when CustomerPlacesOrder do reserveStock {
-    event StockReserved
-    event StockUnavailable
-}
-```
- 
-The `when` is the event. The `do` is the command. The `event` lines are the possible outcomes. One block, one policy.
- 
-From there the happy path chains naturally. Each event triggers the next command.
- 
-```zfl
-when StockReserved do createOrder {
-    event OrderCreated
-}
- 
 when OrderCreated do authorizePayment {
-    event PaymentAuthorized
-    event PaymentFailed
+    service PaymentsProcessing.PaymentsProcessingService
+    emits PaymentAuthorized
+    emits PaymentDeclined
+    emits PaymentFailed
 }
- 
+```
+
+The `when` side is the event that triggers the policy. The `do` side is the command. The `emits` lines are the possible outcomes of that command.
+
+You will also see `service` lines in some examples. They belong to a later modeling step, when we discover bounded contexts, systems, services, and aggregates. The notation can go up to `System.Service.Aggregate`, but you only write the level you have already discovered. At this stage, it is also fine to omit `service` completely.
+
+This is the default move when translating an Event Storming board into ZFL:
+
+1. Find a policy sticky note.
+2. Read the event before it.
+3. Read the command after it.
+4. Write `when Event do command`.
+5. Add the events that command can emit.
+
+From there, the flow chains naturally. Each outcome can trigger the next policy.
+
+```zfl
 when PaymentAuthorized do confirmOrder {
-    event OrderConfirmed
+    service OrdersCheckout.OrdersCheckoutService
+    emits OrderConfirmed
 }
- 
+
 when OrderConfirmed do scheduleFulfillment {
-    event FulfillmentScheduled
+    service FulfillmentShipping.FulfillmentShippingService
+    emits FulfillmentScheduled
+    emits FulfillmentFailed
 }
- 
-when OrderConfirmed do sendOrderConfirmation {
-    event OrderConfirmationSent
+
+when FulfillmentScheduled do capturePayment {
+    service PaymentsProcessing.PaymentsProcessingService
+    emits PaymentCaptured
+    emits PaymentCaptureFailed
 }
 ```
- 
-Notice that `OrderConfirmed` triggers two commands in parallel. Fulfillment and notification happen at the same time. On the Miro board those are two separate policies branching from the same event. In ZFL you just write two `when OrderConfirmed` blocks.
- 
-## The failure paths
- 
-Event Storming does not let you hide the failure paths. When you ask "what can go wrong", the board fills up. ZFL handles them exactly the same way as the happy path. A failure event is still an event. It still triggers a policy.
- 
-Remember that `reserveStock` produces two possible outcomes. `StockReserved` takes us down the happy path. `StockUnavailable` is the first branch:
- 
+
+If the Event Storming board is the visual story, ZFL is the structured version of that same story.
+
+## Branches stay explicit
+
+Event Storming does not let you hide failure paths. When you ask "what can go wrong?", the board fills up. ZFL keeps those branches visible.
+
+Payment authorization can succeed, be declined, or fail for a technical reason. Each outcome is named:
+
 ```zfl
-when StockUnavailable do sendStockUnavailableNotification {
-    event StockUnavailableNotificationSent
+when OrderCreated do authorizePayment {
+    service PaymentsProcessing.PaymentsProcessingService
+    emits PaymentAuthorized
+    emits PaymentDeclined
+    emits PaymentFailed
 }
 ```
- 
-The second branch comes from `authorizePayment`, which also produces two outcomes. `PaymentAuthorized` continues the happy path. `PaymentFailed` triggers a compensation chain. The stock that was reserved has to be released:
- 
+
+Then each outcome can continue in a different direction:
+
 ```zfl
-when PaymentFailed do cancelOrder {
-    event OrderCancelled
-    event PaymentFailedNotificationSent
+when PaymentFailed do retryPayment {
+    service PaymentsProcessing.PaymentsProcessingService
+    emits PaymentRetried
+    emits PaymentRetryExhausted
 }
- 
-when OrderCancelled do releaseStock {
-    event StockReleased
+
+when PaymentDeclined, PaymentRetryExhausted do releaseStock {
+    service CatalogProducts.CatalogProductsService
+    emits StockReleased
 }
 ```
- 
-Each failure path traces back to a branching point on the board. One command, two possible events, two separate paths forward.
- 
-## The timeout path
- 
-This is where Event Storming surfaces something that is easy to miss in a normal design session. A customer who starts checkout and never finishes is not an edge case for Arcadia Editions. During a drop, it is a real problem. Holding stock for someone who walked away is business damage.
- 
-Event Storming models this as a time-based policy. After ten minutes with no payment, something has to happen.
- 
+
+This is one of the reasons a text model is useful. The board helps the team discover the branches. ZFL keeps them precise enough for tools to analyze, generate from, and cross-navigate.
+
+## Direct calls
+
+Most policies translate cleanly as event-to-command relationships. But when we turn a workshop board into a structured model, we sometimes discover that a step should be modeled as a direct synchronous call.
+
+Stock reservation is the clearest example in this flow.
+
+When a customer starts checkout during a limited edition drop, we want to know immediately whether the stock can be reserved. We do not want to model that as a long event-driven loop just to find out whether the copy is available. The checkout command needs the response now, because the next step depends on it.
+
+ZFL models that with `call`:
+
+```zfl
+when StartOrderCheckout do startOrderCheckout {
+    service OrdersCheckout.OrdersCheckoutService
+    call reserveStock
+    on StockReserved emits OrderCreated
+    on StockUnavailable emits StockUnavailable
+}
+```
+
+The policy is still there: when `StartOrderCheckout`, do `startOrderCheckout`. Inside that command, we make a direct call to `reserveStock`.
+
+The response of that call is handled with `on <Response> emits ...`. If stock is reserved, the flow emits `OrderCreated`. If stock is unavailable, the flow emits `StockUnavailable`.
+
+The called operation is modeled separately:
+
+```zfl
+do reserveStock {
+    service CatalogProducts.CatalogProductsService
+    emits response StockReserved
+    response StockUnavailable
+}
+```
+
+A standalone `do` block defines a command that can be called directly. Its outcomes are `response` values because the caller is waiting for them.
+
+Sometimes the response is also important outside the caller. `emits response StockReserved` means the caller receives `StockReserved` synchronously, and the same outcome is published as an event for the rest of the system. `StockUnavailable` stays only as a response because no order was created and there is nothing else to coordinate.
+
+The important modeling rule stays simple: use `when ... do ...` for policies, and use `call` when the structured model needs an immediate response from another command.
+
+## Time-based policies
+
+Event Storming also surfaces rules that happen after time passes. A customer who starts checkout and never finishes is not an edge case for Arcadia Editions. During a drop, holding stock forever is business damage.
+
+On the board, this is a time-based policy. After ten minutes without a terminal payment outcome, the reservation expires.
+
 ZFL has a `@time` annotation for exactly this:
- 
+
 ```zfl
-@time("10 minutes after OrderCreated and not PaymentAuthorized or PaymentFailed")
-start PaymentTimeout {
+@actor(Scheduler)
+@time("10 minutes after OrderCreated and not PaymentAuthorized or PaymentDeclined or PaymentRetryExhausted")
+start ReservationExpired {
     orderId String
 }
- 
-when PaymentTimeout do cancelOrder {
+```
+
+`@time` defines the condition. `start` names the event produced by the scheduler. From there it behaves like any other event in the flow:
+
+```zfl
+when ReservationExpired do releaseStock {
     service CatalogProducts.CatalogProductsService
+    emits StockReleased
 }
 ```
- 
-`@time` defines the condition. `start` names the synthetic event it produces. From there it is just another policy. When `PaymentTimeout`, do `cancelOrder`.
- 
-## The end states
- 
+
+The timing rule from the workshop is no longer just a note on the side of the board. It is part of the model.
+
+## End states
+
 Every Event Storming session needs to answer: how does this flow end? What are the possible final states?
- 
+
 ZFL makes this explicit with an `end` block:
- 
+
 ```zfl
 end {
-    completed: OrderConfirmationSent
+    completed: PaymentCaptured
     stockGone: StockUnavailableNotificationSent
-    paymentDeclined: PaymentFailedNotificationSent
+    orderCancelled: OrderCancelledNotificationSent
 }
 ```
- 
-Three outcomes. Order confirmed, stock unavailable, payment declined. Each one named. Each one traceable back to an event on the board.
- 
+
+Each ending gets a name. Each one points to an event in the flow. That gives readers and tools a clear set of terminal outcomes.
+
 ## The full flow
- 
-Put it all together and the full ZFL for the PlaceOrder flow looks like this:
- 
+
+Put it all together and the ZFL model has this shape:
+
 ```zfl
 flow PlaceOrderFlow {
     @actor(Customer)
-    start CustomerPlacesOrder { }
- 
-    when CustomerPlacesOrder do reserveStock {
-        event StockReserved
-        event StockUnavailable
+    start StartOrderCheckout {
+        ...
     }
- 
-    when StockReserved do createOrder {
-        event OrderCreated
+
+    when StartOrderCheckout do startOrderCheckout {
+        call reserveStock
+        on StockReserved emits OrderCreated
+        on StockUnavailable emits StockUnavailable
     }
- 
+
+    do reserveStock {
+        service CatalogProducts.CatalogProductsService
+        emits response StockReserved
+        response StockUnavailable
+    }
+
     when OrderCreated do authorizePayment {
-        event PaymentAuthorized
-        event PaymentFailed
+        ...
     }
- 
-    when PaymentAuthorized do confirmOrder {
-        event OrderConfirmed
-    }
- 
-    when OrderConfirmed do scheduleFulfillment {
-        event FulfillmentScheduled
-    }
- 
-    when OrderConfirmed do sendOrderConfirmation {
-        event OrderConfirmationSent
-    }
- 
-    when StockUnavailable do sendStockUnavailableNotification {
-        event StockUnavailableNotificationSent
-    }
- 
-    when PaymentFailed do cancelOrder {
-        event OrderCancelled
-        event PaymentFailedNotificationSent
-    }
- 
-    when OrderCancelled do releaseStock {
-        event StockReleased
-    }
- 
-    @time("10 minutes after OrderCreated and not PaymentAuthorized or PaymentFailed")
-    start PaymentTimeout {
+
+    @actor(Scheduler)
+    @time("10 minutes after OrderCreated and not PaymentAuthorized or PaymentDeclined or PaymentRetryExhausted")
+    start ReservationExpired {
         orderId String
     }
- 
-    when PaymentTimeout do cancelOrder { }
- 
+
     end {
-        completed: OrderConfirmationSent
+        completed: PaymentCaptured
         stockGone: StockUnavailableNotificationSent
-        paymentDeclined: PaymentFailedNotificationSent
+        orderCancelled: OrderCancelledNotificationSent
     }
 }
 ```
- 
-If you have the Event Storming board in front of you, you can read this top to bottom and point to the sticky note behind every line.
- 
-That is the point. ZFL is not a new design. It is the design you already did, in a format you can version, share, and feed to tools.
- 
-In the next post we look at how ZFL maps to bounded contexts and how those boundaries become the seams of your AsyncAPI specs.
+
+The complete flow is available in [003-place-order-flow.zfl](./003-place-order-flow.zdl). There you can see the same patterns repeated across the whole checkout flow: policies, direct calls, compensations, time-based triggers, and explicit end states.
+
+If you have the Event Storming board in front of you, you can read the full ZFL file top to bottom and point to the sticky note behind most lines.
+
+That is the point. ZFL is not a different design. It is the design you already discovered, represented in a format that can be versioned, reviewed, parsed, linked, explored, and used by the ZenWave Platform to generate the next set of artifacts.
+
+In the next post we look at how ZFL maps to bounded contexts and how those boundaries become the structure of your systems.

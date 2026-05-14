@@ -1,0 +1,338 @@
+{
+  "fileTypes": ["zfl"],
+  "name": "ZenWave Flow Language ZFL",
+  "scopeName": "source.zfl",
+  "patterns": [
+    {
+      "include": "#comments"
+    },
+    {
+      "include": "#strings"
+    },
+    {
+      "include": "#annotations"
+    },
+    {
+      "include": "#imports"
+    },
+    {
+      "include": "#flowDeclarations"
+    },
+    {
+      "include": "#serviceReferences"
+    },
+    {
+      "include": "#systemDeclarations"
+    },
+    {
+      "include": "#fieldTypes"
+    },
+    {
+      "include": "#endOutcomes"
+    },
+    {
+      "include": "#constants"
+    },
+    {
+      "include": "#validators"
+    },
+    {
+      "include": "#keywords"
+    }
+  ],
+  "repository": {
+    "comments": {
+      "patterns": [
+        {
+          "begin": "/\\*\\*",
+          "end": "\\*/",
+          "name": "comment.block.documentation.zfl"
+        },
+        {
+          "begin": "/\\*",
+          "end": "\\*/",
+          "name": "comment.block.zfl"
+        },
+        {
+          "match": "//.*$",
+          "name": "comment.line.double-slash.zfl"
+        }
+      ]
+    },
+    "strings": {
+      "patterns": [
+        {
+          "begin": "\"",
+          "end": "\"",
+          "name": "string.quoted.double.zfl",
+          "patterns": [
+            {
+              "match": "\\\\.",
+              "name": "constant.character.escape.zfl"
+            }
+          ]
+        },
+        {
+          "begin": "'",
+          "end": "'",
+          "name": "string.quoted.single.zfl",
+          "patterns": [
+            {
+              "match": "\\\\.",
+              "name": "constant.character.escape.zfl"
+            }
+          ]
+        }
+      ]
+    },
+    "annotations": {
+      "patterns": [
+        {
+          "begin": "(@[a-zA-Z_][a-zA-Z0-9_]*)(\\()",
+          "beginCaptures": {
+            "1": {
+              "name": "storage.type.annotation.java"
+            },
+            "2": {
+              "name": "punctuation.definition.annotation-arguments.begin.java"
+            }
+          },
+          "end": "\\)",
+          "endCaptures": {
+            "0": {
+              "name": "punctuation.definition.annotation-arguments.end.java"
+            }
+          },
+          "name": "meta.declaration.annotation.zfl",
+          "patterns": [
+            {
+              "include": "#strings"
+            },
+            {
+              "match": "\\b(true|false|null)\\b",
+              "name": "constant.language.zfl"
+            },
+            {
+              "match": "\\b\\d+(\\.\\d+)?\\b",
+              "name": "constant.numeric.zfl"
+            },
+            {
+              "match": "\\b[a-zA-Z_][a-zA-Z0-9_]*\\b\\s*(?=:)",
+              "name": "constant.other.key.zfl"
+            },
+            {
+              "match": "[:,]",
+              "name": "punctuation.separator.property.zfl"
+            }
+          ]
+        },
+        {
+          "match": "@[a-zA-Z_][a-zA-Z0-9_]*",
+          "name": "storage.type.annotation.java"
+        }
+      ]
+    },
+    "imports": {
+      "patterns": [
+        {
+          "match": "(@import)(\\()",
+          "captures": {
+            "1": {
+              "name": "storage.modifier.java"
+            },
+            "2": {
+              "name": "punctuation.definition.annotation-arguments.begin.java"
+            }
+          }
+        }
+      ]
+    },
+    "flowDeclarations": {
+      "patterns": [
+        {
+          "match": "\\b(flow)\\s+([A-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "storage.modifier.java"
+            },
+            "2": {
+              "name": "entity.name.type.class.java"
+            }
+          }
+        },
+        {
+          "match": "\\b(start)\\s+([A-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.java"
+            },
+            "2": {
+              "name": "entity.name.type.class.java"
+            }
+          }
+        },
+        {
+          "match": "\\b(when)\\s+([A-Z_][a-zA-Z0-9_]*(?:\\s*(?:,|\\||\\band\\b)\\s*[A-Z_][a-zA-Z0-9_]*)*)\\s+(do)\\s+([a-zA-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.java"
+            },
+            "2": {
+              "name": "variable.parameter.java"
+            },
+            "3": {
+              "name": "keyword.control.java"
+            },
+            "4": {
+              "name": "support.function.java"
+            }
+          }
+        },
+        {
+          "match": "\\b(do|call)\\s+([a-zA-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.java"
+            },
+            "2": {
+              "name": "support.function.java"
+            }
+          }
+        },
+        {
+          "match": "\\b(on)\\s+([A-Z_][a-zA-Z0-9_]*)\\s+(call|emits)\\s+([a-zA-Z_][a-zA-Z0-9_]*|[A-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.java"
+            },
+            "2": {
+              "name": "variable.parameter.java"
+            },
+            "3": {
+              "name": "keyword.control.java"
+            },
+            "4": {
+              "name": "support.function.java"
+            }
+          }
+        },
+        {
+          "match": "\\b(emits\\s+response|emits|response)\\s+([A-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "keyword.control.java"
+            },
+            "2": {
+              "name": "variable.parameter.java"
+            }
+          }
+        }
+      ]
+    },
+    "systemDeclarations": {
+      "patterns": [
+        {
+          "match": "\\b(systems|config)\\b",
+          "name": "storage.modifier.java"
+        },
+        {
+          "match": "\\b(service)\\s+([A-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "storage.modifier.java"
+            },
+            "2": {
+              "name": "entity.name.type.class.java"
+            }
+          }
+        },
+        {
+          "match": "\\b(for)\\b",
+          "name": "keyword.control.java"
+        }
+      ]
+    },
+    "serviceReferences": {
+      "patterns": [
+        {
+          "match": "\\b(service)\\s+([A-Z_][a-zA-Z0-9_]*)(\\.)([A-Z_][a-zA-Z0-9_]*)",
+          "captures": {
+            "1": {
+              "name": "storage.modifier.java"
+            },
+            "2": {
+              "name": "entity.name.type.class.java"
+            },
+            "3": {
+              "name": "punctuation.accessor.zfl"
+            },
+            "4": {
+              "name": "entity.name.type.class.java"
+            }
+          }
+        }
+      ]
+    },
+    "fieldTypes": {
+      "patterns": [
+        {
+          "match": "\\b([a-zA-Z_][a-zA-Z0-9_]*)\\s+([A-Z_][a-zA-Z0-9_]*)(\\[\\])?(\\?)?",
+          "captures": {
+            "1": {
+              "name": "variable.parameter.java"
+            },
+            "2": {
+              "name": "entity.name.type.class.java"
+            },
+            "3": {
+              "name": "keyword.operator.zfl"
+            },
+            "4": {
+              "name": "keyword.operator.zfl"
+            }
+          }
+        }
+      ]
+    },
+    "endOutcomes": {
+      "patterns": [
+        {
+          "match": "^\\s*([a-zA-Z_][a-zA-Z0-9_]*)\\s*:",
+          "captures": {
+            "1": {
+              "name": "constant.other.key.zfl"
+            }
+          }
+        }
+      ]
+    },
+    "constants": {
+      "patterns": [
+        {
+          "match": "\\b(true|false|null)\\b",
+          "name": "constant.language.zfl"
+        },
+        {
+          "match": "\\b\\d+(\\.\\d+)?\\b",
+          "name": "constant.numeric.zfl"
+        }
+      ]
+    },
+    "validators": {
+      "patterns": [
+        {
+          "match": "\\b(required|unique|min|max|minlength|maxlength|email|pattern)\\b",
+          "name": "entity.name.tag.validation.zfl"
+        }
+      ]
+    },
+    "keywords": {
+      "patterns": [
+        {
+          "match": "\\b(import|zdl|commands|events|completed|suspended|cancelled|and|end)\\b",
+          "name": "keyword.control.java"
+        }
+      ]
+    }
+  }
+}
