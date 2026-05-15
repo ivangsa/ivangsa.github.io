@@ -281,7 +281,7 @@ flow PlaceOrderFlow {
 }
 ```
 
-The complete flow is available in [004-place-order-flow.zfl](/assets/articles/arcadia-editions/004-place-order-flow.zdl). There you can see the same patterns repeated across the whole checkout flow: policies, direct calls, compensations, time-based triggers, and explicit end states.
+The complete flow is available in [place-order-flow.zfl](https://github.com/arcadia-editions/arcadia-editions-docs/blob/main/business-flows/place-order-flow.zfl). There you can see the same patterns repeated across the whole checkout flow: policies, direct calls, compensations, time-based triggers, and explicit end states.
 
 If you have the Event Storming board in front of you, you can read the full ZFL file top to bottom and point to the sticky note behind most lines.
 
