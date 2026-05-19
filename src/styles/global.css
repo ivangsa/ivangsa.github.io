@@ -172,13 +172,22 @@ pre.astro-code {
 
 :not(pre) > code {
 	border-radius: 0.25rem;
-	background: var(--accent-subtle-overlay);
-	color: var(--accent-regular);
+	background: var(--gray-800);
+	color: var(--gray-200);
 	padding: 0.1em 0.3em;
 	font-size: 1.05em;
 }
 
 :root.theme-dark :not(pre) > code {
+	background: var(--gray-800);
+	color: var(--gray-200);
+}
+
+strong {
+	color: var(--accent-regular);
+}
+
+:root.theme-dark strong {
 	color: var(--accent-dark);
 }
 

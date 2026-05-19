@@ -24,15 +24,26 @@ const latestArticles = nonArcadiaArticlesEn
 	.filter((a) => a.id !== featuredArticle?.id)
 	.slice(0, 2);
 const arcadiaStartArticle = arcadiaArticles.find((article) => article.id.startsWith('arcadia/001-'));
-const fixedArcadiaArticle = arcadiaArticles.find((article) => article.id.startsWith('arcadia/002-'));
+const showLatestArcadiaHighlights = false;
+const fixedArcadiaArticles = ['arcadia/002-', 'arcadia/003-']
+	.map((prefix) => arcadiaArticles.find((article) => article.id.startsWith(prefix)))
+	.filter((article): article is (typeof arcadiaArticles)[number] => article !== undefined);
 const latestArcadiaStripArticles = arcadiaArticles
-	.filter((article) => !article.id.startsWith('arcadia/001-') && !article.id.startsWith('arcadia/002-'))
+	.filter(
+		(article) =>
+			!article.id.startsWith('arcadia/001-') &&
+			!fixedArcadiaArticles.some((fixedArticle) => fixedArticle.id === article.id),
+	)
 	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-	.slice(0, 3)
+	.slice(0, 2)
 	.sort((a, b) => a.data.date.valueOf() - b.data.date.valueOf());
-const arcadiaStripArticles = [fixedArcadiaArticle, ...latestArcadiaStripArticles].filter(
-	(article): article is (typeof arcadiaArticles)[number] => article !== undefined,
-);
+const chronologicalArcadiaStripArticles = arcadiaArticles
+	.filter((article) => !article.id.startsWith('arcadia/001-'))
+	.sort((a, b) => a.id.localeCompare(b.id))
+	.slice(0, 4);
+const arcadiaStripArticles = showLatestArcadiaHighlights
+	? [...fixedArcadiaArticles, ...latestArcadiaStripArticles]
+	: chronologicalArcadiaStripArticles;
 
 function getArcadiaSequence(article: (typeof arcadiaArticles)[number]) {
 	const sequence = article.id.match(/(?:^|\/)(\d+)/)?.[1];
