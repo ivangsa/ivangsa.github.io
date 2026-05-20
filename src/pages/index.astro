@@ -66,6 +66,18 @@ const talks = (await getCollection('talks'))
 const projects = (await getCollection('projects'))
 	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 	.slice(0, 3);
+
+function getYouTubeId(url: string | undefined) {
+	if (!url) return undefined;
+	return new URL(url).searchParams.get('v') ?? undefined;
+}
+
+function getTalkImage(talk: (typeof talks)[number]) {
+	if (talk.data.event?.includes('springio.net')) return '/SpringIO-2025_400x267.jpg';
+	const youtubeId = getYouTubeId(talk.data.video);
+	if (youtubeId) return `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+	return '/SpringIO-2025_400x267.jpg';
+}
 ---
 
 <BaseLayout
@@ -85,7 +97,7 @@ const projects = (await getCollection('projects'))
     </p>
 
     <div class="actions">
-        <a href="/projects/"><Pill><Icon icon="code" size="1.33em" /> Explore ZenWave360 &rarr;</Pill></a>
+        <a href="/projects/"><Pill><Icon icon="code" size="1.33em" /> ZenWave Projects &rarr;</Pill></a>
         <a href="/articles/"><Pill><Icon icon="pencil-line" size="1.33em" /> Read Articles &rarr;</Pill></a>
         <a href="/talks/"><Pill><Icon icon="microphone-stage" size="1.33em" /> Watch Talks &rarr;</Pill></a>
     </div>
@@ -269,6 +281,7 @@ const projects = (await getCollection('projects'))
 					{
 						talks.map((talk) => (
 							<li class="card">
+								<img class="talk-card-image" src={getTalkImage(talk)} alt="" loading="lazy" />
 								<div class="card-tags">
 									{talk.data.tags.slice(0, 3).map((tag) => (
 										<span class="card-tag">#{tag}</span>
@@ -443,6 +456,18 @@ const projects = (await getCollection('projects'))
 		object-fit: cover;
 		border-radius: 0.5rem;
 		margin-bottom: 0.25rem;
+	}
+
+	.talk-card-image {
+		width: min(100%, 12rem);
+		aspect-ratio: 3 / 2;
+		object-fit: cover;
+		object-position: center;
+		align-self: center;
+		border-radius: 0.5rem;
+		border: 1px solid var(--gray-800);
+		background: var(--gray-900);
+		margin-bottom: 0.5rem;
 	}
 
 	.card.featured .card-description {

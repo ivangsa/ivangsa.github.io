@@ -1,10 +1,24 @@
 ---
 import { getCollection } from 'astro:content';
+import { existsSync } from 'node:fs';
+import { join } from 'node:path';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const tutorials = (await getCollection('tutorials')).sort(
 	(a, b) => b.data.date.valueOf() - a.data.date.valueOf(),
 );
+
+function resolveImageSrc(path: string) {
+	if (/^(https?:)?\/\//.test(path) || path.startsWith('/')) return path;
+	return `/${path}`;
+}
+
+function hasPublicImage(path: string | undefined) {
+	if (!path) return false;
+	if (/^(https?:)?\/\//.test(path)) return true;
+	const publicPath = path.startsWith('/') ? path.slice(1) : path;
+	return existsSync(join(process.cwd(), 'public', publicPath));
+}
 ---
 
 <BaseLayout
@@ -17,19 +31,31 @@ const tutorials = (await getCollection('tutorials')).sort(
 			{
 				tutorials.map((tutorial) => (
 					<li>
-						<article class="item">
-							<p class="meta">
-								<time datetime={tutorial.data.date.toISOString()}>
-									{tutorial.data.date.toLocaleDateString('en-US', {
-										year: 'numeric',
-										month: 'short',
-										day: 'numeric',
-									})}
-								</time>
-								{tutorial.data.featured && <span>Featured</span>}
-							</p>
-							<h2><a href={`/tutorials/${tutorial.id}/`}>{tutorial.data.title}</a></h2>
-							<p>{tutorial.data.summary}</p>
+						<article class="item item-with-image">
+							{hasPublicImage(tutorial.data.featuredImage) ? (
+								<img
+									class="item-image"
+									src={resolveImageSrc(tutorial.data.featuredImage)}
+									alt={tutorial.data.featuredImageAlt ?? ''}
+									loading="lazy"
+								/>
+							) : (
+								<div class="item-image-placeholder" aria-hidden="true"></div>
+							)}
+							<div class="item-body">
+								<p class="meta">
+									<time datetime={tutorial.data.date.toISOString()}>
+										{tutorial.data.date.toLocaleDateString('en-US', {
+											year: 'numeric',
+											month: 'short',
+											day: 'numeric',
+										})}
+									</time>
+									{tutorial.data.featured && <span>Featured</span>}
+								</p>
+								<h2><a href={`/tutorials/${tutorial.id}/`}>{tutorial.data.title}</a></h2>
+								<p>{tutorial.data.summary}</p>
+							</div>
 						</article>
 					</li>
 				))
@@ -61,6 +87,32 @@ const tutorials = (await getCollection('tutorials')).sort(
 		background: var(--gradient-subtle);
 	}
 
+	.item-with-image {
+		display: grid;
+		grid-template-columns: 1fr;
+		gap: 0.875rem;
+		align-items: start;
+	}
+
+	.item-image {
+		width: 100%;
+		height: 180px;
+		object-fit: cover;
+		border-radius: 0.5rem;
+	}
+
+	.item-image-placeholder {
+		width: 100%;
+		height: 180px;
+		border-radius: 0.5rem;
+		border: 1px dashed var(--gray-700);
+		background: color-mix(in srgb, var(--gray-900) 55%, transparent);
+	}
+
+	.item-body {
+		min-width: 0;
+	}
+
 	.meta {
 		display: flex;
 		gap: 0.75rem;
@@ -81,6 +133,17 @@ const tutorials = (await getCollection('tutorials')).sort(
 
 	p {
 		color: var(--gray-300);
+	}
+
+	@media (min-width: 768px) {
+		.item-with-image {
+			grid-template-columns: minmax(160px, 220px) minmax(0, 1fr);
+		}
+
+		.item-image,
+		.item-image-placeholder {
+			height: 120px;
+		}
 	}
 </style>
 

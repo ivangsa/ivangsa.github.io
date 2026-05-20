@@ -1,155 +1,591 @@
 ---
 import BaseLayout from '../../layouts/BaseLayout.astro';
 import Icon from '../../components/Icon.astro';
-import Pill from '../../components/Pill.astro';
 import type { iconPaths } from '../../components/IconPaths';
 
-const projects: { title: string; icon: keyof typeof iconPaths; description: string; url: string; linkText: string }[] = [
+type ProjectCard = {
+	title: string;
+	description: string;
+	url: string;
+	linkText: string;
+	image?: string;
+	coverImage?: string;
+	icon?: keyof typeof iconPaths;
+};
+
+type ProjectGroup = {
+	title: string;
+	kicker: string;
+	description: string;
+	logo?: string;
+	icon?: keyof typeof iconPaths;
+	url: string;
+	linkText: string;
+	cards: ProjectCard[];
+};
+
+const zenwavePlatformCards: ProjectCard[] = [
+  {
+    title: 'ZenWave IntelliJ Plugin',
+    image: '/assets/icons/zenwave-logo.svg',
+    description: 'Architecture navigation and visualization layer for ZenWave models inside your IDE.',
+    url: 'https://plugins.jetbrains.com/plugin/22997-zenwave-360',
+    linkText: 'View plugin',
+  },
+  {
+    title: 'ZenWave SDK',
+    image: '/assets/icons/zenwave-sdk-hexagon.svg',
+    description: 'Generate Spring Boot services from domain models, business flows and API contracts.',
+    url: 'https://www.zenwave360.io/zenwave-sdk/',
+    linkText: 'Explore SDK',
+  },
+  {
+    title: 'ZFL Flow Language',
+    image: '/assets/icons/zfl-icon.png',
+    description: 'Model business processes and event flows connected to APIs, events, schemas and services.',
+    url: 'https://www.zenwave360.io/docs/event-driven-design/zenwave-flow-language/',
+    linkText: 'Read the docs',
+  },
+  {
+    title: 'ZDL Modeling Language',
+    image: '/assets/icons/zdl-icon.png',
+    description: 'Model bounded contexts, aggregates, commands, events and APIs as structured domain artifacts.',
+    url: 'https://www.zenwave360.io/docs/event-driven-design/zenwave-domain-language/',
+    linkText: 'Read the docs',
+  },
+  {
+    title: 'AsyncAPI Generator for Spring Cloud Stream / Spring Kafka',
+    icon: 'rocket-launch',
+    description: 'Generate strongly typed Java and Kotlin code from AsyncAPI specifications.',
+    url: 'https://www.zenwave360.io/zenwave-sdk/plugins/asyncapi-generator/',
+    linkText: 'Read the docs',
+  },
 	{
-		title: 'ZenWave SDK',
-		icon: 'rocket-launch',
-		description: `
-			Converts <strong>APIs</strong> and <strong>Domain Models (ZDL)</strong> into executable code,
-			API definitions, tests and documentation.<br/>
-			Allowing you to build complete <strong>Spring Boot Java (and Kotlin)</strong> projects from models and APIs.
-		`,
+	title: 'EventCatalog Generator',
+	icon: 'list',
+	description: 'WIP generator for publishing OpenAPI, AsyncAPI and ZenWave models as browsable EventCatalog.dev documentation.',
+	url: 'https://www.zenwave360.io/zenwave-sdk/plugins/eventcatalog/',
+	linkText: 'Read the docs',
+	},
+  {
+    title: 'Terraform / asyncapi-ops',
+    icon: 'strategy',
+    description: 'Provision Kafka and Schema Registry infrastructure from AsyncAPI contracts.',
+    url: 'https://www.zenwave360.io/zenwave-sdk/plugins/asyncapi-terraform/',
+    linkText: 'Read the docs',
+  },
+];
+
+const referenceArchitectureCards: ProjectCard[] = [
+	{
+		title: 'Arcadia Editions',
+		coverImage: '/assets/articles/arcadia-editions/arcadia.png',
+		description:
+			'A fictional board game retailer built to explore event-driven architecture end-to-end, from discovery and modeling to APIs, events and running services.',
+		url: '/articles/arcadia/',
+		linkText: 'Read the series',
+	},
+	{
+		title: 'AsyncAPI Shopping Cart',
+		coverImage: '/assets/tutorials/ShoppingCartAsyncAPI.png',
+		description:
+			'Define AsyncAPI and Avro contracts, then derive Kafka producers and consumers for a multi-module event-driven application.',
+		url: '/tutorials/2026-03-04-asyncapi-shopping-cart-summary/',
+		linkText: 'Read tutorial',
+	},
+	{
+		title: 'Order Fulfillment Kotlin',
+		coverImage: '/assets/tutorials/OrderFulfillmentKotlin.png',
+		description:
+			'Capture ubiquitous language in ZDL and derive a Kotlin Spring Boot service with REST APIs, domain events and generated implementation.',
+		url: '/tutorials/2026-02-04-order-fulfillment-kotlin-summary/',
+		linkText: 'Read tutorial',
+	},
+	{
+		title: 'Clinical Tool Modulith',
+		coverImage: '/assets/tutorials/ClinicalToolModulith.png',
+		description:
+			'Model multiple bounded contexts and derive a modular monolith where domain boundaries, APIs and persistence stay aligned.',
+		url: '/tutorials/2025-12-30-modulith-clinical-tool-jpa-summary/',
+		linkText: 'Read tutorial',
+	},
+];
+
+const asyncApiContributionCards: ProjectCard[] = [
+  {
+    title: 'TSC and Ambassador Work',
+    icon: 'trophy',
+    description:
+      'Contributing to the AsyncAPI ecosystem through technical governance, community advocacy and practical feedback from real event-driven architecture work.',
+    url: 'https://www.asyncapi.com/community/ambassadors',
+    linkText: 'Community',
+  },
+  {
+    title: 'Generators and Tooling',
+    icon: 'code',
+    description:
+      'Contributions across generation, preview and developer tooling, including AsyncAPI Studio and VSCode Preview work as part of the broader ecosystem.',
+    url: 'https://www.asyncapi.com/tools',
+    linkText: 'Explore tools',
+  },
+];
+
+const otherOssCards: ProjectCard[] = [
+	{
+	title: 'JSON Schema Ref Parser',
+	icon: 'codepen-logo',
+	description:
+		'Standalone JSON Schema reference parsers for JVM and Kotlin Multiplatform, used across ZenWave SDK, the IntelliJ plugin and other tooling.',
+	url: 'https://github.com/ZenWave360/json-schema-ref-parser-jvm',
+	linkText: 'View repository',
+	},
+	{
+	title: 'Spring Modulith Events for Spring Cloud Stream',
+	icon: 'paper-plane-tilt',
+	description:
+		'Externalize Spring Modulith domain events through Spring Cloud Stream to any supported broker. Used by the AsyncAPI Generator for Transactional Outbox integration.',
+	url: 'https://github.com/ZenWave360/spring-modulith-events-spring-cloud-stream',
+	linkText: 'View repository',
+	},
+];
+
+const platformScreenshots = [
+  {
+    file: 'zfl-flow.png',
+    caption: 'Business flow modeled from EventStorming sessions',
+  },
+  {
+    file: 'zfl-systems.png',
+    caption: 'Systems map generated from a business flow',
+  },
+  {
+    file: 'zfl-flowchart-diagram.png',
+    caption: 'Flowchart visualization generated from ZFL',
+  },
+  {
+    file: 'zfl-sequence-diagram.png',
+    caption: 'Sequence diagrams derived from business flows',
+  },
+  {
+    file: 'zfl-sequence-separate-variants.png',
+    caption: 'Alternative business flow outcomes separated into sequences',
+  },
+  {
+    file: 'zfl-organize-systems.png',
+    caption: 'Systems, commands and events organized from business flows',
+  },
+  {
+    file: 'zdl-model-generated-draft.png',
+    caption: 'Domain model with aggregates, entities and lifecycle states',
+  },
+  {
+    file: 'zdl-api-plugins.png',
+    caption: 'Service commands connected to API generation plugins',
+  },
+  {
+    file: 'zdl-asyncapi-plugin.png',
+    caption: 'AsyncAPI contracts generated from domain events',
+  },
+  {
+    file: 'zdl-openapi.png',
+    caption: 'OpenAPI contracts derived from annotated service commands',
+  },
+];
+
+const projectGroups: ProjectGroup[] = [
+	{
+		title: 'ZenWave Platform',
+		kicker: 'Open Source Architecture Tooling',
+		logo: '/assets/icons/zenwave-logo.svg',
+		description:
+			'Build navigable architectural world models from bounded contexts, business flows, APIs and schemas. Cross navigate your architecture from domain flows to API contracts, events, schemas and generated services directly from your IDE.',
 		url: 'https://www.zenwave360.io/',
 		linkText: 'Visit ZenWave360',
+		cards: zenwavePlatformCards,
 	},
 	{
-		title: 'AsyncAPI Generator for Java / Spring-Boot',
-		icon: 'rocket-launch',
-		description: `
-			Generates <strong>strongly-typed Java/Kotlin code</strong> from AsyncAPI specifications,
-			eliminating API drift through build-time regeneration and compile-time guarantees.<br/>
-			Produces non-editable interfaces, DTOs, and Spring Cloud Streams/Kafka bindings—keeping your
-			event-driven code perfectly aligned with AsyncAPI contracts.
-		`,
-		url: 'https://www.zenwave360.io/zenwave-sdk/plugins/asyncapi-generator/',
-		linkText: 'Read the Docs',
+		title: 'Reference Architectures',
+		kicker: 'Examples and Running Systems',
+		logo: '/assets/icons/conceptual-model.svg',
+		description:
+			'Reference systems and practical examples that show event-driven architecture, DDD modeling and ZenWave generation working together in real code.',
+		url: '/tutorials/',
+		linkText: 'Explore tutorials',
+		cards: referenceArchitectureCards,
 	},
 	{
-		title: 'ZDL Modeling Language',
-		icon: 'strategy',
-		description: `
-			A domain specific language for expressing <strong>Bounded Contexts</strong> with entities, aggregates,
-			commands, events and APIs in a clear and structured form.<br/>
-			Works well as an <strong>Ubiquitous Language</strong> format shared across teams.
-		`,
-		url: 'https://www.zenwave360.io/docs/event-driven-design/zenwave-domain-language/',
-		linkText: 'Read the Docs',
+		title: 'AsyncAPI Contributions',
+		kicker: 'Community, Governance and Tooling',
+		logo: '/assets/icons/asyncapi-logo.png',
+		description:
+			'AsyncAPI TSC member and Ambassador. Contributor across the initiative, from Java and Kotlin generators to IDE tooling, previews, Studio work and infrastructure provisioning patterns for Kafka and Schema Registry.',
+		url: 'https://www.asyncapi.com/',
+		linkText: 'Visit AsyncAPI',
+		cards: asyncApiContributionCards,
 	},
 	{
-		title: 'AsyncAPI Initiative',
-		icon: 'paper-plane-tilt',
-		description: `
-			Contributing to the <strong>AsyncAPI initiative</strong>, including
-			<a href="https://marketplace.visualstudio.com/items?itemName=asyncapi.asyncapi-preview" target="_blank" rel="noopener noreferrer">AsyncAPI Preview for VSCode</a>
-			and AsyncAPI Studio.
-		`,
-		url: 'https://www.asyncapi.com/tools#IDE%20Extensions',
-		linkText: 'Explore AsyncAPI Tools',
+		title: 'Other OSS',
+		kicker: 'Libraries and Experiments',
+		icon: 'github-logo',
+		description:
+			'Smaller open source projects that support the same architecture tooling ecosystem, usually where schema processing, model transformation and JVM/Kotlin multiplatform infrastructure meet.',
+		url: 'https://github.com/ZenWave360',
+		linkText: 'View GitHub',
+		cards: otherOssCards,
 	},
 ];
 ---
 
 <BaseLayout
 	title="Projects | Ivan Garcia Sainz-Aja"
-	description="Projects focused on Domain-Driven Design, Event-Driven Architecture, AsyncAPI, and platform-level tooling."
+	description="Projects focused on ZenWave Platform, AsyncAPI, Domain-Driven Design, Event-Driven Architecture, and open source tooling."
 >
 	<main class="wrapper stack gap-8 list-page">
-		<h1>Projects</h1>
-		<ul class="items">
-			{projects.map((project) => (
-				<li>
-					<article class="item stack gap-4">
-						<div class="item-header">
-							<Icon icon={project.icon} color="var(--accent-regular)" size="2.5rem" gradient />
-							<h2>{project.title}</h2>
+		<div class="project-groups">
+			{projectGroups.map((group) => (
+				<section class:list={['project-group', group.cards.length <= 2 && 'project-group-wide-cards']}>
+					<div class="group-head">
+						<div class="group-title">
+							<div class="group-logo" aria-hidden="true">
+								{group.logo ? (
+									<img src={group.logo} alt="" loading="lazy" />
+								) : (
+									group.icon && <Icon icon={group.icon} color="var(--accent-regular)" size="3rem" gradient />
+								)}
+							</div>
+							<div class="group-copy">
+								<h2>{group.title}</h2>
+							</div>
 						</div>
-						<p set:html={project.description} />
-						<div class="item-cta">
-							<a href={project.url} target="_blank" rel="noopener noreferrer">
-								<Pill><Icon icon="code" size="1.33em" /> {project.linkText} &rarr;</Pill>
-							</a>
+					</div>
+
+					{group.title === 'ZenWave Platform' && (
+						<div class="platform-carousel" aria-label="ZenWave architecture screenshots" data-platform-carousel>
+							{platformScreenshots.map((screenshot, index) => (
+								<figure class="platform-slide">
+									<img
+										src={`/assets/articles/arcadia-editions/${screenshot.file}`}
+										alt={screenshot.caption}
+										loading={index === 0 ? 'eager' : 'lazy'}
+									/>
+									<figcaption>{screenshot.caption}</figcaption>
+								</figure>
+							))}
 						</div>
-					</article>
-				</li>
+					)}
+
+					<ul class="project-cards">
+						{group.cards.map((project) => (
+							<li>
+								<a
+									class:list={['project-card', project.coverImage && 'project-card-cover']}
+									href={project.url}
+									target={project.url.startsWith('http') ? '_blank' : undefined}
+									rel={project.url.startsWith('http') ? 'noopener noreferrer' : undefined}
+								>
+									{project.coverImage ? (
+										<img class="card-cover" src={project.coverImage} alt="" loading="lazy" />
+									) : (
+										<div class="card-icon" aria-hidden="true">
+											{project.image ? (
+												<img src={project.image} alt="" loading="lazy" />
+											) : (
+												project.icon && <Icon icon={project.icon} color="var(--accent-regular)" size="2rem" gradient />
+											)}
+										</div>
+									)}
+									<div class="card-body">
+										<h3>{project.title}</h3>
+										<p>{project.description}</p>
+									</div>
+								</a>
+							</li>
+						))}
+					</ul>
+
+					{group.title === 'ZenWave Platform' && (
+						<div class="platform-cta">
+							<a href={group.url} target="_blank" rel="noopener noreferrer">zenwave360.io &rarr;</a>
+						</div>
+					)}
+				</section>
 			))}
-		</ul>
+		</div>
 	</main>
 </BaseLayout>
 
 <style>
 	.list-page {
+		max-width: 68rem;
 		padding-bottom: 4rem;
 	}
 
-	h1 {
-		font-size: var(--text-3xl);
+	.eyebrow,
+	.group-kicker {
+		color: var(--accent-regular);
+		font-size: var(--text-sm);
+		font-weight: 800;
+		letter-spacing: 0.08em;
+		text-transform: uppercase;
 	}
 
-	.items {
-		list-style: none;
-		padding: 0;
-		display: flex;
-		flex-direction: column;
-		gap: 1.5rem;
-	}
-
-	.item {
-		border: 1px solid var(--gray-800);
-		border-radius: 0.75rem;
-		padding: 1.5rem;
-		background-color: var(--gray-999_40);
-		box-shadow: var(--shadow-sm);
-	}
-
-	.item-header {
-		display: flex;
-		align-items: center;
-		gap: 1rem;
-	}
-
-	h2 {
-		font-size: var(--text-xl);
-	}
-
-	p {
+	.project-card p {
 		color: var(--gray-300);
 	}
 
-	p :global(a) {
-		color: var(--accent-regular);
+	.project-groups {
+		display: flex;
+		flex-direction: column;
+		gap: 2rem;
 	}
 
-	p :global(strong) {
-		color: var(--gray-0);
+	.project-group {
+		display: grid;
+		gap: 1.5rem;
+		border: 1px solid color-mix(in srgb, var(--gray-800) 65%, transparent);
+		border-radius: 1.25rem;
+		padding: 1rem;
+		background:
+			linear-gradient(135deg, color-mix(in srgb, var(--accent-regular) 8%, transparent), transparent 38%),
+			color-mix(in srgb, var(--gray-999) 34%, transparent);
+		box-shadow: var(--shadow-sm);
 	}
 
-	.item-cta {
+	.group-title {
+		display: grid;
+		grid-template-columns: auto minmax(0, 1fr);
+		align-items: center;
+		gap: 1rem;
+		min-height: 5.5rem;
+		width: 100%;
+	}
+
+	.group-logo {
+		display: grid;
+		place-items: center;
+		width: 4.5rem;
+		height: 4.5rem;
+	}
+
+	.group-logo img {
+		width: 4rem;
+		height: 4rem;
+		object-fit: contain;
+	}
+
+	.group-copy {
+		display: grid;
+		gap: 0.55rem;
+		max-width: none;
+	}
+
+	h2 {
+		font-size: var(--text-2xl);
+	}
+
+	.project-cards {
+		list-style: none;
+		padding: 0;
+		display: grid;
+		grid-template-columns: repeat(auto-fit, minmax(min(100%, 12.5rem), 1fr));
+		gap: 0.875rem;
+	}
+
+	.platform-carousel {
+		display: grid;
+		grid-auto-columns: minmax(100%, 1fr);
+		grid-auto-flow: column;
+		gap: 1rem;
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		scroll-snap-type: inline mandatory;
+		scrollbar-color: var(--accent-regular) transparent;
+		padding-bottom: 0.25rem;
+		cursor: pointer;
+		user-select: none;
+	}
+
+	.platform-slide {
+		position: relative;
+		scroll-snap-align: start;
+		overflow: hidden;
+		border: 1px solid var(--gray-800);
+		border-radius: 0.9rem;
+		background: var(--gray-900);
+	}
+
+	.platform-slide img {
+		display: block;
+		width: 100%;
+		aspect-ratio: 16 / 8.6;
+		object-fit: contain;
+		background: var(--gray-999);
+	}
+
+	.platform-slide figcaption {
+		position: absolute;
+		inset-inline: 0;
+		inset-block-end: 0;
+		padding: 0.9rem 1.1rem;
+		color: #F5EEDF;
+		background: linear-gradient(180deg, transparent, color-mix(in srgb, var(--gray-999) 92%, transparent));
+		font-size: 1.125rem;
+		font-weight: 600;
+		line-height: 1.4;
+		text-shadow: 0 1px 2px rgba(0, 0, 0, 0.72);
+	}
+
+	.project-card {
+		--card-padding: 1.25rem;
+		display: flex;
+		flex-direction: column;
+		gap: 1.25rem;
+		min-height: 100%;
+		border: 1px solid var(--gray-800);
+		border-radius: 0.75rem;
+		padding: var(--card-padding);
+		background: color-mix(in srgb, var(--gray-900) 70%, var(--gray-999));
+		color: inherit;
+		text-decoration: none;
+		box-shadow: var(--shadow-sm);
+		transition:
+			border-color var(--theme-transition),
+			transform var(--theme-transition),
+			box-shadow var(--theme-transition);
+		overflow: hidden;
+	}
+
+	.project-card:hover,
+	.project-card:focus-visible {
+		border-color: color-mix(in srgb, var(--accent-regular) 45%, var(--gray-800));
+		box-shadow: var(--shadow-md);
+		transform: translateY(-2px);
+	}
+
+	.project-card:hover h3,
+	.project-card:focus-visible h3 {
+		color: var(--accent-dark);
+	}
+
+	.card-icon {
+		display: grid;
+		place-items: center;
+		align-self: center;
+		width: 3.25rem;
+		height: 3.25rem;
+	}
+
+	.card-icon img {
+		width: 2.9rem;
+		height: 2.9rem;
+		object-fit: contain;
+	}
+
+	.card-cover {
+		width: calc(100% + (var(--card-padding) * 2));
+		max-width: none;
+		height: 8rem;
+		margin: calc(var(--card-padding) * -1) calc(var(--card-padding) * -1) 0;
+		object-fit: cover;
+		object-position: center;
+		border-bottom: 1px solid var(--gray-800);
+		background: color-mix(in srgb, var(--gray-900) 72%, var(--gray-999));
+	}
+
+	.project-card-cover {
+		gap: 1rem;
+	}
+
+	.card-body {
+		display: flex;
+		min-width: 0;
+		flex-direction: column;
+		gap: 0.75rem;
+	}
+
+	h3 {
+		font-size: var(--text-lg);
+	}
+
+	.project-card p {
+		font-size: var(--text-sm);
+	}
+
+	.platform-cta {
 		display: flex;
 		justify-content: flex-end;
 	}
 
-	.item-cta a {
+	.platform-cta a {
+		color: var(--accent-regular);
+		font-weight: 800;
 		text-decoration: none;
-		display: inline-flex;
+	}
+
+	.platform-cta a:hover,
+	.platform-cta a:focus-visible {
+		color: var(--accent-dark);
 	}
 
 	@media (min-width: 50em) {
-		.item {
-			border-radius: 1.5rem;
-			padding: 2.5rem;
+		.list-page {
+			padding-bottom: 5rem;
 		}
 
-		h2 {
-			font-size: var(--text-2xl);
+		.project-groups {
+			gap: 2.5rem;
 		}
 
-		.items {
-			gap: 2rem;
+		.project-group {
+			gap: 1.75rem;
+			padding: 1.75rem 2rem 2rem;
+		}
+
+		.project-cards {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.project-group:first-child .project-cards {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.project-group-wide-cards .project-cards {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.project-card {
+			--card-padding: 1.3rem;
+			min-height: 15.5rem;
+		}
+	}
+
+	@media (min-width: 72em) {
+		.project-cards {
+			grid-template-columns: repeat(4, minmax(0, 1fr));
+		}
+
+		.project-group:first-child .project-cards {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
+		}
+
+		.project-group-wide-cards .project-cards {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
 		}
 	}
 </style>
 
+<script>
+	document.querySelectorAll<HTMLElement>('[data-platform-carousel]').forEach((carousel) => {
+		carousel.addEventListener('click', (event) => {
+			const target = event.target as HTMLElement;
+			if (target.closest('a')) return;
+
+			const bounds = carousel.getBoundingClientRect();
+			const direction = event.clientX < bounds.left + bounds.width / 2 ? -1 : 1;
+			carousel.scrollBy({
+				left: direction * carousel.clientWidth,
+				behavior: 'smooth',
+			});
+		});
+	});
+</script>

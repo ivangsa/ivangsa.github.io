@@ -3,6 +3,18 @@ import { getCollection } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
 
 const talks = (await getCollection('talks')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+function getYouTubeId(url: string | undefined) {
+	if (!url) return undefined;
+	return new URL(url).searchParams.get('v') ?? undefined;
+}
+
+function getTalkImage(talk: (typeof talks)[number]) {
+	if (talk.data.event?.includes('springio.net')) return '/SpringIO-2025_800x533.jpg';
+	const youtubeId = getYouTubeId(talk.data.video);
+	if (youtubeId) return `https://img.youtube.com/vi/${youtubeId}/hqdefault.jpg`;
+	return '/SpringIO-2025_800x533.jpg';
+}
 ---
 
 <BaseLayout
@@ -11,12 +23,12 @@ const talks = (await getCollection('talks')).sort((a, b) => b.data.date.valueOf(
 >
 	<main class="wrapper stack gap-8 list-page">
 		<h1>Talks</h1>
-		<img src="/SpringIO-2025_800x533.jpg" alt="Spring I/O 2025" style="width: 100%; max-width: 800px; margin: 2rem auto; display: block; border-radius: 0.75rem;" />
 		<ul class="items">
 			{
 				talks.map((talk) => (
 					<li>
 						<article class="item stack gap-2">
+							<img class="talk-image" src={getTalkImage(talk)} alt="" loading="lazy" />
 							<p class="meta">
 								<time datetime={talk.data.date.toISOString()}>
 									{talk.data.date.toLocaleDateString('en-US', {
@@ -42,6 +54,7 @@ const talks = (await getCollection('talks')).sort((a, b) => b.data.date.valueOf(
 
 <style>
 	.list-page {
+		max-width: 64rem;
 		padding-bottom: 4rem;
 	}
 
@@ -61,6 +74,18 @@ const talks = (await getCollection('talks')).sort((a, b) => b.data.date.valueOf(
 		border-radius: 0.75rem;
 		padding: 1rem;
 		background: var(--gradient-subtle);
+	}
+
+	.talk-image {
+		width: min(100%, 28rem);
+		height: 12.25rem;
+		object-fit: cover;
+		object-position: center;
+		align-self: center;
+		border-radius: 0.5rem;
+		border: 1px solid var(--gray-800);
+		background: var(--gray-900);
+		margin-bottom: 0.5rem;
 	}
 
 	.meta {
@@ -87,6 +112,12 @@ const talks = (await getCollection('talks')).sort((a, b) => b.data.date.valueOf(
 		display: flex;
 		gap: 1rem;
 		flex-wrap: wrap;
+	}
+
+	@media (min-width: 50em) {
+		.talk-image {
+			height: 14rem;
+		}
 	}
 </style>
 
