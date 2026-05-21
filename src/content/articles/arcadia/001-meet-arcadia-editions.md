@@ -52,16 +52,19 @@ That is where the domain earns its complexity. Not because it is trendy. Because
 
 ## The bounded contexts
 
-Arcadia Editions architecture is organized around six core domains, and we will discover how to find them later:
+Arcadia Editions architecture is organized around seven core domains, and we will discover how to find them later:
 
 - **Customer and Identity** — profiles, loyalty tiers, authentication
-- **Catalog and Inventory** — products, pricing, stock levels, launch management
+- **Product Catalog** — product descriptions, pricing, editions, launch metadata
+- **Catalog Inventory** — stock levels, reservations, scarcity rules, launch management
 - **Orders** — cart, checkout, order lifecycle
 - **Payments** — authorization, failure handling, refunds
 - **Fulfillment** — picking, packing, shipping, delivery tracking
 - **Notifications** — email, SMS, push, reacting to everything else
 
 Simple enough to understand in one sitting. Rich enough to surface real architectural problems.
+
+Not every flow touches every domain. The Place Order flow will exercise inventory, checkout, payments, fulfillment, and notifications. Product Catalog and Customer Identity still matter, but they have their own lifecycles and will appear when we model the flows that need them.
 
 ## From Discovery to Running Code
 

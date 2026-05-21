@@ -1,7 +1,7 @@
 ---
 title: "Domain Modeling with ZDL: Entities, Aggregates, and State Machines"
 summary: "Our entities have a lifecycle. That lifecycle is the business logic. ZDL is the ubiquitous language that makes it readable by humans, developers, and tools alike."
-date: 2026-05-29
+date: 2026-06-07
 tags:
   - arcadia
   - eda

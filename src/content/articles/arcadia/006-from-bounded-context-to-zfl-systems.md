@@ -14,7 +14,7 @@ readingTime: "6 min read"
 draft: true
 ---
 
-In the [previous post](/articles/arcadia/005-finding-bounded-contexts/) we found the main centers of gravity inside the PlaceOrder flow. Catalog Products, Orders Checkout, Payments Processing, Fulfillment Shipping, and Notifications Consumer. The latest flow also makes Scheduler explicit, because reservation expiry is owned by time coordination, not by payment or inventory.
+In the [previous post](/articles/arcadia/005-finding-bounded-contexts/) we found the main centers of gravity inside the PlaceOrder flow. Catalog Inventory, Orders Checkout, Payments Processing, Fulfillment Shipping, and Notifications Consumer. The latest flow also makes Scheduler explicit, because reservation expiry is owned by time coordination, not by payment or inventory.
 
 We found them by looking for centers of gravity. Business objects that receive commands, enforce rules, own state, and emit events. Each center of gravity became a bounded context.
 
@@ -50,17 +50,17 @@ The `service` field is where the second phase of Event Storming becomes explicit
 
 The `service` reference accepts different levels of precision:
 
-**System**: `CatalogProducts`. 
+**System**: `CatalogInventory`. 
 
-**System.Service**: `CatalogProducts.CatalogProductsService`. 
+**System.Service**: `CatalogInventory.InventoryService`. 
 
-**System.Service.Aggregate**: `CatalogProducts.CatalogProductsService.Product`
+**System.Service.Aggregate**: `CatalogInventory.InventoryService.StockReservation`
 
 The more precise you are, the more the platform can do with it. At the system level you know which bounded context owns the command. At the service level you know which service handles it. At the aggregate level you know which business object owns the state, and that link travels all the way to the ZDL model, the AsyncAPI spec, and the generated code.
 
-You can use either `.` or `/` as separator, so `CatalogProducts.CatalogProductsService.Product` is equivalent to `CatalogProducts/CatalogProductsService/Product`
+You can use either `.` or `/` as separator, so `CatalogInventory.InventoryService.StockReservation` is equivalent to `CatalogInventory/InventoryService/StockReservation`
 
-For this flow example we are going to inform service level references.
+For this flow example we mostly use service level references. For inventory, we also name the aggregate because the reservation is the consistency boundary that protects scarce stock.
 
 NOTE: when you are using ZenWave Platform IntelliJ plugin
 
@@ -72,7 +72,7 @@ The answer comes directly from the previous post. We already did the thinking. N
 
 `StartOrderCheckout` triggers `startOrderCheckout`. The checkout request is owned by Orders Checkout. That is `OrdersCheckout.OrdersCheckoutService`.
 
-Inside that step, Orders Checkout calls `reserveStock`. Stock reservation is owned by Catalog Products. That is `CatalogProducts.CatalogProductsService`.
+Inside that step, Orders Checkout calls `reserveStock`. Stock reservation is owned by Catalog Inventory. That is `CatalogInventory.InventoryService`.
 
 When stock is reserved, Orders Checkout emits `OrderCreated`. That event triggers `authorizePayment`. Payment authorization is owned by Payments Processing. That is `PaymentsProcessing.PaymentsProcessingService`.
 
@@ -96,31 +96,43 @@ Each block now has a complete picture. Trigger on the left. Command in the middl
 
 Once every command block has a `service` field, the `systems` block writes itself. It is the set of unique services you referenced, with a pointer to where their domain model will live.
 
+There is a subtle but important limit here. The `systems` block is derived from the services referenced by this flow. It is not a complete enterprise map.
+
+Product Catalog, for example, is a real Arcadia service. It owns product descriptions, prices, edition metadata, launch dates, and tracking mode. But `PlaceOrderFlow` does not call it. Checkout starts with SKUs, and the flow only needs Catalog Inventory to reserve or release scarce stock.
+
+So Product Catalog belongs in the broader architecture manifest, but not necessarily in this flow specific `systems` block. ZFL should show the participants in the business process being modeled, not every service the company owns.
+
 ```zfl
 systems {
-    @zdl("catalog-products-api/domain-model.zdl")
-    CatalogProducts {
-        service CatalogProductsService for (Product)
+    @zdl("catalog-inventory-api/domain-model.zdl")
+    CatalogInventory {
+        service InventoryService for (StockReservation) {
+            commands: reserveStock, releaseStock
+        }
     }
     @zdl("orders-checkout-api/domain-model.zdl")
     OrdersCheckout {
-        service OrdersCheckoutService
+        service OrdersCheckoutService {
+            commands: startOrderCheckout, confirmOrder, cancelOrder
+        }
     }
     @zdl("payments-processing-api/domain-model.zdl")
     PaymentsProcessing {
-        service PaymentsProcessingService
+        service PaymentsProcessingService {
+            commands: authorizePayment, retryPayment, capturePayment, voidPayment
+        }
     }
     @zdl("fulfillment-shipping-api/domain-model.zdl")
     FulfillmentShipping {
-        service FulfillmentShippingService
+        service FulfillmentShippingService {
+            commands: scheduleFulfillment
+        }
     }
     @zdl("notifications-consumer-api/domain-model.zdl")
     NotificationsConsumer {
-        service NotificationsConsumerService
-    }
-    @zdl("scheduler-api/domain-model.zdl")
-    Scheduler {
-        service SchedulerService
+        service NotificationsConsumerService {
+            commands: sendOrderConfirmation, sendStockUnavailableNotification, sendOrderCancelledNotification
+        }
     }
 }
 ```
@@ -148,7 +160,7 @@ when StartOrderCheckout do startOrderCheckout {
 }
 
 do reserveStock {
-    service CatalogProducts.CatalogProductsService
+    service CatalogInventory.InventoryService
     response StockReserved
     response StockUnavailable
 }
@@ -175,12 +187,20 @@ And the timer now has an owner too.
 
 ```zfl
 @actor(Scheduler)
-@time("10 minutes after OrderCreated and not PaymentAuthorized or PaymentDeclined or PaymentRetryExhausted")
+@time("10 mins after OrderCreated and not PaymentAuthorized or PaymentDeclined or PaymentRetryExhausted")
 start ReservationExpired {
     orderId String
 }
 ```
 
-That is the document that the next post takes as input. Three files go in: the ZDL grammar, a working example, and this ZFL. Six system model skeletons can come out, one per service boundary in the flow.
+## What Comes Next
 
-The `systems` block is the glue. Without it the AI has no way to know which commands belong to which context. With it the mapping is explicit, the generation is mechanical, and the architectural world model has its first real shape.
+That is the document that the next post takes as input. The ZFL already has boundaries, services, commands, events, and even aggregate names when we choose to model at that level.
+
+The `systems` block is the glue. Without it, an AI agent has no way to know which commands belong to which context. With it, the mapping is explicit enough to create the scaffolding around the model.
+
+That does not mean the agent designs the domain for us. We still model by hand. We still decide what the aggregate really owns, what fields carry meaning, what transitions are valid, and which events deserve to exist.
+
+What the agent can do is give us a head start. It can create the folders, files, service skeletons, initial ZDL documents, and the boring structure we need before the real modeling begins.
+
+That is where we go next. From a completed flow to the first service scaffolds.

@@ -151,7 +151,7 @@ when PaymentFailed do retryPayment {
 }
 
 when PaymentDeclined, PaymentRetryExhausted do releaseStock {
-    service CatalogProducts.CatalogProductsService
+    service CatalogInventory.InventoryService
     emits StockReleased
 }
 ```
@@ -185,7 +185,7 @@ The called operation is modeled separately:
 
 ```zfl
 do reserveStock {
-    service CatalogProducts.CatalogProductsService
+    service CatalogInventory.InventoryService
     emits response StockReserved
     response StockUnavailable
 }
@@ -217,7 +217,7 @@ start ReservationExpired {
 
 ```zfl
 when ReservationExpired do releaseStock {
-    service CatalogProducts.CatalogProductsService
+    service CatalogInventory.InventoryService
     emits StockReleased
 }
 ```
@@ -258,7 +258,7 @@ flow PlaceOrderFlow {
     }
 
     do reserveStock {
-        service CatalogProducts.CatalogProductsService
+        service CatalogInventory.InventoryService
         emits response StockReserved
         response StockUnavailable
     }

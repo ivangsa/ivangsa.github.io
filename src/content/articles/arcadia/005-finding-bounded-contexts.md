@@ -12,16 +12,18 @@ featuredImage: assets/articles/arcadia-editions/bounded-context.png
 featuredImageAlt: ""
 readingTime: "4 min read"
 
-draft: true
+draft: false
 ---
 
 After the Event Storming session, we had a wall full of events.
 
 `StockReserved`. `OrderCreated`. `PaymentAuthorized`. `FulfillmentScheduled`.
 
-A timeline that told the story of a customer buying a limited edition game during a drop. Non technical, from the business point of view, in the business language, grounded in the business.
+A timeline that told the story of a customer buying a limited edition game during a new release. Non technical, from the business point of view, in the business language, grounded in the business.
 
-But Event Storming does not provide bounded contexts. It gives you an story, it brings up conversation. Now is time to discover the boundaries that make the business language self contained.
+Event Storming gives you an story-line, it brings up conversation arround hotspots and also helps discover boundaries. Now is time to identify those boundaries that make the business language self contained.
+
+With boundary identification we are entering in the **Solution Space**. See [Problem Space vs Solution Space](/articles/arcadia/002-ddd-problem-space-vs-solution-space/).
 
 This post is about one heuristic that worked for us. This is not a formal algorithm but one question, applied consistently.
 
@@ -29,11 +31,13 @@ This post is about one heuristic that worked for us. This is not a formal algori
 
 ## The question
 
-Look for the business objects that act as **centers of gravity** for commands and events.
+Which business objects that act as **centers of gravity** for commands and events?
 
-That is an aggregate, a center of gravity, a business object that receives commands, owns state, enforces rules, changes over time, and emits domain events as a result. If something behaves like that, it is not just a concept. It is a candidate model. And very likely a candidate for a system boundary.
+That is an aggregate, a center of gravity, a business object that receives commands, owns state, enforces rules, changes over time, and emits domain events as a result. If something behaves like that, it is a candidate model. And very likely a candidate for a system boundary.
 
 The aggregate is the thing that enforces consistency. And aggregates are the centers of gravity around which bounded contexts form.
+
+We still need to decide which aggregates to group arround a bounded context, but their gravity and interactions are the best clue for discovering bounded contexts.
 
 ---
 
@@ -41,7 +45,7 @@ The aggregate is the thing that enforces consistency. And aggregates are the cen
 
 Walk the flow. At each step, ask: what is the business object at the center of this cluster of commands and events?
 
-**Catalog Products.** Something receives `reserveStock` and `releaseStock`, enforces scarcity, and emits `StockReserved`, `StockUnavailable`, `StockReleased`. It owns what can be sold and how much of it exists. The center of gravity are the Products thus the service/bounded context we are looking for is Catalog Products.
+**Catalog Inventory.** Something receives `reserveStock` and `releaseStock`, enforces scarcity, and emits `StockReserved`, `StockUnavailable`, `StockReleased`. It owns whether a checkout can claim stock, which reservation holds it, and when that stock returns to the pool. The center of gravity is not the product description. It is the reservation of scarce inventory. That becomes Catalog Inventory.
 
 **Orders Checkout.** Something receives `startOrderCheckout`, `confirmOrder`, `cancelOrder`. It owns the commercial commitment and the order lifecycle. It does not own payment or stock. It reacts to them through events.
 
@@ -55,13 +59,21 @@ Walk the flow. At each step, ask: what is the business object at the center of t
 
 **Customer.** The customer is still important, but in this flow it appears as an actor, not as a bounded context. The customer starts `StartOrderCheckout`. The flow does not show customer profile rules, identity rules, or loyalty rules. So from this flow alone, Customer and Identity is not a context we can claim yet.
 
+**Product Catalog.** Product Catalog clearly exists in Arcadia Editions. Someone has to define the SKU, name, price, edition size, artwork, launch date, and whether an edition is quantity tracked or serialized. But in this flow, Product Catalog does not receive a command. `StartOrderCheckout` already carries the SKUs the customer wants to buy. The flow needs to know whether stock can be reserved, not how the product was created or merchandised.
+
+That is an important distinction. A flow discovers the services needed by that flow. It does not prove that no other services exist.
+
+So Product Catalog remains part of the broader Arcadia architecture, but it is outside the Place Order flow. Catalog Inventory is inside this flow because it receives `reserveStock` and `releaseStock`, owns reservation state, and emits stock events.
+
 ---
 
 ## Not every concept becomes a bounded context
 
 During Event Storming you will see many concepts that look important but are not centers of gravity on their own.
 
-`OrderLine`, `Address`, `PaymentMethod`, `StockReservation`. These do not receive independent commands. They do not have their own lifecycle. They do not emit meaningful events on their own. They belong inside a model, not as a model.
+`OrderLine`, `Address`, `PaymentMethod`. These do not receive independent commands. They do not have their own lifecycle. They do not emit meaningful events on their own. They belong inside a model, not as a model.
+
+`StockReservation` is different in this flow. It is the thing created, held, expired, and released by the inventory rules. That makes it a good aggregate candidate inside Catalog Inventory, even if the customer-facing product information still belongs to a product catalog model.
 
 The test is simple: can it change independently? Does it enforce its own rules? Does it emit its own facts? Mostly no means it belongs inside a center of gravity, not as one.
 
@@ -85,7 +97,9 @@ All of these are signals, not rules. They are useful when they confirm each othe
 
 ## What this gives us
 
-Five candidate bounded contexts: Catalog Products, Orders Checkout, Payments Processing, Fulfillment Shipping, Notifications Consumer.
+Five candidate bounded contexts for this flow: Catalog Inventory, Orders Checkout, Payments Processing, Fulfillment Shipping, Notifications Consumer.
+
+Other contexts, such as Product Catalog or Customer and Identity, still exist in the wider business architecture. They are just not participants in this specific flow.
 
 ![Event Storming board showing the bounded contexts as systems in Arcadia Editions](/assets/articles/arcadia-editions/eventstorming-systems.jpg)
 
