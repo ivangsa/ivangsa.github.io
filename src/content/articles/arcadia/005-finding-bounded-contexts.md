@@ -25,7 +25,7 @@ Event Storming gives you an story-line, it brings up conversation arround hotspo
 
 With boundary identification we are entering in the **Solution Space**. See [Problem Space vs Solution Space](/articles/arcadia/002-ddd-problem-space-vs-solution-space/).
 
-This post is about one heuristic that worked for us. This is not a formal algorithm but one question, applied consistently.
+This post is about one heuristic that worked for me. This is not a formal algorithm but one question, applied consistently.
 
 ---
 
@@ -38,6 +38,22 @@ That is an aggregate, a center of gravity, a business object that receives comma
 The aggregate is the thing that enforces consistency. And aggregates are the centers of gravity around which bounded contexts form.
 
 We still need to decide which aggregates to group arround a bounded context, but their gravity and interactions are the best clue for discovering bounded contexts.
+
+---
+
+## Other signals worth knowing
+
+Centers of gravity is not the only way to find boundaries. There are others.
+
+**Language shifts**. When people in a real workshop start arguing about what an event means, or use different words for the same concept, that friction is a boundary. Two mental models colliding. The `OrderConfirmed` pivot above is a textbook example: same event, completely different meaning to Fulfillment Shipping, Payments Processing, and Notifications Consumer.
+
+**Pivotal events**. Some events change the kind of work the business is doing. Before `OrderConfirmed`, the flow is about intent, stock, and payment authorization. After `OrderConfirmed`, the flow becomes about fulfillment, capture, and communication. When an event changes the language around it, pay attention. It is often sitting on a boundary.
+
+Organizational boundaries. Conway's Law works in both directions. If two teams have been arguing about who owns something for months, that ownership dispute is telling you something real about the domain.
+
+Rate of change. If two **things always change together**, they probably belong together. If they change independently, they probably do not.
+
+All of these are signals, not rules. They are useful when they confirm each other. When they contradict each other, you need to think harder.
 
 ---
 
@@ -79,21 +95,6 @@ The test is simple: can it change independently? Does it enforce its own rules? 
 
 ---
 
-## Other signals worth knowing
-
-Centers of gravity is not the only way to find boundaries. There are others.
-
-**Language shifts**. When people in a real workshop start arguing about what an event means, or use different words for the same concept, that friction is a boundary. Two mental models colliding. The `OrderConfirmed` pivot above is a textbook example: same event, completely different meaning to Fulfillment Shipping, Payments Processing, and Notifications Consumer.
-
-**Pivotal events**. Some events change the kind of work the business is doing. Before `OrderConfirmed`, the flow is about intent, stock, and payment authorization. After `OrderConfirmed`, the flow becomes about fulfillment, capture, and communication. When an event changes the language around it, pay attention. It is often sitting on a boundary.
-
-Organizational boundaries. Conway's Law works in both directions. If two teams have been arguing about who owns something for months, that ownership dispute is telling you something real about the domain.
-
-Rate of change. If two **things always change together**, they probably belong together. If they change independently, they probably do not.
-
-All of these are signals, not rules. They are useful when they confirm each other. When they contradict each other, you need to think harder.
-
----
 
 ## What this gives us
 
