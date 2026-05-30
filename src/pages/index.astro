@@ -24,7 +24,7 @@ const latestArticles = nonArcadiaArticlesEn
 	.filter((a) => a.id !== featuredArticle?.id)
 	.slice(0, 2);
 const arcadiaStartArticle = arcadiaArticles.find((article) => article.id.startsWith('arcadia/001-'));
-const showLatestArcadiaHighlights = false;
+const showLatestArcadiaHighlights = true;
 const fixedArcadiaArticles = ['arcadia/002-', 'arcadia/003-']
 	.map((prefix) => arcadiaArticles.find((article) => article.id.startsWith(prefix)))
 	.filter((article): article is (typeof arcadiaArticles)[number] => article !== undefined);

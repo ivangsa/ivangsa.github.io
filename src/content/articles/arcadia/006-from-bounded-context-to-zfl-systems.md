@@ -1,7 +1,7 @@
 ---
 title: "Completing the ZFL: From Bounded Contexts to Systems"
 summary: "Event Storming has two phases. First you discover the flow. Then you find the centers of gravity. The service field in ZFL is where that second phase becomes explicit, and where you start building the architectural world model."
-date: 2026-05-26
+date: 2026-06-01
 tags:
   - arcadia
   - eda
@@ -11,10 +11,10 @@ featured: false
 featuredImage: assets/articles/arcadia-editions/zfl-systems.png
 featuredImageAlt: "ZFL flow with service fields filled in for Arcadia Editions"
 readingTime: "6 min read"
-draft: true
+draft: false
 ---
 
-In the [previous post](/articles/arcadia/005-finding-bounded-contexts/) we found the main centers of gravity inside the PlaceOrder flow. Catalog Inventory, Orders Checkout, Payments Processing, Fulfillment Shipping, and Notifications Consumer. The latest flow also makes Scheduler explicit, because reservation expiry is owned by time coordination, not by payment or inventory.
+In the [previous post](/articles/arcadia/005-finding-bounded-contexts/) we found the main centers of gravity inside the PlaceOrder flow. Catalog Inventory, Orders Checkout, Payments Processing, Fulfillment Shipping, and Notifications Consumer.
 
 We found them by looking for centers of gravity. Business objects that receive commands, enforce rules, own state, and emit events. Each center of gravity became a bounded context.
 
@@ -60,13 +60,13 @@ The more precise you are, the more the platform can do with it. At the system le
 
 You can use either `.` or `/` as separator, so `CatalogInventory.InventoryService.StockReservation` is equivalent to `CatalogInventory/InventoryService/StockReservation`
 
-For this flow example we mostly use service level references. For inventory, we also name the aggregate because the reservation is the consistency boundary that protects scarce stock.
+For this flow example we mostly use service level references. For inventory, we also name the aggregate just as an example, so you know how to explicit that level of precision.
 
-NOTE: when you are using ZenWave Platform IntelliJ plugin
+NOTE: when you are using ZenWave Platform IntelliJ plugin, the `systems` block can be generated for you by reading the `service` fields.
 
 ## Filling in the service fields
 
-Walk the flow. For each command block, ask: which bounded context owns this command?
+Walk the flow. For each command block, ask: which system/service owns this command?
 
 The answer comes directly from the previous post. We already did the thinking. Now we are just writing it down.
 
@@ -87,8 +87,6 @@ If authorization fails for a technical reason, `PaymentFailed` triggers `retryPa
 `PaymentCaptured` triggers `sendOrderConfirmation`. Notifications are owned by Notifications Consumer. That is `NotificationsConsumer.NotificationsConsumerService`.
 
 The failure paths follow the same logic. `StockUnavailable` triggers a stock unavailable notification. `FulfillmentFailed` and `PaymentCaptureFailed` trigger `voidPayment`. `PaymentDeclined`, `PaymentRetryExhausted`, `PaymentVoided`, and `ReservationExpired` trigger `releaseStock`. `StockReleased` triggers `cancelOrder`, and `OrderCancelled` triggers a cancellation notification.
-
-The timer path has its own owner. `ReservationExpired` is started by Scheduler after ten minutes if payment has not reached a terminal state. That is `Scheduler.SchedulerService`.
 
 Each block now has a complete picture. Trigger on the left. Command in the middle. Service named. Outcome on the right.
 
