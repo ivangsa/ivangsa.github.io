@@ -88,15 +88,30 @@ function getTalkImage(talk: (typeof talks)[number]) {
 		<div class="wrapper stack gap-8 lg:gap-20">
 			<header class="hero">
 				<Hero
-    title="I am Iván García Sainz-Aja."
-    tagline="I am a programmer. That is where I start and where I always come back to."
+    title="I am Iván García Sainz-Aja"
+    tagline="I am a programmer. I build tools to solve actual problems."
     align="start"
 >
     <p class="intro">
-        I model event-driven architectures, design API governance at scale, and build the tools that make good architecture visible and automatable. Then I use those tools to build actual software.
+        I model event-driven architectures, design API governance, and make good architecture visible and automatable.
     </p>
 
-    <div class="actions">
+	<div class="hero-signature">
+		<p>
+			I built tools like ZenWave SDK to help me think about software, talk about software,
+			and validate software before writing any code... and then generate all the boring parts that are
+			already present in the model.
+		</p>
+		<p>
+			With ZenWave Platform I explore these ideas further: making software architecture visible, navigable, and understandable for people, tools, and AI.
+		</p>
+		<p>
+			When I find something missing, I try to build it and contribute it back to the projects, specifications, and communities I depend on. 
+		</p>
+		<footer>— Ivan Garcia Sainz-Aja</footer>
+	</div>
+
+	<div class="actions">
         <a href="/projects/"><Pill><Icon icon="code" size="1.33em" /> ZenWave Projects &rarr;</Pill></a>
         <a href="/articles/"><Pill><Icon icon="pencil-line" size="1.33em" /> Read Articles &rarr;</Pill></a>
         <a href="/talks/"><Pill><Icon icon="microphone-stage" size="1.33em" /> Watch Talks &rarr;</Pill></a>
@@ -115,7 +130,6 @@ function getTalkImage(talk: (typeof talks)[number]) {
 		</div>
 
 		<main class="wrapper stack gap-8 lg:gap-15">
-
 			<section class="box arcadia-series stack gap-8">
 				<div class="arcadia-hero">
 					<img
@@ -352,6 +366,18 @@ function getTalkImage(talk: (typeof talks)[number]) {
 		box-shadow: var(--shadow-md);
 	}
 
+	header.hero > :global(.hero) {
+		gap: 0.75rem;
+		width: 100%;
+	}
+
+	header.hero :global(.tagline) {
+		margin-bottom: 0;
+		max-width: none;
+		font-size: clamp(1.05rem, 1.9vw, 1.3125rem);
+		line-height: 1.45;
+	}
+
 	.hero {
 		padding: 1.5rem;
 		border: 1px solid var(--gray-800);
@@ -371,6 +397,15 @@ function getTalkImage(talk: (typeof talks)[number]) {
 		font-size: var(--text-3xl);
 	}
 
+	header.hero :global(h1.title) {
+		max-width: none;
+		font-size: clamp(2.5rem, 5.5vw, 3.4375rem) !important;
+	}
+
+	header.hero :global(h1.title + .tagline) {
+		margin-top: 0.25rem;
+	}
+
 	.subtitle {
 		font-size: var(--text-lg);
 		max-width: 70ch;
@@ -380,6 +415,7 @@ function getTalkImage(talk: (typeof talks)[number]) {
 		display: flex;
 		flex-wrap: wrap;
 		gap: 1rem;
+		margin-top: 0.75rem;
 	}
 
 	.actions a {
@@ -389,7 +425,33 @@ function getTalkImage(talk: (typeof talks)[number]) {
 
 	.intro {
 		color: var(--gray-300);
-		max-width: 74ch;
+		font-size: clamp(1.15rem, 2.4vw, 1.5rem);
+		line-height: 1.5;
+		max-width: none;
+	}
+
+	.hero-signature {
+		display: grid;
+		gap: 1rem;
+		width: 100%;
+		max-width: none;
+		margin-top: 0.25rem;
+		border-top: 1px solid color-mix(in srgb, var(--accent-regular) 22%, var(--gray-800));
+		padding-top: 0.85rem;
+		color: color-mix(in srgb, var(--gray-300) 80%, transparent);
+		font-size: clamp(1rem, 1.45vw, 1.1875rem);
+		line-height: 1.65;
+	}
+
+	.hero-signature p {
+		margin: 0;
+	}
+
+	.hero-signature footer {
+		margin-top: 0.5rem;
+		color: color-mix(in srgb, var(--gray-100) 90%, transparent);
+		font-style: italic;
+		font-weight: 600;
 	}
 
 	.box {
@@ -725,9 +787,14 @@ function getTalkImage(talk: (typeof talks)[number]) {
 
 		header.hero {
 			display: grid;
-			grid-template-columns: 6fr 4fr;
+			grid-template-columns: minmax(0, 6fr) minmax(320px, 4fr);
 			padding-inline: 2.5rem;
 			gap: 3.75rem;
+		}
+
+		header.hero > :global(.hero),
+		header.hero picture {
+			min-width: 0;
 		}
 
 		header.hero img {
@@ -736,8 +803,9 @@ function getTalkImage(talk: (typeof talks)[number]) {
 			object-fit: cover;
 		}
 
-		h1 {
-			font-size: var(--text-5xl);
+		header.hero :global(h1.title) {
+			font-size: clamp(3rem, 3.9vw, 3.4375rem) !important;
+			white-space: nowrap;
 		}
 
 		.card-grid {

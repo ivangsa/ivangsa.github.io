@@ -7,7 +7,6 @@ type ProjectCard = {
 	title: string;
 	description: string;
 	url: string;
-	linkText: string;
 	image?: string;
 	coverImage?: string;
 	icon?: keyof typeof iconPaths;
@@ -15,12 +14,8 @@ type ProjectCard = {
 
 type ProjectGroup = {
 	title: string;
-	kicker: string;
-	description: string;
 	logo?: string;
 	icon?: keyof typeof iconPaths;
-	url: string;
-	linkText: string;
 	cards: ProjectCard[];
 };
 
@@ -30,49 +25,42 @@ const zenwavePlatformCards: ProjectCard[] = [
     image: '/assets/icons/zenwave-logo.svg',
     description: 'Architecture navigation and visualization layer for ZenWave models inside your IDE.',
     url: 'https://plugins.jetbrains.com/plugin/22997-zenwave-360',
-    linkText: 'View plugin',
   },
   {
     title: 'ZenWave SDK',
     image: '/assets/icons/zenwave-sdk-hexagon.svg',
     description: 'Generate Spring Boot services from domain models, business flows and API contracts.',
     url: 'https://www.zenwave360.io/zenwave-sdk/',
-    linkText: 'Explore SDK',
   },
   {
     title: 'ZFL Flow Language',
     image: '/assets/icons/zfl-icon.png',
     description: 'Model business processes and event flows connected to APIs, events, schemas and services.',
     url: 'https://www.zenwave360.io/docs/event-driven-design/zenwave-flow-language/',
-    linkText: 'Read the docs',
   },
   {
     title: 'ZDL Modeling Language',
     image: '/assets/icons/zdl-icon.png',
     description: 'Model bounded contexts, aggregates, commands, events and APIs as structured domain artifacts.',
     url: 'https://www.zenwave360.io/docs/event-driven-design/zenwave-domain-language/',
-    linkText: 'Read the docs',
   },
   {
     title: 'AsyncAPI Generator for Spring Cloud Stream / Spring Kafka',
     icon: 'rocket-launch',
     description: 'Generate strongly typed Java and Kotlin code from AsyncAPI specifications.',
     url: 'https://www.zenwave360.io/zenwave-sdk/plugins/asyncapi-generator/',
-    linkText: 'Read the docs',
   },
 	{
 	title: 'EventCatalog Generator',
 	icon: 'list',
 	description: 'WIP generator for publishing OpenAPI, AsyncAPI and ZenWave models as browsable EventCatalog.dev documentation.',
 	url: 'https://www.zenwave360.io/zenwave-sdk/plugins/event-catalog-generator/',
-	linkText: 'Read the docs',
 	},
   {
     title: 'Terraform / asyncapi-ops',
     icon: 'strategy',
     description: 'Provision Kafka and Schema Registry infrastructure from AsyncAPI contracts.',
     url: 'https://www.zenwave360.io/zenwave-sdk/plugins/asyncapi-ops/',
-    linkText: 'Read the docs',
   },
 ];
 
@@ -83,7 +71,6 @@ const referenceArchitectureCards: ProjectCard[] = [
 		description:
 			'A fictional board game retailer built to explore event-driven architecture end-to-end, from discovery and modeling to APIs, events and running services.',
 		url: '/articles/arcadia/',
-		linkText: 'Read the series',
 	},
 	{
 		title: 'AsyncAPI Shopping Cart',
@@ -91,7 +78,6 @@ const referenceArchitectureCards: ProjectCard[] = [
 		description:
 			'Define AsyncAPI and Avro contracts, then derive Kafka producers and consumers for a multi-module event-driven application.',
 		url: '/tutorials/2026-03-04-asyncapi-shopping-cart-summary/',
-		linkText: 'Read tutorial',
 	},
 	{
 		title: 'Order Fulfillment Kotlin',
@@ -99,7 +85,6 @@ const referenceArchitectureCards: ProjectCard[] = [
 		description:
 			'Capture ubiquitous language in ZDL and derive a Kotlin Spring Boot service with REST APIs, domain events and generated implementation.',
 		url: '/tutorials/2026-02-04-order-fulfillment-kotlin-summary/',
-		linkText: 'Read tutorial',
 	},
 	{
 		title: 'Clinical Tool Modulith',
@@ -107,7 +92,6 @@ const referenceArchitectureCards: ProjectCard[] = [
 		description:
 			'Model multiple bounded contexts and derive a modular monolith where domain boundaries, APIs and persistence stay aligned.',
 		url: '/tutorials/2025-12-30-modulith-clinical-tool-jpa-summary/',
-		linkText: 'Read tutorial',
 	},
 ];
 
@@ -116,9 +100,8 @@ const asyncApiContributionCards: ProjectCard[] = [
     title: 'TSC and Ambassador Work',
     icon: 'trophy',
     description:
-      'Contributing to the AsyncAPI ecosystem through technical governance, community advocacy and practical feedback from real event-driven architecture work.',
+      'Contributing to the AsyncAPI ecosystem through technical governance, community advocacy and practical feedback from real event-driven architecture work.  I also organized AsyncAPI Conference on Tour Madrid 2023.',
     url: 'https://www.asyncapi.com/community/ambassadors',
-    linkText: 'Community',
   },
   {
     title: 'Generators and Tooling',
@@ -126,7 +109,6 @@ const asyncApiContributionCards: ProjectCard[] = [
     description:
       'Contributions across generation, preview and developer tooling, including AsyncAPI Studio and VSCode Preview work as part of the broader ecosystem.',
     url: 'https://www.asyncapi.com/tools',
-    linkText: 'Explore tools',
   },
 ];
 
@@ -137,7 +119,6 @@ const otherOssCards: ProjectCard[] = [
 	description:
 		'Standalone JSON Schema reference parsers for JVM and Kotlin Multiplatform, used across ZenWave SDK, the IntelliJ plugin and other tooling.',
 	url: 'https://github.com/ZenWave360/json-schema-ref-parser-jvm',
-	linkText: 'View repository',
 	},
 	{
 	title: 'Spring Modulith Events for Spring Cloud Stream',
@@ -145,7 +126,6 @@ const otherOssCards: ProjectCard[] = [
 	description:
 		'Externalize Spring Modulith domain events through Spring Cloud Stream to any supported broker. Used by the AsyncAPI Generator for Transactional Outbox integration.',
 	url: 'https://github.com/ZenWave360/spring-modulith-events-spring-cloud-stream',
-	linkText: 'View repository',
 	},
 ];
 
@@ -195,42 +175,22 @@ const platformScreenshots = [
 const projectGroups: ProjectGroup[] = [
 	{
 		title: 'ZenWave Platform',
-		kicker: 'Open Source Architecture Tooling',
 		logo: '/assets/icons/zenwave-logo.svg',
-		description:
-			'Build navigable architectural world models from bounded contexts, business flows, APIs and schemas. Cross navigate your architecture from domain flows to API contracts, events, schemas and generated services directly from your IDE.',
-		url: 'https://www.zenwave360.io/',
-		linkText: 'Visit ZenWave360',
 		cards: zenwavePlatformCards,
 	},
 	{
 		title: 'Reference Architectures',
-		kicker: 'Examples and Running Systems',
 		logo: '/assets/icons/conceptual-model.svg',
-		description:
-			'Reference systems and practical examples that show event-driven architecture, DDD modeling and ZenWave generation working together in real code.',
-		url: '/tutorials/',
-		linkText: 'Explore tutorials',
 		cards: referenceArchitectureCards,
 	},
 	{
 		title: 'AsyncAPI Contributions',
-		kicker: 'Community, Governance and Tooling',
 		logo: '/assets/icons/asyncapi-logo.png',
-		description:
-			'AsyncAPI TSC member and Ambassador. Contributor across the initiative, from Java and Kotlin generators to IDE tooling, previews, Studio work and infrastructure provisioning patterns for Kafka and Schema Registry.',
-		url: 'https://www.asyncapi.com/',
-		linkText: 'Visit AsyncAPI',
 		cards: asyncApiContributionCards,
 	},
 	{
 		title: 'Other OSS',
-		kicker: 'Libraries and Experiments',
 		icon: 'github-logo',
-		description:
-			'Smaller open source projects that support the same architecture tooling ecosystem, usually where schema processing, model transformation and JVM/Kotlin multiplatform infrastructure meet.',
-		url: 'https://github.com/ZenWave360',
-		linkText: 'View GitHub',
 		cards: otherOssCards,
 	},
 ];
@@ -260,18 +220,36 @@ const projectGroups: ProjectGroup[] = [
 					</div>
 
 					{group.title === 'ZenWave Platform' && (
-						<div class="platform-carousel" aria-label="ZenWave architecture screenshots" data-platform-carousel>
-							{platformScreenshots.map((screenshot, index) => (
-								<figure class="platform-slide">
-									<img
-										src={`/assets/articles/arcadia-editions/${screenshot.file}`}
-										alt={screenshot.caption}
-										loading={index === 0 ? 'eager' : 'lazy'}
-									/>
-									<figcaption>{screenshot.caption}</figcaption>
-								</figure>
-							))}
-						</div>
+						<>
+							<div class="platform-intro">
+								<p>
+									I created <strong>ZenWave SDK</strong> to help me think about software, talk about software, and validate software before writing any code.
+									<strong>ZDL</strong> compresses the design of a service so it fits in your head.
+								</p>
+								<p>
+									Then the <strong>SDK</strong> generates all the boring parts that are already present in the model.
+								</p>
+								<p>
+									Four years in production,<br/> open sourced from day one,<br/> funded by the time it saved me and my team.
+								</p>
+								<p>
+									The platform, the <strong>architectural world model</strong>, is where I take this further: making the big
+									picture visible and navigable, for people and agents.
+								</p>
+							</div>
+							<div class="platform-carousel" aria-label="ZenWave architecture screenshots" data-platform-carousel>
+								{platformScreenshots.map((screenshot, index) => (
+									<figure class="platform-slide">
+										<img
+											src={`/assets/articles/arcadia-editions/${screenshot.file}`}
+											alt={screenshot.caption}
+											loading={index === 0 ? 'eager' : 'lazy'}
+										/>
+										<figcaption>{screenshot.caption}</figcaption>
+									</figure>
+								))}
+							</div>
+						</>
 					)}
 
 					<ul class="project-cards">
@@ -305,7 +283,7 @@ const projectGroups: ProjectGroup[] = [
 
 					{group.title === 'ZenWave Platform' && (
 						<div class="platform-cta">
-							<a href={group.url} target="_blank" rel="noopener noreferrer">zenwave360.io &rarr;</a>
+							<a href="https://www.zenwave360.io/" target="_blank" rel="noopener noreferrer">zenwave360.io &rarr;</a>
 						</div>
 					)}
 				</section>
@@ -318,15 +296,6 @@ const projectGroups: ProjectGroup[] = [
 	.list-page {
 		max-width: 68rem;
 		padding-bottom: 4rem;
-	}
-
-	.eyebrow,
-	.group-kicker {
-		color: var(--accent-regular);
-		font-size: var(--text-sm);
-		font-weight: 800;
-		letter-spacing: 0.08em;
-		text-transform: uppercase;
 	}
 
 	.project-card p {
@@ -389,6 +358,14 @@ const projectGroups: ProjectGroup[] = [
 		display: grid;
 		grid-template-columns: repeat(auto-fit, minmax(min(100%, 12.5rem), 1fr));
 		gap: 0.875rem;
+	}
+
+	.platform-intro {
+		display: grid;
+		gap: 0.8rem;
+		color: var(--gray-200);
+		font-size: clamp(var(--text-md), 2vw, 21px);
+		line-height: 1.7;
 	}
 
 	.platform-carousel {
