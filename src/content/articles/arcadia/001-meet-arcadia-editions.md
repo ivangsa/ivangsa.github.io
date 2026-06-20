@@ -9,7 +9,7 @@ tags:
   - DDD
   - Governance
 featured: false
-featuredImage: assets/articles/arcadia-editions/arcadia.png
+featuredImage: assets/articles/arcadia-editions/001-meet-arcadia-editions.png
 featuredImageAlt: "Arcadia Editions - Logo"
 readingTime: "4 min read"
 

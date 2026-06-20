@@ -8,7 +8,7 @@ tags:
   - ddd
   - zenwave
 featured: false
-featuredImage: assets/articles/013-infrastructure-provisioning-asyncapi-terraform/arcadia.png
+featuredImage: assets/articles/arcadia-editions/013-infrastructure-provisioning-asyncapi-terraform.png
 featuredImageAlt: ""
 draft: true
 ---

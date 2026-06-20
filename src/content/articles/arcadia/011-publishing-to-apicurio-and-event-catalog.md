@@ -8,7 +8,7 @@ tags:
   - ddd
   - zenwave
 featured: false
-featuredImage: assets/articles/011-publishing-to-apicurio-and-event-catalog/arcadia.png
+featuredImage: assets/articles/arcadia-editions/011-publishing-to-apicurio-and-event-catalog.png
 featuredImageAlt: ""
 draft: true
 ---

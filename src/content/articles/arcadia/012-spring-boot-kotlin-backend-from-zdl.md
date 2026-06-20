@@ -8,7 +8,7 @@ tags:
   - ddd
   - zenwave
 featured: false
-featuredImage: assets/articles/012-spring-boot-kotlin-backend-from-zdl/arcadia.png
+featuredImage: assets/articles/arcadia-editions/012-spring-boot-kotlin-backend-from-zdl.png
 featuredImageAlt: ""
 draft: true
 ---

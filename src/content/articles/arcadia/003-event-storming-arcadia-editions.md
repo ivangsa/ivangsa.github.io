@@ -10,7 +10,7 @@ tags:
   - DDD
   - Governance
 featured: false
-featuredImage: assets/articles/arcadia-editions/eventstorming-events-commands-policies-hotspots.jpg
+featuredImage: assets/articles/arcadia-editions/003-event-storming-arcadia-editions.jpg
 featuredImageAlt: ""
 readingTime: "5 min read"
 

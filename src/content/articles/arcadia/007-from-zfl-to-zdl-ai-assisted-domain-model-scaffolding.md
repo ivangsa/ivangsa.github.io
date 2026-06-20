@@ -8,7 +8,7 @@ tags:
   - ddd
   - zenwave
 featured: false
-featuredImage: assets/articles/07-from-zfl-to-zdl-using-ai/scaffolding-zenwave-services-with-ai.png
+featuredImage: assets/articles/arcadia-editions/007-from-zfl-to-zdl-ai-assisted-domain-model-scaffolding.png
 featuredImageAlt: "AI generated ZDL scaffolding for Arcadia Editions"
 draft: false
 ---

@@ -8,7 +8,7 @@ tags:
   - ddd
   - zenwave
 featured: false
-featuredImage: assets/articles/010-master-yaml-architecture-manifest/arcadia.png
+featuredImage: assets/articles/arcadia-editions/010-master-yaml-architecture-manifest.png
 featuredImageAlt: ""
 draft: true
 ---

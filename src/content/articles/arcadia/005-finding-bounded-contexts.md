@@ -8,7 +8,7 @@ tags:
   - DDD
   - Governance
 featured: false
-featuredImage: assets/articles/arcadia-editions/bounded-context.png
+featuredImage: assets/articles/arcadia-editions/005-finding-bounded-contexts.png
 featuredImageAlt: ""
 readingTime: "4 min read"
 

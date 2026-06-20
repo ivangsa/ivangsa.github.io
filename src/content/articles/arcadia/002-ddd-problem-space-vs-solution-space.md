@@ -8,7 +8,7 @@ tags:
   - DDD
   - Governance
 featured: false
-featuredImage: assets/articles/arcadia-editions/problem-space-vs-solution-space.png
+featuredImage: assets/articles/arcadia-editions/002-ddd-problem-space-vs-solution-space.png
 featuredImageAlt: "Event Storming board for the PlaceOrder flow of Arcadia Editions"
 readingTime: "3 min read"
 draft: false

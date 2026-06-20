@@ -8,7 +8,7 @@ tags:
   - ddd
   - zenwave
 featured: false
-featuredImage: assets/articles/arcadia-editions/zfl-systems.png
+featuredImage: assets/articles/arcadia-editions/006-from-bounded-context-to-zfl-systems.png
 featuredImageAlt: "ZFL flow with service fields filled in for Arcadia Editions"
 readingTime: "6 min read"
 draft: false

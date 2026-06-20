@@ -8,7 +8,7 @@ tags:
   - ddd
   - zenwave
 featured: false
-featuredImage: assets/articles/arcadia-editions/zfl-flow.png
+featuredImage: assets/articles/arcadia-editions/004-from-event-storming-to-zfl.png
 featuredImageAlt: "Event Storming board for the PlaceOrder flow of Arcadia Editions"
 readingTime: "8 min read"
 draft: false
