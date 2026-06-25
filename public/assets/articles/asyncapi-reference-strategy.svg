@@ -1,0 +1,85 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="title desc">
+  <title id="title">AsyncAPI reference strategy</title>
+  <desc id="desc">Provider AsyncAPI is on the left and client AsyncAPI is on the right. The client channels section uses $ref to point to the provider through one of three middle targets: pinned version, env/prod, or main. Below the target choice are application behavior and platform provisioning.</desc>
+  <defs>
+    <marker id="arrow-left" viewBox="0 0 12 12" refX="2" refY="6" markerWidth="10" markerHeight="10" orient="auto">
+      <path d="M10 2 L2 6 L10 10" fill="none" stroke="#1f2937" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <filter id="shadow" x="-10%" y="-15%" width="120%" height="130%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+    </pattern>
+  </defs>
+
+  <rect width="1200" height="630" fill="#f8fafc"/>
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.42"/>
+
+  <g font-family="Inter, Segoe UI, Arial, sans-serif">
+    <text x="600" y="58" text-anchor="middle" font-size="34" font-weight="850" fill="#111827">AsyncAPI Referencing Strategy</text>
+    <text x="600" y="92" text-anchor="middle" font-size="18" fill="#475569">A client references the provider's channel without duplicating it. But which specific contract?</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="54" y="166" width="318" height="192" rx="18" fill="#ffffff" stroke="#1f2937" stroke-width="2.5"/>
+    <rect x="54" y="166" width="318" height="52" rx="18" fill="#ecfdf5"/>
+    <path d="M54 218H372" stroke="#1f2937" stroke-width="2"/>
+  </g>
+  <g font-family="Inter, Segoe UI, Arial, sans-serif">
+    <text x="213" y="200" text-anchor="middle" font-size="20" font-weight="900" fill="#087f5b">provider AsyncAPI</text>
+    <text x="82" y="246" font-size="16" fill="#111827" font-family="Consolas, Menlo, monospace">channels:</text>
+    <text x="104" y="273" font-size="16" fill="#111827" font-family="Consolas, Menlo, monospace">orderCreated:</text>
+    <text x="126" y="300" font-size="16" fill="#111827" font-family="Consolas, Menlo, monospace">address: ...</text>
+    <text x="126" y="327" font-size="16" fill="#111827" font-family="Consolas, Menlo, monospace">messages: ...</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="828" y="166" width="318" height="192" rx="18" fill="#ffffff" stroke="#1f2937" stroke-width="2.5"/>
+    <rect x="828" y="166" width="318" height="52" rx="18" fill="#eef2ff"/>
+    <path d="M828 218H1146" stroke="#1f2937" stroke-width="2"/>
+  </g>
+  <g font-family="Inter, Segoe UI, Arial, sans-serif">
+    <text x="987" y="200" text-anchor="middle" font-size="20" font-weight="900" fill="#1d4ed8">client AsyncAPI</text>
+    <text x="856" y="250" font-size="16" fill="#111827" font-family="Consolas, Menlo, monospace">channels:</text>
+    <text x="878" y="277" font-size="16" fill="#111827" font-family="Consolas, Menlo, monospace">orderCreated:</text>
+    <text x="900" y="304" font-size="16" fill="#2563eb" font-family="Consolas, Menlo, monospace">$ref: &lt;provider-url&gt;</text>
+  </g>
+
+  <path d="M372 262 L458 262" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+  <path d="M828 262 L742 262" fill="none" stroke="#1f2937" stroke-width="3.5"/>
+  <path d="M758 250 L742 262 L758 274" fill="none" stroke="#1f2937" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  <g font-family="Inter, Segoe UI, Arial, sans-serif">
+    <rect x="770" y="225" width="52" height="30" rx="15" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="796" y="246" text-anchor="middle" font-size="15" font-weight="850" fill="#2563eb" font-family="Consolas, Menlo, monospace">$ref</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="458" y="133" width="284" height="258" rx="22" fill="#ffffff" stroke="#1f2937" stroke-width="2.2"/>
+  </g>
+  <g font-family="Inter, Segoe UI, Arial, sans-serif">
+    <text x="600" y="172" text-anchor="middle" font-size="18" font-weight="850" fill="#111827">which $ref target</text>
+
+    <rect x="500" y="198" width="200" height="43" rx="21.5" fill="#fff7ed" stroke="#ea580c" stroke-width="2"/>
+    <text x="600" y="226" text-anchor="middle" font-size="17" font-weight="900" fill="#9a3412" font-family="Consolas, Menlo, monospace">v1.1.0</text>
+
+    <rect x="500" y="262" width="200" height="43" rx="21.5" fill="#f8fafc" stroke="#64748b" stroke-width="2"/>
+    <text x="600" y="290" text-anchor="middle" font-size="17" font-weight="900" fill="#334155" font-family="Consolas, Menlo, monospace">env/prod</text>
+
+    <rect x="500" y="326" width="200" height="43" rx="21.5" fill="#ecfdf5" stroke="#087f5b" stroke-width="2.5"/>
+    <text x="600" y="354" text-anchor="middle" font-size="17" font-weight="900" fill="#087f5b" font-family="Consolas, Menlo, monospace">main</text>
+  </g>
+
+  <g font-family="Inter, Segoe UI, Arial, sans-serif">
+    <rect x="309" y="470" width="278" height="100" rx="18" fill="#fff7ed" stroke="#ea580c" stroke-width="2.2" filter="url(#shadow)"/>
+    <text x="448" y="509" text-anchor="middle" font-size="19" font-weight="900" fill="#9a3412">application behavior</text>
+    <text x="448" y="538" text-anchor="middle" font-size="16" fill="#9a3412">send, receive, dtos, headers</text>
+
+    <rect x="613" y="470" width="278" height="100" rx="18" fill="#ecfdf5" stroke="#087f5b" stroke-width="2.2" filter="url(#shadow)"/>
+    <text x="752" y="509" text-anchor="middle" font-size="19" font-weight="900" fill="#087f5b">platform provisioning</text>
+    <text x="752" y="538" text-anchor="middle" font-size="16" fill="#14532d">topics, schema-registry, ACLs</text>
+  </g>
+
+  <path d="M540 391 L540 470" fill="none" stroke="#ea580c" stroke-width="2.6" stroke-dasharray="7 9"/>
+  <path d="M660 391 L660 470" fill="none" stroke="#087f5b" stroke-width="2.6" stroke-dasharray="7 9"/>
+</svg>

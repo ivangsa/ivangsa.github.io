@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 1200 630" width="1200" height="630" role="img" aria-labelledby="title desc">
+  <title id="title">AsyncAPI canonical reference stores</title>
+  <desc id="desc">A client AsyncAPI document resolves a $ref URL over plain HTTP GET to one of three canonical reference stores: Git, Apicurio Registry, or Artifactory. Git emphasizes branches, tags, and audit history. Apicurio adds versions, branches, validation, and a dependency graph. Artifactory serves files and aliases with CI-managed discipline.</desc>
+  <defs>
+    <filter id="shadow" x="-10%" y="-15%" width="120%" height="135%">
+      <feDropShadow dx="0" dy="8" stdDeviation="10" flood-color="#0f172a" flood-opacity="0.12"/>
+    </filter>
+    <marker id="arrow" viewBox="0 0 12 12" refX="10" refY="6" markerWidth="9" markerHeight="9" orient="auto">
+      <path d="M2 2 L10 6 L2 10" fill="none" stroke="#1f2937" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"/>
+    </marker>
+    <pattern id="grid" width="32" height="32" patternUnits="userSpaceOnUse">
+      <path d="M32 0H0V32" fill="none" stroke="#e5e7eb" stroke-width="1"/>
+    </pattern>
+    <style>
+      .sans { font-family: Inter, Segoe UI, Arial, sans-serif; }
+      .mono { font-family: Consolas, Menlo, monospace; }
+      .card { fill: #ffffff; stroke: #1f2937; stroke-width: 2.2; }
+      .muted { fill: #475569; }
+      .ink { fill: #111827; }
+      .small { font-size: 15px; }
+      .title { font-size: 34px; font-weight: 850; }
+    </style>
+  </defs>
+
+  <rect width="1200" height="630" fill="#f8fafc"/>
+  <rect width="1200" height="630" fill="url(#grid)" opacity="0.42"/>
+
+  <g class="sans">
+    <text x="600" y="57" text-anchor="middle" class="title ink">Canonical Reference Stores</text>
+    <text x="600" y="91" text-anchor="middle" font-size="18" class="muted">The $ref URL must resolve to a real provider contract over plain HTTP GET</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="54" y="164" width="280" height="174" rx="18" class="card"/>
+    <rect x="54" y="164" width="280" height="50" rx="18" fill="#eef2ff"/>
+    <path d="M54 214H334" stroke="#1f2937" stroke-width="2"/>
+  </g>
+  <g class="sans">
+    <text x="194" y="197" text-anchor="middle" font-size="20" font-weight="900" fill="#1d4ed8">client AsyncAPI</text>
+    <text x="82" y="244" font-size="16" class="ink mono">channels:</text>
+    <text x="104" y="272" font-size="16" class="ink mono">orderCreated:</text>
+    <text x="126" y="300" font-size="16" fill="#2563eb" class="mono">$ref: https://...</text>
+  </g>
+
+  <path d="M334 250 C402 250 420 136 493 136" fill="none" stroke="#1f2937" stroke-width="3.2" marker-end="url(#arrow)"/>
+  <path d="M334 250 C403 250 425 315 493 315" fill="none" stroke="#1f2937" stroke-width="3.2" marker-end="url(#arrow)"/>
+  <path d="M334 250 C404 250 421 494 493 494" fill="none" stroke="#1f2937" stroke-width="3.2" marker-end="url(#arrow)"/>
+  <g class="sans">
+    <rect x="350" y="225" width="116" height="36" rx="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="2"/>
+    <text x="408" y="249" text-anchor="middle" font-size="15" font-weight="850" fill="#334155">HTTP GET</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="493" y="112" width="292" height="150" rx="18" class="card"/>
+    <rect x="493" y="112" width="292" height="48" rx="18" fill="#ecfdf5"/>
+    <path d="M493 160H785" stroke="#1f2937" stroke-width="2"/>
+  </g>
+  <g class="sans">
+    <text x="639" y="143" text-anchor="middle" font-size="20" font-weight="900" fill="#087f5b">Git</text>
+    <circle cx="536" cy="199" r="9" fill="#087f5b"/>
+    <circle cx="584" cy="199" r="9" fill="#087f5b"/>
+    <circle cx="634" cy="221" r="9" fill="#087f5b"/>
+    <path d="M545 199H575 M584 208 C592 218 607 221 625 221" fill="none" stroke="#087f5b" stroke-width="3" stroke-linecap="round"/>
+    <text x="674" y="191" class="small ink">branches for aliases</text>
+    <text x="674" y="218" class="small ink">tags for pinned versions</text>
+    <text x="674" y="245" class="small ink">commit log as audit trail</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="493" y="292" width="292" height="168" rx="18" class="card"/>
+    <rect x="493" y="292" width="292" height="48" rx="18" fill="#eff6ff"/>
+    <path d="M493 340H785" stroke="#1f2937" stroke-width="2"/>
+  </g>
+  <g class="sans">
+    <text x="639" y="323" text-anchor="middle" font-size="20" font-weight="900" fill="#1d4ed8">Apicurio Registry</text>
+    <rect x="522" y="371" width="74" height="50" rx="10" fill="#dbeafe" stroke="#1d4ed8" stroke-width="2"/>
+    <text x="559" y="402" text-anchor="middle" font-size="24" font-weight="900" fill="#1d4ed8">A</text>
+    <circle cx="653" cy="379" r="8" fill="#1d4ed8"/>
+    <circle cx="704" cy="394" r="8" fill="#1d4ed8"/>
+    <circle cx="660" cy="426" r="8" fill="#1d4ed8"/>
+    <path d="M660 381 L696 392 M700 400 L668 422" fill="none" stroke="#1d4ed8" stroke-width="2.5" stroke-linecap="round"/>
+    <text x="522" y="362" class="small ink">versions and branches</text>
+    <text x="522" y="447" font-size="15" font-weight="850" fill="#1d4ed8">validation + compatibility + graph</text>
+  </g>
+
+  <g filter="url(#shadow)">
+    <rect x="493" y="484" width="292" height="116" rx="18" class="card"/>
+    <rect x="493" y="484" width="292" height="44" rx="18" fill="#fff7ed"/>
+    <path d="M493 528H785" stroke="#1f2937" stroke-width="2"/>
+  </g>
+  <g class="sans">
+    <text x="639" y="513" text-anchor="middle" font-size="20" font-weight="900" fill="#c2410c">Artifactory</text>
+    <path d="M532 554 L562 539 L592 554 L592 583 L562 598 L532 583 Z" fill="#ffedd5" stroke="#c2410c" stroke-width="2"/>
+    <path d="M532 554 L562 570 L592 554 M562 570V598" fill="none" stroke="#c2410c" stroke-width="2"/>
+    <text x="624" y="562" class="small ink">generic files over HTTP</text>
+    <text x="624" y="589" class="small ink">aliases managed by CI</text>
+  </g>
+
+  <path d="M785 187 C844 187 858 239 918 239" fill="none" stroke="#1f2937" stroke-width="3.2" marker-end="url(#arrow)"/>
+  <path d="M785 376 C842 376 862 298 918 298" fill="none" stroke="#1f2937" stroke-width="3.2" marker-end="url(#arrow)"/>
+  <path d="M785 544 C845 544 858 359 918 359" fill="none" stroke="#1f2937" stroke-width="3.2" marker-end="url(#arrow)"/>
+
+  <g filter="url(#shadow)">
+    <rect x="918" y="194" width="228" height="210" rx="18" class="card"/>
+    <rect x="918" y="194" width="228" height="50" rx="18" fill="#f1f5f9"/>
+    <path d="M918 244H1146" stroke="#1f2937" stroke-width="2"/>
+  </g>
+  <g class="sans">
+    <text x="1032" y="227" text-anchor="middle" font-size="20" font-weight="900" fill="#334155">provider contract</text>
+    <text x="946" y="275" font-size="15" class="ink mono">asyncapi.yml</text>
+    <text x="946" y="304" font-size="15" class="ink mono">channels:</text>
+    <text x="968" y="333" font-size="15" class="ink mono">orderCreated</text>
+    <text x="968" y="362" font-size="15" class="ink mono">messages</text>
+  </g>
+
+  <g class="sans">
+    <rect x="76" y="438" width="324" height="92" rx="18" fill="#ffffff" stroke="#cbd5e1" stroke-width="2" filter="url(#shadow)"/>
+    <text x="238" y="475" text-anchor="middle" font-size="18" font-weight="900" fill="#334155">store requirement</text>
+    <text x="238" y="504" text-anchor="middle" font-size="16" class="muted">stable URL, moving alias, audit history</text>
+  </g>
+</svg>

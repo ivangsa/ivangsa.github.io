@@ -197,6 +197,37 @@ function getArticleHref(article: CollectionEntry<'articles'>) {
 		font-size: var(--text-lg);
 	}
 
+	:global(.detail-page .content blockquote) {
+		margin: 1.75rem 0;
+		padding: 1rem 1.25rem 1rem 1.5rem;
+		border-left: 0.35rem solid var(--accent-regular);
+		border-radius: 0 0.5rem 0.5rem 0;
+		background: var(--gray-900);
+		color: var(--gray-200);
+		font-size: var(--text-md);
+		line-height: 1.65;
+	}
+
+	:global(.detail-page .content blockquote p),
+	:global(.detail-page .content blockquote ul),
+	:global(.detail-page .content blockquote ol) {
+		margin-top: 0;
+	}
+
+	:global(.detail-page .content blockquote > * + *) {
+		margin-top: 0.75rem;
+	}
+
+	:global(.detail-page .content blockquote strong) {
+		color: var(--gray-100);
+	}
+
+	:global(:root.theme-dark .detail-page .content blockquote) {
+		border-left-color: var(--accent-dark);
+		background: var(--gray-800);
+		color: var(--gray-100);
+	}
+
 	@media (min-width: 50em) {
 		.article-nav {
 			grid-template-columns: repeat(2, minmax(0, 1fr));
