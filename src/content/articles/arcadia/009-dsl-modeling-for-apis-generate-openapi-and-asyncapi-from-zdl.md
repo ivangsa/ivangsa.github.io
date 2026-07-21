@@ -1,7 +1,7 @@
 ---
 title: "DSL Modeling for APIs: Generate OpenAPI and AsyncAPI from ZDL"
 summary: "Writing YAML by hand is no fun, but you can generate your OpenAPI and AsyncAPI definition files from a Domain Specific Language instead. With ZenWave SDK you convert a compact ZDL model into those contracts, saving time and effort while keeping your APIs aligned with best practices and standards."
-date: 2026-07-02
+date: 2026-07-21
 tags:
   - arcadia
   - eda
