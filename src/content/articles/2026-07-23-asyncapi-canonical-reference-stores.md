@@ -8,7 +8,7 @@ tags:
   - ddd
   - governance
 featured: false
-featuredImage: assets/articles/2026-07-23-asyncapi-canonical-reference-stores.png
+featuredImage: assets/articles/2026-07-23-asyncapi-canonical-reference-stores.webp
 featuredImageAlt: "A client AsyncAPI document uses a $ref URL that resolves over plain HTTP GET through one of three logo-style canonical reference stores: Git, Apicurio Registry, or Artifactory. Git is associated with branches, tags, and commit history; Apicurio with registry versions, validation, and dependency graph features; Artifactory with generic artifact URLs and CI-managed aliases."
 draft: true
 ---
@@ -35,25 +35,17 @@ With those requirements in mind, three options cover most organizations: Git wit
 
 One constraint cuts across all three options: standard AsyncAPI tooling does not send authentication headers when resolving `$ref` URLs. The `@asyncapi/parser`, Spectral, and most code generators perform a plain HTTP GET. There is no standard configuration point for injecting a bearer token or API key into `$ref` resolution.
 
-This means that a `$ref` pointing to a private resource will fail in local development and in any CI environment that does not have network-level access. The simplest fix is to make the public contract publicly readable. That is usually acceptable: a provider spec is an API contract, not a secret.
+The simplest fix is to make the public contract publicly readable. That is usually acceptable: a provider spec is an API contract, not a secret.
 
-When public access is not an option, the solution is **bundling**. The AsyncAPI CLI includes a `bundle` command that resolves all `$ref`s in a source spec and outputs a single self-contained document.
+When public access is not an option, a reverse proxy placed in front of the schema store can enforce network-level access control — restricting reads to the corporate network or VPN. nginx can do this. It is blanket permission rather than per-user authorization, but for read access to schemas that is usually sufficient: the governance concern is about who can publish a new version, not who can read the current one.
 
-```sh
-asyncapi bundle asyncapi.yml --output asyncapi.bundle.yml
-```
-
-The provider maintains its source spec with internal `$ref`s in the normal way. CI bundles it and publishes the bundle to the canonical store. Clients reference the bundle. When a client's tooling fetches the bundle URL, there are no further `$ref`s to resolve — the document is complete.
-
-This pattern has a secondary benefit: the published bundle is exactly what the client consumes, with no dependency on the provider's internal spec layout. If the provider reorganizes its internal files, the bundle does not change and no client is affected.
-
-The source spec lives in the repository. The bundle is the published artifact. The bundle URL is what goes into client `$ref`s.
+If you need transparent per-user authentication — so that a developer already logged into the corporate domain is automatically authenticated to the store — protocols like Kerberos, SPNEGO, or NTLM can be configured at the proxy level. The canonical `$ref` URL points to the proxy rather than directly to the store. However, this only works end-to-end with JVM-based tooling, which handles these protocols automatically through the JVM's built-in security integration. Node.js tools — including Spectral, AsyncAPI Studio, and AsyncAPI Preview — do not implement NTLM or Kerberos challenge-response and will fail to resolve `$ref` URLs behind such a proxy.
 
 ## Git
 
 Git is the natural starting point. The provider spec already lives in a Git repository. The question is whether the same repository can serve as the canonical reference store.
 
-Hosted Git platforms — GitHub, GitLab, Bitbucket — expose raw file URLs that serve file contents directly over HTTP. No special client. No additional infrastructure.
+Common Git platforms — GitHub, GitLab, Bitbucket — expose raw file URLs that serve file contents directly over HTTP. No special client. No additional infrastructure.
 
 ```
 # GitHub raw URL
@@ -73,17 +65,27 @@ A tag is immutable once created. The URL below always resolves to the same docum
 https://raw.githubusercontent.com/org/orders-service/v1.1.0/asyncapi.yml
 ```
 
-Git tags are created automatically by CI when a release is cut. The history is in the repository. If you need to know what changed between `v1.1.0` and `v1.2.0`, `git diff` gives you the exact answer.
+Git tags are created automatically by CI when a release is cut, and must never be moved or deleted afterwards — immutability is what makes a pinned reference meaningful. If you need to know what changed between `v1.1.0` and `v1.2.0`, `git diff` gives you the exact answer.
 
 ### Environment alias
 
-A branch can represent what is deployed to a given environment. The pipeline that deploys to production merges or fast-forwards an `env/production` branch to the release tag that was just promoted.
+A branch can represent what is deployed to a given environment. When a deployment to production completes, the pipeline moves the `env/production` branch to point at the tag that was just promoted.
 
 ```
 https://raw.githubusercontent.com/org/orders-service/env/production/asyncapi.yml
 ```
 
+The pipeline step resets the environment branch to the exact commit the release tag references — no merge commit:
+
+```bash
+git checkout env/production
+git reset --hard v1.1.0
+git push --force-with-lease origin env/production
+```
+
 This branch moves when a deployment happens — automatically, in the pipeline, with full commit history. The branch log is the deployment history. `git log env/production` shows every version that has ever been deployed, in order. No manual process. No separate audit trail to maintain.
+
+This pattern holds up well in regulated environments. The release tag is immutable — it always points to the same commit. Each `--force-with-lease` push is recorded in the platform reflog and in the pipeline audit log, with the identity of who triggered the deployment and when. The canonical `$ref` URL points to `env/production`, and at any point you can reconstruct exactly which contract was live at any given time by inspecting that branch's history.
 
 ### Integration alias
 
@@ -99,9 +101,7 @@ The Git repository enforces the governance that the integration alias requires. 
 
 Public repositories expose raw URLs with no auth requirement. That is the cleanest option: every tool resolves the `$ref` without configuration.
 
-Private repositories require a token. GitHub and GitLab support bearer tokens and personal access tokens, but most `$ref` resolvers are plain HTTP clients that do not send auth headers. The token-in-URL approach (`?token=xxx`) works technically but is a security risk: the token is visible in every spec file that references the provider.
-
-The practical solution for private repositories is bundling. The provider publishes a bundled, self-contained spec to a readable location; clients reference the bundle, not the source file.
+For private repositories, the options described in the authentication section above apply: network-level access control at a proxy, or Kerberos/SPNEGO/NTLM at the proxy for transparent per-user authentication, with the JVM tooling caveat noted there.
 
 ### Tooling
 
@@ -257,7 +257,7 @@ What it does not give you is anything specific to APIs or schemas: no validation
 | Read auth required | Optional (private repos only) | Optional (configurable) | Optional (configurable) |
 | Write auth | Branch protection + PR | OIDC / service account | API key / token |
 | $ref resolution (public) | Any tool, no config | Any tool, no config | Any tool, no config |
-| $ref resolution (private) | Bundle workaround | Bundle workaround | Bundle workaround |
+| $ref resolution (private) | Proxy / network-level access | Proxy / network-level access | Proxy / network-level access |
 | CI publishing step | `git push` (zero extra steps) | REST API / Maven plugin | JFrog CLI / REST API |
 | Additional infrastructure | None | Yes | Already present (assumption) |
 

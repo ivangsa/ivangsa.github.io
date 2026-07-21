@@ -108,7 +108,7 @@ The integration alias only works if the `main` branch is kept coherent. That req
 
 **Backwards compatibility is maintained until consumers migrate.** A channel cannot be removed from `main` until every client that references it has been updated. Removing it first breaks every client's CI and provisioning pipeline immediately.
 
-**Breaking changes are explicit and governed.** A schema change that breaks existing consumers must be recognized as such before merging. Even better do not allow breaking changes on a live topic. User compatibility rules and version the topic if required changes are not compatible with existing clients.
+**Breaking changes are explicit and governed.** A schema change that breaks existing consumers must be recognized as such before merging. Even better do not allow breaking changes on a live topic. Use compatibility rules for your schemas and version the topic if required changes are not compatible with existing clients.
 
 **Liveness is validated separately.** The spec says a channel should exist. Whether it does exist in the broker is a separate check. Do not mix them. If you are deploying or provisioning a client that depends on a channel that does not exist in an environment, just fail the CI/CD pipeline.
 

@@ -10,7 +10,7 @@ tags:
   - devops
   - zenwave
 featured: false
-featuredImage: assets/articles/api-first-ops-kafka-terraform-banner.png
+featuredImage: assets/articles/api-first-ops-kafka-terraform-banner.webp
 featuredImageAlt: "API First Ops: Provisioning Kafka from AsyncAPI with Terraform"
 readingTime: "7 min read"
 draft: false
