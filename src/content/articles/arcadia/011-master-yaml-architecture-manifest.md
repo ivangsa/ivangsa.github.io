@@ -1,46 +1,88 @@
 ---
 title: "The Master YAML: A Manifest of Your Entire Architecture"
-summary: "Once every service is its own API product, the big picture scatters across dozens of repositories. The architecture manifest pulls it back into one hand-authored file that names every domain, service and contract and how they connect, without copying any of it, so the whole business becomes explicit, connected and navigable for humans, tools and agents."
-date: 2026-07-22
+summary: "As Arcadia Editions grows, no single person knows the whole system anymore. The big picture scatters across dozens of repositories. ZenWave architecture manifest pulls it back into one place with every domain, service and contract and how they connect, without copying any of it. And as you work with your API contracts, the pipeline keeps it current: adding services, artifacts, versions... So this manifest and ZenWave Platform keeps your whole architecture connected and navigable for humans, tools and agents."
+date: 2026-07-26
 tags:
   - arcadia
   - eda
   - ddd
   - zenwave
 featured: false
-featuredImage: assets/articles/arcadia-editions/011-master-yaml-architecture-manifest.png
+featuredImage: assets/articles/arcadia-editions/011-master-yaml-architecture-manifest.webp
 featuredImageAlt: "The Arcadia Editions architecture manifest pointing at the models and contracts each service owns"
-draft: true
+draft: false
 ---
 
-The previous article left Arcadia Editions in a good place and a slightly awkward one at the same time. Every service is now its own API product, with its own repository, its own ZDL model, and its own published contracts, versioned and discoverable the way any released component should be. That is exactly what you want for each service on its own, but it also means the architecture no longer lives anywhere as a whole. It is scattered across a dozen repositories, each one honest about itself and silent about everything else, and nothing in that picture tells you what exists, who owns it, or how any of it connects. You have solved the single contract. You have not solved knowing the shape of the system those contracts add up to.
+As Arcadia Editions grows, no single person knows the whole system anymore. Services multiply, each team comes to know its own piece well but nobody knows how the whole system works.
 
-The Master YAML is the piece that closes that gap. It is one hand-authored file, `zenwave-architecture.yml`, that names every domain, every service and every contract in the business and records how they depend on one another, and it does all of that without copying a single line of the artifacts it describes. It is not a diagram of the architecture that somebody redraws when they remember to. It is the architecture itself, written down once as a single addressable thing.
+What's missing isn't more documentation. What is missing is a complete landscape, a self-contained architectural world model of the whole system. Documenting a REST API endpoint or an asynchronous message is easy. For that we have OpenAPI and AsyncAPI, along with other standard API specifications. What is missing is a manifest that connects all the pieces together.
+
+What Arcadia, and any other real org, needs is the architecture itself in a form both people and tools can read, a structured, machine-readable representation of what the system derived from the lifecycle of the API contracts themselves.
+
+That is what a world model is. Every service, every contract, every event and schema, described once in one consistent structure, and connected, so you can navigate from bounded context to bounded context to an API to a schema in a single step. It is the model itself.
+
+The Master YAML is that map written down. One file, `zenwave-architecture.yml`, that knows where everything is, the index of the whole architecture, holding not the artifacts but the pointers to them. It is hierarchical, from domain to subdomain to service to contracts, so the tree reads like the business itself. It is git-native, so it versions, diffs and reviews right alongside the code. And it is tool-agnostic, because anything that reads YAML can consume it.
+
+From that one file, a whole architecture map can be derived. You generate an EventCatalog website from it, feed an LSP that navigates across services, provision infrastructure, know your consumers, validate contracts. The Master YAML is to your architecture, the manifest that makes the whole thing navigable.
+
+You could call a single YAML file a poor man's database, and in a sense it is. But it is the right call for the source of truth, on two conditions this series already meets.
+
+- The integrity has to live in a schema and in the tooling that reads it, not in the format.
+- And the file has to be machine-maintained rather than hand-curated once you are past a handful of services.
+
+You can start it by hand, but you do not keep it alive by hand: the tooling maintains it for you, writing a service in when you add its artifacts and bumping the version when you release. Meet those two, and the Master YAML stops being a poor man's anything and becomes what it should be, the one place your whole architecture is written down and everything else is derived from.
 
 ## What the manifest actually is
 
-The manifest is an index, not a copy. It describes the architecture as a tree of domains, subdomains and services, and for each service it points at the artifacts that service already owns, the ZDL model, the OpenAPI contract, the provider and client AsyncAPI contracts, together with the documents that travel alongside them like the SUMMARY and the CHANGELOG. Every one of those entries is a pointer to a file that lives in the service's own repository, the very same file the code is generated from, so the manifest never restates a schema or a channel or a topic. It only says where each of them lives and how they fit into the larger whole.
+The manifest is an index of all your service artifacts, properly cataloged. 
+
+It describes the architecture as a tree of domains, subdomains and services, and for each service it points at the artifacts that service already owns, the ZDL model, the OpenAPI contract, the provider and client AsyncAPI contracts, together with the documents that travel alongside them like the SUMMARY and the CHANGELOG. Every one of those entries is a pointer to a file that lives in the service's own repository, the very same file the code is generated from, so the manifest never restates a schema or a channel or a topic. It only says where each of them lives and how they fit into the larger whole.
+
+[zenwave-manifest](https://github.com/ZenWave360/zenwave-manifest), an open-source Kotlin Multiplatform library, contains not only the `json-schema` to validate your architectural manifest, but the rules to resolve each artifact type from different sources: `workspace`, `git`, `http`, `maven`, `artifactory`, `apicurio-registry`... and utility functions to fetch the actual content of each file.
 
 Here is the Orders Checkout corner of the Arcadia Editions manifest.
 
 ```yaml
 # yaml-language-server: $schema=https://schemas.zenwave360.io/zenwave-architecture/latest/schema.json
 
+config:
+  title: "Arcadia Editions - Event-Driven Retail Architecture"
+  version: 0.0.1
+  groupIdExpression: "com.arcadiaeditions.${service.id}"
+  artifactIdExpression: "${artifact.fileNameWithoutExtension}"
+  contentResolution:
+    - workspace
+    - git
+  sources:
+    workspace:
+      basePathExpression: "../${service.repository}"
+    git:
+      provider: github
+      server: "https://github.com"
+      contentUrlExpression: "${server}/arcadia-editions/${service.repository}/raw/main/${content.path}"
+
+# [...]
 domains:
-  orders:
+  "orders":
+    id: "orders"
     name: "Orders"
     description: "Commercial order creation, confirmation, and cancellation"
     subdomains:
-      checkout:
+      "checkout":
+        id: "orders.checkout"
         name: "Checkout"
+        description: "Customer checkout, order commitment, and commercial orchestration"
         services:
-          orders-checkout:
+          "orders-checkout":
             id: "orders.checkout.orders-checkout"
-            version: "1.0.0"
+            repository: "orders-checkout-api"
+            version: "0.0.1"
             name: "Orders Checkout"
-            repository: orders-checkout-api
+            description: > 
+              Owns checkout flow, order lifecycle, and the handoff from purchase intent to confirmed order
             docs:
               summary: SUMMARY.md
+              content: EVENT_CATALOG.md
               changelog: CHANGELOG.md
             artifacts:
               - type: zdl
@@ -52,23 +94,17 @@ domains:
               - type: openapi
                 path: "openapi.yml"
             consumers:
-              - $ref: "#/domains/payments/subdomains/payment-processing/services/payments-processing"
-              - $ref: "#/domains/fulfillment/subdomains/shipping/services/fulfillment-shipping"
+              - "payments/payment-processing/payments-processing"
+              - "fulfillment/shipping/fulfillment-shipping"
+              - "notifications/customer-communications/notifications-consumer"
+
 ```
 
 Read from the top down it is the whole company in miniature. The Orders domain contains a Checkout subdomain, the Checkout subdomain owns the Orders Checkout service, and that service points at the four contracts from the previous articles and the two documents that describe it. Repeat that for Catalog, Inventory, Payments, Fulfillment and Notifications and the entire Arcadia Editions architecture sits in one file you can read start to finish in a couple of minutes.
 
-## It points, it does not duplicate
+It's not only a map of pointers, but a connected graph where services know their consumers. When a service wants to consume, as a client, messages from another service, the API pipelines will automatically add to the list of `consumers` of the target service.
 
-The reason an architecture diagram or a wiki catalog always rots is that it is a copy. Somebody drew the boxes and arrows once, reality moved on, and the copy stayed behind, so within a few months the most confident-looking picture in the company is also the least trustworthy. The manifest avoids that failure by never holding a copy in the first place. Each artifact entry is a pointer to the file that is already the source of truth, and because that file is the one the service is generated from, there is nothing to keep in sync and nothing that can quietly disagree with the running system. The world model cannot drift away from the architecture because it is made of references to the architecture, not restatements of it.
-
-That is the same idea that runs through this whole series, only lifted up a level. A contract does not drift from its model because the contract is generated from the model. Code does not drift from its contract because the code is generated from the contract. And the manifest does not drift from any of them because it points at all of them instead of describing them again. Drift is what happens when the same fact is written down twice, and the manifest is careful never to write anything down twice.
-
-## Connected, and connected in the file
-
-An index that only listed services would still be a flat inventory. What makes the manifest a map rather than a list is that the relationships between services live in the file as well. Look again at the `consumers` block on Orders Checkout. It declares, by reference, that Payments Processing and Fulfillment Shipping consume what Orders Checkout produces, and those references are real pointers into the same tree, resolvable and checkable, not prose that hopes to stay accurate.
-
-Written out across every service, those pointers are the event-driven topology of Arcadia Editions. You can start at any service and walk outward to see who reacts to it and what it reacts to in turn, which is the question you actually ask when you are about to change an event or trace an incident back to its origin. The connections were always there in the individual AsyncAPI contracts, but they were spread across a dozen repositories where no one could see them at once. The manifest gathers them into a single graph you can follow.
+Written out across every service, those pointers are the architectural topology of Arcadia Editions. You can start at any service and walk outward to see who reacts to it and what it reacts to in turn, which is the question you actually ask when you are about to change an event or trace an incident back to its origin. The connections were always there in the individual AsyncAPI contracts, but they were spread across a dozen repositories where no one could see them at once. The manifest gathers them into a single graph you can follow.
 
 ## One file, resolved from wherever the artifacts live
 
@@ -86,14 +122,24 @@ That is why the manifest is operational rather than documentation. It describes 
 
 ## Navigable by humans, tools and agents
 
-Because the manifest is a real file with a published schema, the `yaml-language-server` line at the top gives you validation and completion while you write it, so the tree stays well formed instead of drifting into whatever shape each author guessed at. Underneath, the manifest is read by `manifest-core`, a small Kotlin Multiplatform library that resolves the tree and its artifacts on both the JVM and JavaScript, which is what lets the ZenWave IDE and the tooling around it navigate the whole architecture from this one entry point rather than crawling repositories one at a time.
+Because the manifest is a real file with a published schema, the `yaml-language-server` line at the top gives you validation and completion while you write it, and because is plain yml, any tools can read from it, including your AI agents. 
 
-That last reader is the one that matters most now. The previous article made the case that a good contract is the densest context an agent can have about a single system, everything it needs stated outright instead of guessed at. The manifest is the map that leads an agent to every one of those contracts at once. From this single file it can see every domain, resolve every model and every contract, and follow the consumer graph between them, which is precisely what an agent needs before it can reason about a change that crosses more than one service. This is what the ZenWave Platform means by a world model, an architecture made explicit, connected and navigable in one place, for the people who build it and the tools and agents that increasingly build alongside them.
+Underneath ZenWave Platform lives [zenwave-manifest](https://github.com/ZenWave360/zenwave-manifest) a small Kotlin Multiplatform library that resolves the tree and its artifacts on both the JVM and JavaScript, which is what lets the ZenWave IDE and the tooling around it navigate the whole architecture from this one entry point rather than crawling repositories one at a time.
 
-## The layer above the products
+## The Model compounds in value as it grows
 
-The shift the series has been building toward is now complete. The model comes first, because it is where the meaning lives. The contract is its published projection, the product other teams depend on. The service is one implementation of that contract, replaceable underneath it. And the Master YAML is the layer above all of them, the single file where the whole business is explicit, connected and navigable at once, not a picture of the architecture that has to be maintained beside it but the architecture itself as one addressable thing.
+The manifest is worth building because its value compounds as more things learn to read it:
+
+- Today: humans navigate it to understand the system
+- Tomorrow: the EventCatalog website makes it visible to the whole organization
+- Later: coding agents use it as context to read and fetch contents, without hallucinating contracts
+- The model does not change in nature — only the consumers of it change
+- Build the model once. Use it everywhere.
+
+That is exactly what the [ZenWave Platform](https://www.zenwave360.io/) is built to do, feed on this architectural manifest and turn it into something every kind of consumer can reach:
+
+- It starts with [zenwave-manifest](https://github.com/ZenWave360/zenwave-manifest), an open-source library that reads the manifest and loads the individual artifacts it points at.
+- On top of that library sits an open-source LSP, so an editor can navigate the whole architecture the way it navigates a single codebase.
+- And on top of the LSP sits an MCP server, so an agent reaches the same model, through the same resolved graph, that a human does. One manifest at the bottom, and a library, a language server and an agent interface stacked on it, each drawing from the same source of truth.
 
 From here the manifest stops being a description and starts being a starting point. Because it already knows every contract and every document each service owns, it can drive the next steps of the series directly, beginning with [Publishing to Apicurio and Generating an Event Catalog](/articles/arcadia/012-publishing-to-apicurio-and-event-catalog), where the same registry the manifest resolves against becomes the place the whole organization goes to discover what exists.
-</content>
-</invoke>
