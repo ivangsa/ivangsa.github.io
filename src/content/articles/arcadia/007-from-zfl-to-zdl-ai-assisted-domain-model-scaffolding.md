@@ -65,7 +65,7 @@ That is the practical value of the generation step: it turns one business flow i
 
 An AI skill is a reusable instruction pack for an agent. It gives the agent the rules, references, and examples it needs before doing a task.
 
-For this task, the [zfl to zdl skill](https://github.com/arcadia-editions/arcadia-editions-docs/blob/main/skills/zfl-to-zdl.md) gives the agent three things:
+For this task, the [zfl to zdl skill](https://github.com/arcadia-editions/arcadia-editions-architecture/blob/main/skills/zfl-to-zdl.md) gives the agent three things:
 
 - **The grammar** of valid ZDL.
 - **A working example** to follow for structure and naming.

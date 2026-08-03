@@ -145,7 +145,7 @@ One small caveat. The platform is evolving as we build this in public, so the ex
 
 ## The relevant parts
 
-We do not need to paste the whole flow here. The complete file is available in [place-order-flow.zfl](https://github.com/arcadia-editions/arcadia-editions-docs/blob/main/business-flows/place-order-flow.zfl).
+We do not need to paste the whole flow here. The complete file is available in [place-order-flow.zfl](https://github.com/arcadia-editions/arcadia-editions-architecture/blob/main/business-flows/place-order-flow.zfl).
 
 The important change is visible in the command blocks. Each command now says who owns it.
 
