@@ -1,0 +1,528 @@
+ZenWave: A Software Engineering Vision for the Age of Agents
+
+«Working notes for a larger vision. This is not yet a talk abstract or a product description. It describes the engineering model behind ZenWave Platform, ZenWave SDK, and Arcadia Editions.»
+
+The main idea
+
+Agentic development changes how much software we can produce and how fast we can produce it. It does not remove the need for software engineering.
+
+When code becomes easier to produce, the important engineering work moves even more towards understanding the problem, making decisions, defining boundaries, and keeping a clear model of the system.
+
+Business experts and software engineers still need to build a common understanding of the business. They need to create a ubiquitous language, identify domains and subdomains, define bounded contexts, create domain models, understand business flows, define APIs and events, and decide how the different parts of the system relate to each other.
+
+Agents can help with this work. They can explore alternatives, help to refine models, detect missing cases, generate examples, and accelerate many repetitive tasks. However, the important result of this phase is not the conversation with the agent. The important result is the engineering knowledge that humans and agents create together.
+
+This knowledge must not remain only in conversations, prompts, diagrams, documents, or source code. It must become explicit and structured context.
+
+This is the first part of the ZenWave vision.
+
+---
+
+1. Human engineering creates structured context
+
+The first phase is analysis and design.
+
+This is primarily engineering work. Business experts bring their knowledge of the business. Software engineers bring their knowledge of software design, architecture, integration, and implementation. Agents can participate as collaborators and amplifiers.
+
+Together they create and refine:
+
+- the ubiquitous language;
+- domains and subdomains;
+- bounded contexts;
+- aggregates and domain models;
+- commands and events;
+- APIs;
+- business flows;
+- relationships between producers and consumers;
+- relationships between systems;
+- architectural decisions and relevant metadata.
+
+The objective is not to create documentation after the system has been designed. The objective is to make the understanding of the system an explicit engineering artifact.
+
+In the ZenWave ecosystem, this context can be represented through domain and flow models, API specifications, and an Architecture Manifest that connects the different parts.
+
+ZenWave Platform provides different views of this information. A developer can inspect a domain model. An architect can inspect the relationships between systems. A business expert can follow a business flow. An API team can inspect APIs and events. An agent can access the same structured information as context.
+
+The same engineering knowledge can therefore have different representations without creating independent and disconnected descriptions of the system.
+
+                 HUMAN ENGINEERING
+                        |
+          +-------------+-------------+
+          |             |             |
+          v             v             v
+      Business       Software       Agents
+       experts       engineers   as collaborators
+          |             |             |
+          +-------------+-------------+
+                        |
+                        v
+              STRUCTURED CONTEXT
+                        |
+        +---------------+---------------+
+        |               |               |
+        v               v               v
+     Domains          APIs /          Business
+     Models           Events           Flows
+        |               |               |
+        +---------------+---------------+
+                        |
+                        v
+              ARCHITECTURE MANIFEST
+                        |
+             +----------+----------+
+             |                     |
+             v                     v
+           Humans                Agents
+          understand            understand
+          the system            the system
+
+This is also an important difference from a development process where an agent must reconstruct the architecture from the repository each time that it starts a task.
+
+The source code is still important, but it does not have to be the only source from which architectural knowledge can be recovered.
+
+The architecture has already been engineered. We should not require every developer and every agent to infer it again from source code, Markdown files, naming conventions, diagrams, tickets, and previous conversations.
+
+---
+
+Shared context instead of repeated reconstruction
+
+A common agentic workflow starts with an existing codebase. The agent reads source files, documentation, configuration, tests, and repository conventions. From this information, it reconstructs an approximate understanding of the system before it can make a useful change.
+
+        Code + Documentation + Conventions
+                       |
+                       v
+                     Agent
+                       |
+                 reconstructs
+                       |
+                       v
+             System understanding
+
+This reconstruction is useful when no better representation exists, but it should not become the normal way to communicate architecture.
+
+If engineers have already decided where the boundaries are, what an aggregate means, which events exist, which APIs are exposed, and how a business process works, these decisions can be represented directly.
+
+                 Engineering work
+                       |
+                       v
+                Structured context
+                       |
+             +---------+---------+
+             |         |         |
+             v         v         v
+           Humans    Agents   Generators
+
+The structured context becomes a common reference point.
+
+This does not mean that the model is always correct. It means that the current understanding is explicit, visible, versioned, and open to revision.
+
+---
+
+2. Deterministic generation implements decisions that are already made
+
+After the engineering context is sufficiently clear, the second phase starts.
+
+Many implementation decisions are no longer open questions at this point.
+
+If we have already decided that a bounded context contains a specific aggregate, that the aggregate accepts specific commands, that it produces specific events, that an API follows a specific contract, and that the application follows an agreed architecture, we do not need to ask an LLM to invent another possible implementation of these decisions every time.
+
+This is where deterministic generation is useful.
+
+ZenWave SDK has been developed around this principle for several years. It can transform structured models and specifications into software artifacts according to known architectural patterns and conventions.
+
+Depending on the model and the generator, these artifacts can include:
+
+- Kotlin or Java code;
+- Spring Boot applications;
+- domain structures;
+- API interfaces and implementations;
+- event producers and consumers;
+- DTOs and mappings;
+- tests;
+- AsyncAPI and OpenAPI related artifacts;
+- Kafka infrastructure;
+- schemas and configuration;
+- other repetitive architectural structures.
+
+The purpose is not to generate the complete application.
+
+The purpose is to avoid spending human or agent reasoning on implementation work that is already determined by previous engineering decisions.
+
+                ENGINEERING DECISIONS
+                         |
+                         v
+                STRUCTURED CONTEXT
+                         |
+                         v
+                   ZenWave SDK
+                         |
+             deterministic generation
+                         |
+                         v
+               SOFTWARE ARTIFACTS
+                         |
+        +----------------+----------------+
+        |                |                |
+        v                v                v
+   Kotlin / Java     APIs / Events    Infrastructure
+   Spring Boot           Tests           Schemas
+
+This creates an important separation between two types of work.
+
+Some work requires reasoning because there is uncertainty. Other work requires execution because the decision has already been made.
+
+Agents are very useful for the first type. Deterministic generators are often better for the second type.
+
+This is not an argument against agent-generated code. Agents remain part of the development process. The objective is to use them where their reasoning and flexibility provide value instead of using probabilistic generation for every software artifact.
+
+---
+
+3. The generated software is the start of the next engineering phase
+
+A model cannot describe everything.
+
+A generator must also not try to generate everything.
+
+After the main architecture and a large part of the repetitive implementation exist, the development team must use the software, integrate it, test it, and complete it.
+
+This is the dogfooding phase.
+
+The first two phases can bring the implementation to a high level of completion. A useful target can be 80 or 90 percent for the parts that can be derived from the model. The exact percentage is not important. The important point is that the remaining work contains information that we cannot discover only through modelling.
+
+Developers must experience the product that they are building.
+
+They must see where an API is difficult to use, where two components do not integrate correctly, where an abstraction creates unnecessary work, where a business case was missing, or where a model that looked correct does not work well in practice.
+
+This is where the team starts to experience part of the same pain as the users of the product.
+
+Humans and agents can work together again during this phase. They can:
+
+- integrate the generated components;
+- complete use cases;
+- create additional tests;
+- find edge cases;
+- improve APIs;
+- fix incorrect assumptions;
+- simplify difficult abstractions;
+- improve developer experience;
+- test real business flows;
+- operate the system;
+- compare the implementation with the original architecture.
+
+This work produces new knowledge.
+
+That new knowledge must return to the engineering context.
+
+1. HUMAN ENGINEERING
+        |
+        |  business experts
+        |  software engineers
+        |  agents as collaborators
+        v
++---------------------------+
+|    STRUCTURED CONTEXT     |
+|                           |
+|  Ubiquitous language      |
+|  Domains / subdomains     |
+|  Bounded contexts         |
+|  Domain models            |
+|  APIs and events          |
+|  Business flows           |
+|  System relationships     |
++-------------+-------------+
+              |
+              | Architecture Manifest
+              |
+       +------+------+
+       |             |
+       v             v
+     Humans        Agents
+   understand     understand
+       |             |
+       +------+------+
+              |
+              v
+
+2. DETERMINISTIC GENERATION
+              |
+              | ZenWave SDK
+              v
++---------------------------+
+|    SOFTWARE ARTIFACTS     |
+|                           |
+|  Kotlin / Java            |
+|  Spring Boot              |
+|  APIs / Events            |
+|  Tests                    |
+|  Infrastructure           |
+|  Other repeatable pieces  |
++-------------+-------------+
+              |
+              v
+
+3. DOGFOODING AND ITERATION
+              |
+       +------+------+
+       |             |
+       v             v
+     Humans        Agents
+       |             |
+       +------+------+
+              |
+              v
+       Use the real system
+       Integrate the pieces
+       Complete use cases
+       Test assumptions
+       Find edge cases
+       Feel user pain
+       Refine the solution
+              |
+              v
+        NEW UNDERSTANDING
+              |
+              +--------------------------+
+                                         |
+                                         v
+                               STRUCTURED CONTEXT
+
+The complete process is therefore not a generation pipeline.
+
+It is an engineering feedback loop.
+
+---
+
+Dogfooding closes the loop
+
+Dogfooding has a specific role in this model.
+
+The purpose is not only quality assurance. It is another source of architectural knowledge.
+
+A team can create a good domain model and still discover that the resulting application is difficult to use. An API can follow the original business model and still be inconvenient for a consumer. A bounded context can look correct and still create difficult integration patterns.
+
+These problems become visible when the system is used.
+
+The team can then update the implementation, but it must also decide whether the structured context needs to change.
+
+If the understanding changes, the model changes.
+
+If the model changes, the visual representation changes.
+
+The new context becomes visible to other developers, architects, business stakeholders, and agents.
+
+When appropriate, deterministic artifacts can then be generated again.
+
+The loop continues.
+
+       Understand
+           |
+           v
+         Model
+           |
+           v
+        Generate
+           |
+           v
+          Use
+           |
+           v
+         Learn
+           |
+           +----------> Understand
+
+This feedback loop is one of the main protections against turning model-driven development into an exercise where the model is treated as more important than reality.
+
+Reality always has the last word.
+
+---
+
+Arcadia Editions as the proving ground
+
+Arcadia Editions is a fictional publishing company, but the implementation is real.
+
+It is not only a sample application created to demonstrate individual ZenWave features. It is the main proving ground for the complete engineering model.
+
+Arcadia is being designed as an organization with real architectural structure:
+
+- domains and bounded contexts;
+- domain models;
+- APIs and events;
+- producers and consumers;
+- business flows;
+- pipelines;
+- infrastructure;
+- relationships between systems.
+
+The Architecture Manifest was developed using Arcadia Editions as its main use case.
+
+The EventCatalog representation is generated from the Arcadia architecture.
+
+Kafka topics and other infrastructure are provisioned against a real Confluent environment.
+
+The next step is to package the domain models for the different bounded contexts and use them to generate Kotlin and Spring Boot applications.
+
+This gives Arcadia two different roles.
+
+First, it demonstrates the architecture to other people. It provides a public system that can be inspected without depending on confidential information from a real company.
+
+Second, it forces ZenWave to consume its own ideas. If a workflow is difficult, if a model does not contain enough information, or if a generated application is difficult to complete, this becomes a real problem that must be solved.
+
+Arcadia is therefore not only documentation for ZenWave.
+
+It is dogfooding for ZenWave.
+
+---
+
+The roles of ZenWave Platform and ZenWave SDK
+
+The distinction between ZenWave Platform and ZenWave SDK is important in this vision.
+
+ZenWave Platform helps to create, connect, visualize, navigate, and communicate the engineering context.
+
+It provides the larger architectural view. The Architecture Manifest connects the different elements and makes it possible to create different views for different users and purposes.
+
+A business flow does not need the same representation as a domain model. An architect does not need the same view as an API consumer. An agent can also require a different representation from a human stakeholder.
+
+They can still work from the same underlying context.
+
+ZenWave SDK transforms parts of this structured context into deterministic software artifacts.
+
+The SDK is the older and more mature part of this approach. It represents several years of work with model-driven and API-first development and provides the bridge from engineering decisions to implementation.
+
+The two parts therefore have different responsibilities:
+
+                 ZenWave Platform
+                       |
+             understand / model
+              connect / visualize
+               communicate context
+                       |
+                       v
+              STRUCTURED CONTEXT
+                       |
+                       v
+                  ZenWave SDK
+                       |
+                deterministic
+                  generation
+                       |
+                       v
+                 SOFTWARE
+
+Agents can operate around the complete cycle rather than replacing either part.
+
+---
+
+The role of agents
+
+Agents are not placed at the end of this process as code generators.
+
+They can participate in all phases.
+
+During analysis and design, they can help to explore the business, compare alternatives, find inconsistencies, refine models, and transform informal information into structures that experts can review.
+
+During implementation, deterministic generation can produce the parts that follow known rules. Agents can then work on the parts that require adaptation, integration, reasoning, or additional implementation.
+
+During dogfooding, agents can help to test the application, diagnose problems, complete missing cases, refactor code, and evaluate the effects of changes.
+
+Most importantly, agents can consume the structured context that already exists.
+
+They do not always need to reconstruct the complete architecture from the implementation before they can work.
+
+This creates a different relationship between software architecture and agentic development.
+
+The model is not only an input to a code generator.
+
+It becomes part of the shared context of the engineering team.
+
+---
+
+A different balance between humans, agents, and deterministic tools
+
+The objective is not to decide whether humans, agents, or generators should write the software.
+
+Each one is useful for different work.
+
+                  SOFTWARE ENGINEERING
+                          |
+          +---------------+---------------+
+          |               |               |
+          v               v               v
+       Humans           Agents       Deterministic
+                                        tools
+          |               |               |
+     judgement         reasoning       repeatable
+     experience        exploration     transformation
+     responsibility    adaptation      consistency
+     business          acceleration    known rules
+     understanding
+
+Human responsibility does not disappear because agents become more capable.
+
+Agent reasoning does not become less useful because deterministic generators exist.
+
+Deterministic generation does not become obsolete because agents can write code.
+
+The engineering problem is to decide where each mechanism provides the most value.
+
+---
+
+What ZenWave is trying to test
+
+ZenWave is not based on the idea that all software can be generated from a perfect model.
+
+It is testing a different hypothesis.
+
+When software production becomes very fast, explicit engineering context can become more valuable rather than less valuable.
+
+The more code we can produce, the more important it becomes to keep a coherent understanding of what that code is supposed to represent.
+
+The more agents we use, the more useful it can become to give them an explicit architectural context instead of asking each one to reconstruct that context independently.
+
+The more implementation work becomes automated, the more engineering attention can move towards understanding the domain, making decisions, testing those decisions against reality, and incorporating what we learn back into the system.
+
+ZenWave Platform, ZenWave SDK, and Arcadia Editions are different parts of an experiment around this idea.
+
+The process can be summarized as:
+
+        ENGINEER THE UNDERSTANDING
+                   |
+                   v
+        MAKE THE CONTEXT EXPLICIT
+                   |
+                   v
+      SHARE IT WITH HUMANS AND AGENTS
+                   |
+                   v
+    GENERATE WHAT IS ALREADY DETERMINED
+                   |
+                   v
+         BUILD THE REMAINING PART
+         WITH HUMANS AND AGENTS
+                   |
+                   v
+             DOGFOOD IT
+                   |
+                   v
+                LEARN
+                   |
+                   +--------------------+
+                                        |
+                                        v
+                           ENGINEER THE UNDERSTANDING
+
+This is the larger vision.
+
+The objective is not to remove software engineers from software development.
+
+The objective is to spend more engineering effort on the parts that require understanding, judgement, domain knowledge, architecture, and feedback from reality, while tools and agents take more responsibility for the mechanical work around those decisions.
+
+Arcadia Editions is where this model is being tested.
+
+ZenWave Platform is where the engineering context becomes explicit and visible.
+
+ZenWave SDK is where decisions that can be automated become deterministic software.
+
+The final part remains deliberately open. Humans and agents must use the result, experience its problems, complete it, and learn from it.
+
+Then the cycle starts again.
