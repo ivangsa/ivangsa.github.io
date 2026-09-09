@@ -1,0 +1,38 @@
+---
+import CvDocument from '../components/CvDocument.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCv, hasPrivateOverlay } from '../lib/cv';
+
+/**
+ * /cv.private — the full CV, side by side with the public /cv in `npm run dev`.
+ *
+ * This is a dynamic route on purpose. getStaticPaths returns nothing outside
+ * of dev, so `astro build` emits no page for it and the deployed site cannot
+ * contain the private CV, whatever CV_PRIVATE happens to be set to.
+ */
+export function getStaticPaths() {
+	return import.meta.env.DEV ? [{ params: { variant: 'private' } }] : [];
+}
+
+const cv = getCv(true);
+const found = hasPrivateOverlay(true);
+
+/**
+ * Chrome's "Save as PDF" proposes the document title as the file name, so this
+ * title is the file name: "CV. Ivan Garcia Sainz-Aja 2026-09.pdf". No "private"
+ * in it; the on-screen banner is what marks the page.
+ */
+const stamp = new Date().toISOString().slice(0, 7);
+const title = `CV. ${cv.basics.name} ${stamp}`;
+---
+
+<BaseLayout title={title}>
+	<CvDocument
+		cv={cv}
+		showContact={found}
+		compact={true}
+		banner={found
+			? 'Private version. Dev only, never published. Print this one to PDF.'
+			: 'cv.private.json was not found, so this is the public CV. Check CV_PRIVATE_PATH.'}
+	/>
+</BaseLayout>

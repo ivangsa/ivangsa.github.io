@@ -1,0 +1,634 @@
+---
+import { getCollection } from 'astro:content';
+import type { Cv } from '../lib/cv';
+
+interface Props {
+	cv: Cv;
+	/** Render contact details. Only ever true when the private overlay is loaded. */
+	showContact?: boolean;
+	/**
+	 * Slim channel, used by the private web CV and the printed PDF: fewer entries,
+	 * shorter copy, merged sections. The public web CV keeps everything.
+	 */
+	compact?: boolean;
+	/** On-screen only warning, hidden when printing. */
+	banner?: string;
+}
+
+const { cv, showContact = false, compact = false, banner } = Astro.props;
+
+type Channelled = { hideInCompact?: boolean; compactOnly?: boolean };
+
+/** Applies the hideInCompact / compactOnly convention to any list of entries. */
+function forChannel<T extends Channelled>(entries: T[]): T[] {
+	return entries.filter((entry) =>
+		compact ? !entry.hideInCompact : !entry.compactOnly,
+	);
+}
+
+/** Picks the "<field>Compact" variant when it exists and we are in the slim channel. */
+function pick<T>(full: T, short: T | undefined): T {
+	return compact && short !== undefined ? short : full;
+}
+
+const summary = pick(cv.basics.summary, cv.basics.summaryCompact);
+const openSource = forChannel(cv.openSource);
+const education = forChannel(cv.education);
+const community = pick(cv.community, cv.communityCompact);
+const personal = cv.personal;
+const earlierItems = pick(cv.earlier.items, cv.earlier.itemsCompact);
+const languages = cv.languages.map((entry) => `${entry.language}: ${entry.level}`).join(' · ');
+
+const talks = compact
+	? []
+	: (await getCollection('talks')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+
+const roleGroups = [
+	{ heading: 'Current', roles: cv.current },
+	{ heading: 'Selected experience', roles: cv.experience },
+];
+
+/** The private version carries real contact details, so the social links are noise there. */
+type Profile = { label: string; url: string; hideInPrivate?: boolean };
+const profiles = (cv.basics.profiles as Profile[]).filter(
+	(profile) => !(showContact && profile.hideInPrivate),
+);
+
+/** The contact row already carries the address, so the standalone line would repeat it. */
+const showLocationLine = !(showContact && cv.basics.address);
+
+/**
+ * On paper a link is invisible, so print shows the address as plain text.
+ * "https://www.zenwave360.io/" -> "zenwave360.io"
+ */
+const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+---
+
+<main class="wrapper stack gap-8 cv">
+	{banner && <p class="banner">{banner}</p>}
+
+	<header class="cv-header">
+		<img class="portrait" src={cv.basics.image} alt={cv.basics.name} width="160" height="160" />
+		<div class="identity">
+			<h1>{cv.basics.name}</h1>
+			<p class="label">{cv.basics.label}</p>
+			{cv.basics.tagline && <p class="tagline">{cv.basics.tagline}</p>}
+			{showLocationLine && <p class="location">{cv.basics.location}</p>}
+			<ul class="profiles">
+				{
+					profiles.map((profile) => (
+						<li>
+							<a href={profile.url}>{profile.label}</a>
+						</li>
+					))
+				}
+				{showContact && cv.basics.email && <li>{cv.basics.email}</li>}
+				{showContact && cv.basics.phone && <li>{cv.basics.phone}</li>}
+				{showContact && cv.basics.address && <li>{cv.basics.address}</li>}
+			</ul>
+		</div>
+	</header>
+
+	<section class="summary">
+		{summary.map((paragraph) => <p>{paragraph}</p>)}
+	</section>
+
+	<section>
+		<h2>Skills</h2>
+		<dl class="skills">
+			{
+				cv.skills.map((group) => (
+					<div class="skill-group">
+						<dt>{group.category}</dt>
+						<dd>{pick(group.items, group.itemsCompact).join(' · ')}</dd>
+					</div>
+				))
+			}
+		</dl>
+	</section>
+
+	{
+		roleGroups.map(({ heading, roles }) => (
+			<section>
+				<h2>{heading}</h2>
+				{roles.map((role) => {
+					const highlights = pick(role.highlights, role.highlightsCompact);
+					return (
+						<article class="role">
+							{/* Title, employer and intro paragraph never split across pages. */}
+							<div class="role-head">
+								<h3>{role.role}</h3>
+								<p class="org">
+									{role.company}
+									{role.client && <span class="client"> · {role.client}</span>}
+									{role.period && <span class="period"> · {role.period}</span>}
+								</p>
+								<p>{role.summary}</p>
+							</div>
+							{highlights && (
+								<ul>
+									{highlights.map((highlight) =>
+										typeof highlight === 'string' ? (
+											<li>{highlight}</li>
+										) : (
+											<li>
+												<strong>{highlight.lead}</strong> {highlight.text}
+											</li>
+										),
+									)}
+								</ul>
+							)}
+						</article>
+					);
+				})}
+			</section>
+		))
+	}
+
+	<section>
+		<h2>Open source</h2>
+		{
+			openSource.map((project) => (
+				<article class="role project">
+					<h3>
+						<a href={project.url}>{project.name}</a>
+						<span class="url"> · {displayUrl(project.url)}</span>
+					</h3>
+					{[pick(project.summary, project.summaryCompact)].flat().map((paragraph) => (
+						<p>{paragraph}</p>
+					))}
+				</article>
+			))
+		}
+	</section>
+
+	<section>
+		<h2>Earlier experience</h2>
+		{!compact && <p>{cv.earlier.summary}</p>}
+		<ul>
+			{earlierItems.map((item) => <li>{item}</li>)}
+		</ul>
+	</section>
+
+	{
+		compact ? (
+			<section>
+				<h2>Talks &amp; credentials</h2>
+				<ul class="talks">
+					{cv.selectedTalks.map((talk) => (
+						<li>
+							{talk.title}
+							<span class="org"> — {[talk.event, talk.year].filter(Boolean).join(' ')}</span>
+						</li>
+					))}
+					{cv.certifications.map((entry) => (
+						<li>
+							{entry.title}, {entry.issuer}
+						</li>
+					))}
+					{community.map((item) => (
+						<li>{item}</li>
+					))}
+				</ul>
+			</section>
+		) : (
+			<>
+				<section>
+					<h2>Talks</h2>
+					<ul class="talks">
+						{talks.map((talk) => (
+							<li>
+								<a href={`/talks/${talk.id}/`}>{talk.data.title}</a>
+							</li>
+						))}
+					</ul>
+					<p class="more">
+						<a href="/talks/">All talks</a> · <a href="/articles/">Articles</a>
+					</p>
+				</section>
+
+				<section>
+					<h2>Certifications</h2>
+					<ul>
+						{cv.certifications.map((entry) => (
+							<li>
+								{entry.title}, {entry.issuer}
+							</li>
+						))}
+					</ul>
+				</section>
+
+				<section>
+					<h2>Community</h2>
+					<ul>
+						{community.map((item) => (
+							<li>{item}</li>
+						))}
+					</ul>
+				</section>
+			</>
+		)
+	}
+
+	<section>
+		<h2>Education</h2>
+		<ul class:list={['education', { inline: compact }]}>
+			{
+				education.map((entry) => (
+					<li>
+						<strong>{entry.title}</strong>
+						<span class="org">
+							{entry.institution}
+							{entry.period && <span class="period"> · {entry.period}</span>}
+						</span>
+					</li>
+				))
+			}
+		</ul>
+		{compact && <p class="languages">{languages}</p>}
+	</section>
+
+	{
+		!compact && (
+			<section>
+				<h2>Languages</h2>
+				<p>{languages}</p>
+			</section>
+		)
+	}
+
+	{
+		/* Personal material lands better in the document someone opens with your
+		   name in front of them, not in the one people browse. */
+		compact && (
+			<section>
+				<h2>Beyond software</h2>
+				{personal.map((paragraph) => (
+					<p>{paragraph}</p>
+				))}
+			</section>
+		)
+	}
+</main>
+
+<style>
+	.cv {
+		max-width: 52rem;
+		padding-bottom: 4rem;
+		color: var(--gray-200);
+	}
+
+	.banner {
+		border: 1px solid var(--accent-regular);
+		border-radius: 0.5rem;
+		padding: 0.6rem 0.9rem;
+		font-size: var(--text-sm);
+		color: var(--accent-text-over);
+		background: var(--accent-subtle-overlay);
+	}
+
+	.cv-header {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+		gap: 1.5rem;
+	}
+
+	.identity {
+		flex: 1 1 20rem;
+		min-width: 0;
+	}
+
+	.portrait {
+		width: 8rem;
+		height: 8rem;
+		border-radius: 50%;
+		object-fit: cover;
+		border: 1px solid var(--gray-800);
+	}
+
+	h1 {
+		font-size: var(--text-3xl);
+		color: var(--gray-0);
+	}
+
+	.label {
+		font-size: var(--text-lg);
+		color: var(--accent-text-over);
+	}
+
+	.tagline {
+		font-size: var(--text-md);
+		color: var(--gray-300);
+	}
+
+	.location {
+		font-size: var(--text-sm);
+		color: var(--gray-400);
+	}
+
+	.profiles {
+		list-style: none;
+		padding: 0;
+		/* Without this it inherits the generic `ul` indent and sits off the
+		   left edge of the name and tagline above it. */
+		margin: 0.5rem 0 0 0;
+		display: flex;
+		flex-wrap: wrap;
+		gap: 0.25rem 1rem;
+		font-size: var(--text-sm);
+	}
+
+	h2 {
+		font-size: var(--text-xl);
+		color: var(--gray-0);
+		border-bottom: 1px solid var(--gray-800);
+		padding-bottom: 0.35rem;
+		margin-bottom: 1rem;
+	}
+
+	h3 {
+		font-size: var(--text-md);
+		color: var(--gray-0);
+	}
+
+	section {
+		margin-top: 1.5rem;
+	}
+
+	.role {
+		margin-bottom: 1.5rem;
+	}
+
+	.org {
+		font-size: var(--text-sm);
+		color: var(--gray-400);
+		margin-bottom: 0.35rem;
+	}
+
+	ul {
+		margin: 0.5rem 0 0 1.1rem;
+		padding: 0;
+	}
+
+	li {
+		margin-bottom: 0.3rem;
+	}
+
+	.talks {
+		list-style: none;
+		margin-left: 0;
+	}
+
+	.more {
+		font-size: var(--text-sm);
+		margin-top: 0.75rem;
+	}
+
+	.skills {
+		margin: 0;
+	}
+
+	.skill-group {
+		margin-bottom: 0.75rem;
+	}
+
+	dt {
+		font-weight: 600;
+		color: var(--gray-100);
+	}
+
+	dd {
+		margin: 0;
+		font-size: var(--text-sm);
+	}
+
+	.education {
+		list-style: none;
+		margin-left: 0;
+	}
+
+	.education .org {
+		display: block;
+	}
+
+	/* One line per entry in the slim channel: the two-line form costs four
+	   lines that the closing section needs. */
+	.education.inline .org {
+		display: inline;
+	}
+
+	.education.inline .org::before {
+		content: ' · ';
+	}
+
+	.languages {
+		font-size: var(--text-sm);
+		margin-top: 0.5rem;
+	}
+
+	/* On screen the project name is already a link, so the address is print
+	   only: on paper a link is invisible. Both rules live in this scoped block
+	   so the print one actually wins over the default. */
+	.url {
+		display: none;
+	}
+
+	@media print {
+		.url {
+			display: inline;
+			font-weight: 400;
+			font-size: 9pt;
+		}
+
+		/* A printed underline carries no affordance, it just adds noise. */
+		a {
+			text-decoration: none;
+		}
+
+		/* The header uses rem sizes meant for the screen. In print they leave
+		   the tagline too wide to hold one line. These belong in the scoped
+		   block: a `.cv .tagline` rule in the global block only ties on
+		   specificity and loses. */
+		.label {
+			font-size: 12pt;
+		}
+
+		.tagline {
+			font-size: 10.5pt;
+		}
+
+		.profiles {
+			gap: 0.1rem 0.8rem;
+			margin-top: 0.3rem;
+			font-size: 9.5pt;
+		}
+
+		/* Employer, client, event and institution labels. Same reason: the rem
+		   size is calibrated for the screen, not for a 10pt body. */
+		.org {
+			font-size: 9pt;
+		}
+	}
+
+	a {
+		color: inherit;
+	}
+</style>
+
+<style is:global>
+	@media print {
+		/* Single column, plain text, no decoration: this is what ATS parsers and
+		   `pdftotext` read. Print from the browser with "Save as PDF". */
+		@page {
+			size: A4;
+			margin: 14mm 15mm;
+		}
+
+		:root,
+		:root.theme-dark {
+			color-scheme: light;
+		}
+
+		nav,
+		footer,
+		.theme-toggle,
+		.cv .banner,
+		.cv .more {
+			display: none !important;
+		}
+
+		.backgrounds {
+			background: none !important;
+			background-blend-mode: normal !important;
+		}
+
+		body,
+		.cv,
+		.cv * {
+			color: #000 !important;
+			background: transparent !important;
+		}
+
+		body {
+			background: #fff !important;
+		}
+
+		.cv {
+			max-width: none;
+			padding: 0;
+			font-size: 10pt;
+			line-height: 1.24;
+			gap: 0 !important;
+		}
+
+		.cv h1 {
+			font-size: 18pt;
+		}
+
+		.cv h2 {
+			font-size: 11.5pt;
+			border-bottom: 1px solid #999;
+			margin-top: 0.5rem;
+			margin-bottom: 0.35rem;
+			padding-bottom: 0.15rem;
+		}
+
+		.cv h3 {
+			font-size: 10.5pt;
+		}
+
+		.cv section {
+			margin-top: 0.3rem;
+		}
+
+		.cv p {
+			margin: 0 0 0.25rem;
+		}
+
+		.cv ul {
+			margin-top: 0.25rem;
+		}
+
+		.cv li {
+			margin-bottom: 0.15rem;
+		}
+
+		.cv .role {
+			margin-bottom: 0.7rem;
+		}
+
+		.cv .skill-group {
+			margin-bottom: 0.35rem;
+		}
+
+		/* The label costs a whole line per group when it sits above the tags.
+		   Inline it: three lines back, no tags dropped. */
+		.cv .skill-group dt,
+		.cv .skill-group dd {
+			display: inline;
+		}
+
+		.cv .skill-group dt::after {
+			content: '  ';
+		}
+
+		/* Sections must be allowed to split across pages, otherwise a long one
+		   jumps to the next page and leaves a gap. Only keep small units whole,
+		   and never strand a heading at the bottom of a page. */
+		/* Chrome ignores `break-after: avoid`, so anything whose heading must
+		   stay glued to its text has to be kept whole with `break-inside`.
+		   Open source entries are short, so that is free. */
+		.cv .cv-header,
+		.cv .skill-group,
+		.cv .project,
+		.cv .role-head {
+			break-inside: avoid;
+			page-break-inside: avoid;
+		}
+
+		/* Bullets used to be one line each, so keeping them whole was free.
+		   Some now run to three or four lines, and indivisible blocks that
+		   size stop the pages from packing. Let them split instead, never
+		   leaving or carrying fewer than two lines. */
+		.cv li {
+			orphans: 2;
+			widows: 2;
+		}
+
+		/* A job may split across pages, since keeping the long ones whole is
+		   what pushed the CV to four pages. The split can only fall between
+		   bullets: .role-head keeps title, employer and intro together, and
+		   each bullet is unbreakable. Chrome does not honour widows here. */
+		.cv .role:not(.project) {
+			orphans: 2;
+			widows: 2;
+		}
+
+		.cv h1,
+		.cv h2,
+		.cv h3 {
+			break-after: avoid;
+			page-break-after: avoid;
+		}
+
+		.cv .portrait {
+			width: 26mm;
+			height: 26mm;
+		}
+
+		/* Keep the portrait and the name on one line: the identity block is
+		   allowed to shrink instead of wrapping under the photo. */
+		.cv .cv-header {
+			flex-wrap: nowrap;
+			gap: 6mm;
+		}
+
+		.cv .identity {
+			flex: 1 1 auto;
+			min-width: 0;
+		}
+
+
+	}
+</style>

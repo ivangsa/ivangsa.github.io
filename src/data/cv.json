@@ -1,0 +1,285 @@
+{
+  "_comment": [
+    "Two channels render from this file:",
+    "  full    -> the public web CV at /cv",
+    "  compact -> the private web CV and the printed PDF",
+    "Two conventions control what each channel shows:",
+    "  \"hideInCompact\": true  omits an entry from the compact channel",
+    "  \"compactOnly\": true    shows an entry only in the compact channel",
+    "  a \"<field>Compact\" sibling replaces \"<field>\" in the compact channel"
+  ],
+  "basics": {
+    "name": "Ivan Garcia Sainz-Aja",
+    "label": "Java Tech Lead and Software Architect",
+    "tagline": "Hands-on. I own the problem, from the domain model to production.",
+    "image": "/profile-picture-cv-400.jpg",
+    "location": "A Coruña, Spain",
+    "summary": [
+      "I am a Software Architect and Technical Lead specializing in event-driven architectures, API governance, domain-driven design, and API-first development.",
+      "I design and build product and platform software from the domain outwards, around Kafka, AsyncAPI, OpenAPI, Java and Spring Boot, and the tooling that turns models and contracts into running software.",
+      "At a major bank I led the design and drove the technical implementation of the governance model for event-driven APIs: built to provide automatic auditability, prevent drift between contracts and production, and grant access only to consumers declared in the contracts.",
+      "I build ZenWave SDK and ZenWave Platform: API-first contracts and domain models connected in a navigable knowledge graph, and deterministic generators that turn them into Spring Boot services without losing the language and structure of the domain. In practice the tooling generates most of the backend, and coding agents take the rest.",
+      "I use those agents to build product software, and ZenWave Platform itself, which I could not have taken on before. They build what I have already decided to build.",
+      "AsyncAPI TSC member and Ambassador. Speaker at Spring I/O and Codemotion."
+    ],
+    "profiles": [
+      {
+        "label": "ivangsa.com",
+        "url": "https://ivangsa.com/"
+      },
+      {
+        "label": "LinkedIn",
+        "url": "https://www.linkedin.com/in/ivangarciasainzaja/",
+        "hideInPrivate": true
+      },
+      {
+        "label": "GitHub",
+        "url": "https://github.com/ivangsa",
+        "hideInPrivate": true
+      },
+      {
+        "label": "ZenWave 360",
+        "url": "https://www.zenwave360.io/",
+        "hideInPrivate": true
+      }
+    ]
+  },
+  "current": [
+    {
+      "role": "Event-Driven Architecture Governance Lead",
+      "company": "Capitole Consulting",
+      "client": "Major Spanish bank (under NDA)",
+      "summary": "Defined the governance model for asynchronous APIs end to end, technical and organizational, and drove its adoption through the bank's waterfall demand cycle. I authored the standards, the target architecture and the contract lifecycle from proposal to provisioning, trained the teams that operate it, and act as product owner for the teams that implement it, under these principles:",
+      "highlights": [
+        {
+          "lead": "Specs outlive tools.",
+          "text": "AsyncAPI and Avro contracts, versioned in Git, are the source of truth. The definitions outlive the tooling that provisions them. Previous config died with the tool."
+        },
+        {
+          "lead": "Nothing is provisioned by hand.",
+          "text": "Topics, partitions, retention, schemas and ACLs all derive from the contracts. No contract, no resource, no permission: platform drift and undeclared consumption are impossible by construction, not by policy."
+        },
+        {
+          "lead": "Auditable producer and consumer registry.",
+          "text": "Versioned in Git and automatically written by the pipelines on every release, so every access grant traces back to the release that introduced it."
+        },
+        {
+          "lead": "Central API and schema registry",
+          "text": "with services and APIs catalogued according to the BIAN standard."
+        },
+        {
+          "lead": "Architecture views generated from the contracts",
+          "text": "EventCatalog, Horizzon/BizzDesign, MCP context for agents."
+        }
+      ]
+    }
+  ],
+  "experience": [
+    {
+      "role": "Java Architect",
+      "company": "Izertis (Smart Software Labs)",
+      "summary": "Architecture lead for Java projects without an established client architecture, defining stack, structure and standards from scratch instead of inheriting them from the client.",
+      "highlights": [
+        "Designed and delivered a modular monolith for a medical research consortium: Spring Boot, JPA, several APIs, a React client, mobile, and wearable devices streaming patient data.",
+        "Built the team for it, recruiting and training two junior developers on ZenWave SDK modelling, and took it from first model to MVP.",
+        "Defined a Spring Boot archetype for new projects."
+      ]
+    },
+    {
+      "role": "Java Tech Lead",
+      "company": "SNGULAR",
+      "client": "Leroy Merlin",
+      "summary": "Backend engineering and technical leadership on the pricing and promotions platform, whose output drives the electronic shelf labels in every physical store.",
+      "highlights": [
+        "Maintained and evolved Spring Boot microservices over Kafka and Pub/Sub, with a nightly fan-out of thousands of messages and heavy peaks in promotion season.",
+        "Built several of those services from scratch, setting their structure and standards.",
+        "Java, Spring Boot, Spring Cloud, Kafka, Pub/Sub and MongoDB on Google Cloud."
+      ]
+    },
+    {
+      "role": "Technical Leader and Architect",
+      "company": "Indra",
+      "summary": "Technical lead on a multi-tenant, multinational ecommerce platform: its public REST APIs, its first event-driven contracts, and the testing architecture behind both.",
+      "highlights": [
+        "Led the adoption of AsyncAPI in 2020, months after the 2.0.0 release.",
+        "Built the internal tooling that made it practical: an AsyncAPI parser and a code generator for consumers and producers, along the lines of the OpenAPI generator Maven plugin.",
+        "Defined the end-to-end testing architecture and led a team of 8 QA developers, several of whom went on to lead their own squads.",
+        "Contract testing with KarateDSL across the platform teams.",
+        "Contributed to Java and Node.js backends: Spring Boot, MongoDB, Kafka, Solr."
+      ],
+      "highlightsCompact": [
+        "Led the adoption of AsyncAPI in 2020, months after the 2.0.0 release.",
+        "Built the internal tooling that made it practical: an AsyncAPI parser and a code generator for consumers and producers, along the lines of the OpenAPI generator Maven plugin.",
+        "Defined the end-to-end testing architecture and led a team of 8 QA developers, several of whom went on to lead their own squads.",
+        "Contract testing with KarateDSL across the platform teams."
+      ],
+      "client": "Inditex"
+    }
+  ],
+  "earlier": {
+    "summary": "Earlier roles as analyst, technical leader and team leader:",
+    "items": [
+      "Indra: senior consultant for web portals of the Xunta de Galicia electronic administration.",
+      "Teaching: programming and robotics workshops for children, and integral yoga.",
+      "Inditex: commercial logistics, financial reporting and Zara.com ecommerce systems.",
+      "Softtek GDC Europe: functional analysis and technical leadership for GE Energy, GE Money Bank, GE Fleet Services and Caixa Galicia.",
+      "Pionlabs (Brighton, UK): Java developer of online hotel reservation and e-learning applications."
+    ],
+    "itemsCompact": [
+      "Indra: electronic administration for the Xunta de Galicia.",
+      "Teaching: programming and robotics workshops for children, and integral yoga.",
+      "Inditex: logistics, financial reporting and Zara.com ecommerce.",
+      "Softtek GDC Europe: projects for GE and Caixa Galicia.",
+      "Pionlabs (Brighton, UK): hotel booking and e-learning apps."
+    ]
+  },
+  "openSource": [
+    {
+      "name": "ZenWave SDK and ZenWave Platform",
+      "url": "https://www.zenwave360.io/",
+      "summary": [
+        "I created ZenWave SDK to think about software, talk about it and validate it before writing any code. ZDL compresses the design of a service until it fits in your head, and the SDK generates the parts the model already implies: the boring ones. Four years in production, open source from day one, and paid for by the time it saved me and my teams.",
+        "ZenWave Platform takes that further into an architectural world model: a connected graph of knowledge, with REST and Async APIs, lightweight DSLs for EventStorming and Domain Modeling, and the code that implements them. Every link is optional, so a team can start from the APIs it already has. Building the Platform with coding agents is also where I push software engineering practices.",
+        "Both turn years of engineering and governance practice into something a team can pick up and reuse."
+      ]
+    },
+    {
+      "name": "Arcadia Editions",
+      "url": "https://github.com/arcadia-editions",
+      "summary": [
+        "Public playground and idea lab for event-driven governance and ZenWave Platform. A fictional retailer modelled end to end: AsyncAPI and OpenAPI contracts, topic and channel conventions, provider and client perspectives, and the pipelines that turn them into running services.",
+        "Like the Platform, it is built with coding agents, and the reasoning behind each decision is published as an article series at ivangsa.com/articles/arcadia."
+      ]
+    },
+    {
+      "name": "KarateIDE",
+      "url": "https://github.com/ZenWave360/karate-ide",
+      "summary": "Visual Studio Code extension for KarateDSL and OpenAPI contract testing."
+    },
+    {
+      "name": "AppFuse + GWT",
+      "url": "https://github.com/appfuse",
+      "hideInCompact": true,
+      "summary": "Contributor to the AppFuse project and its GWT integration."
+    }
+  ],
+  "selectedTalks": [
+    {
+      "title": "Event-Driven Architectures with Spring Modulith and AsyncAPI",
+      "event": "Spring I/O",
+      "year": "2025"
+    },
+    {
+      "title": "Arquitecturas EDA con Spring Modulith y AsyncAPI",
+      "event": "Codemotion",
+      "year": "2025"
+    },
+    {
+      "title": "Practical Event Storming with AsyncAPI v3 & ZenWave SDK",
+      "event": "AsyncAPI Conf on Tour Madrid",
+      "year": "2023"
+    }
+  ],
+  "skills": [
+    {
+      "category": "Core",
+      "items": [
+        "Java",
+        "Kotlin / KMP",
+        "Spring (Boot, Cloud, Data, Modulith)",
+        "Apache Kafka",
+        "AsyncAPI",
+        "Avro",
+        "OpenAPI"
+      ]
+    },
+    {
+      "category": "Practices",
+      "items": [
+        "Domain-Driven Design",
+        "API-First",
+        "EventStorming",
+        "Event-driven architecture",
+        "Event-Driven Modular Monoliths",
+        "API governance",
+        "Contract testing"
+      ]
+    },
+    {
+      "category": "Also",
+      "items": [
+        "JPA",
+        "MongoDB",
+        "Node.js",
+        "Microservices",
+        "KarateDSL",
+        "Coding agents / MCP"
+      ]
+    }
+  ],
+  "certifications": [
+    {
+      "title": "Google Cloud Certified Professional Cloud Architect",
+      "issuer": "Google Cloud"
+    }
+  ],
+  "community": [
+    "AsyncAPI Ambassador and member of the AsyncAPI Technical Steering Committee.",
+    "Organizer and speaker at AsyncAPI Conference on Tour, Madrid.",
+    "Speaker at Spring I/O and Codemotion."
+  ],
+  "communityCompact": [
+    "Organizer and speaker at AsyncAPI Conference on Tour, Madrid."
+  ],
+  "education": [
+    {
+      "title": "Seminar on Complex Problem Solving (J. Recuenco)",
+      "institution": "UNIR",
+      "period": "2024"
+    },
+    {
+      "title": "Master in Mental Training",
+      "institution": "Scandinavian International University",
+      "period": "2014 to 2016",
+      "hideInCompact": true
+    },
+    {
+      "title": "University Expert in Programming, 3D Design and Robotics",
+      "institution": "UNIR",
+      "period": "2015"
+    },
+    {
+      "title": "Degree in Social and Cultural Anthropology",
+      "institution": "UNED",
+      "period": "2009 to 2012"
+    },
+    {
+      "title": "HNC in Software Engineering",
+      "institution": "South Thames College, London",
+      "period": "2003 to 2004"
+    },
+    {
+      "title": "Degree in Economics and Business",
+      "institution": "Universidade da Coruña",
+      "period": "1995 to 2001"
+    }
+  ],
+  "_personalNote": "Rendered only in the compact channel: the private CV and the PDF. The public web CV omits this section.",
+  "personal": [
+    "I came to software from economics, by way of two and a half years in the UK, where I earned an HNC in Software Engineering at a further education college in a multicultural neighbourhood of south London. Passing that admission interview is still one of my proudest achievements."
+  ],
+  "languages": [
+    {
+      "language": "Spanish",
+      "level": "Native"
+    },
+    {
+      "language": "Galician",
+      "level": "Native"
+    },
+    {
+      "language": "English",
+      "level": "Professional working proficiency"
+    }
+  ]
+}

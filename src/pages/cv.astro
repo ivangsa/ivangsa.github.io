@@ -1,0 +1,19 @@
+---
+import CvDocument from '../components/CvDocument.astro';
+import BaseLayout from '../layouts/BaseLayout.astro';
+import { getCv, isPrivate } from '../lib/cv';
+
+/**
+ * The published CV. Public by default; `npm run cv:build` sets CV_PRIVATE=1
+ * and renders the full version here instead. See also /cv.private, the
+ * dev-only route that always shows the private version.
+ */
+const cv = getCv();
+---
+
+<BaseLayout
+	title="CV | Ivan Garcia Sainz-Aja"
+	description="Curriculum vitae of Ivan Garcia Sainz-Aja: event-driven architecture, API governance, AsyncAPI and Kafka."
+>
+	<CvDocument cv={cv} showContact={isPrivate} compact={isPrivate} />
+</BaseLayout>
