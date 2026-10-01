@@ -24,3 +24,7 @@ pnpm-debug.log*
 .idea/
 
 .mcp_data/
+
+# private CV overlay and its render (never commit)
+cv.private.json
+dist-private/
