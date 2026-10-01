@@ -1,0 +1,36 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 760 640" role="img" aria-labelledby="title desc">
+  <title id="title">From API release to Event Catalog</title>
+  <desc id="desc">A release in an API repository updates the architecture manifest, then rebuilds the Event Catalog.</desc>
+  <style>
+    .stage { fill: #1b2a33; }
+    .label { fill: #f4efe6; font-family: Georgia, "Times New Roman", serif; font-size: 20px; font-weight: 700; }
+    .meta { fill: #c9bba8; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+    .arrow { stroke: #c47b2b; stroke-width: 2.5; fill: none; }
+    .event { fill: #c47b2b; font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; font-size: 13px; }
+  </style>
+
+  <rect class="stage" x="90" y="16" width="580" height="132" rx="10"/>
+  <text class="label" x="370" y="62" text-anchor="middle">API repository</text>
+  <text class="meta" x="370" y="90" text-anchor="middle">orders-checkout-api</text>
+  <text class="meta" x="370" y="114" text-anchor="middle">artifact-release.yml</text>
+
+  <path class="arrow" d="M370 148 L370 198"/>
+  <polygon fill="#c47b2b" points="370,206 364,192 376,192"/>
+  <text class="event" x="386" y="182">artifact-released</text>
+
+  <rect class="stage" x="90" y="214" width="580" height="154" rx="10"/>
+  <text class="label" x="370" y="262" text-anchor="middle">Architecture manifest</text>
+  <text class="meta" x="370" y="290" text-anchor="middle">arcadia-editions-architecture</text>
+  <text class="meta" x="370" y="314" text-anchor="middle">zenwave-architecture.yml</text>
+  <text class="meta" x="370" y="338" text-anchor="middle">update-architecture-manifest.yml</text>
+
+  <path class="arrow" d="M370 368 L370 418"/>
+  <polygon fill="#c47b2b" points="370,426 364,412 376,412"/>
+  <text class="event" x="386" y="402">api-updated</text>
+
+  <rect class="stage" x="90" y="434" width="580" height="154" rx="10"/>
+  <text class="label" x="370" y="482" text-anchor="middle">Event Catalog</text>
+  <text class="meta" x="370" y="510" text-anchor="middle">arcadia-event-catalog</text>
+  <text class="meta" x="370" y="534" text-anchor="middle">update-catalog.yml</text>
+  <text class="meta" x="370" y="558" text-anchor="middle">event-catalog-content/</text>
+</svg>
