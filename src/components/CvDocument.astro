@@ -469,6 +469,14 @@ const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').repl
 		.org {
 			font-size: 9pt;
 		}
+
+		/* Screen `dd` is --text-sm (~10.5pt). At that size Core wraps OpenAPI
+		   onto a second line. Combined with the extra skill group, that orphans
+		   the last Current bullet on page 2. A hair under the 10pt body keeps
+		   Core and the AI line on one line each. */
+		dd {
+			font-size: 9.5pt;
+		}
 	}
 
 	a {
@@ -526,12 +534,14 @@ const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').repl
 			font-size: 18pt;
 		}
 
+		/* Tighter than the previous 0.5/0.35 rem: the extra skill group was
+		   enough to push Current's last bullet onto page 2. */
 		.cv h2 {
 			font-size: 11.5pt;
 			border-bottom: 1px solid #999;
-			margin-top: 0.5rem;
-			margin-bottom: 0.35rem;
-			padding-bottom: 0.15rem;
+			margin-top: 0.3rem;
+			margin-bottom: 0.22rem;
+			padding-bottom: 0.12rem;
 		}
 
 		.cv h3 {
@@ -539,11 +549,11 @@ const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').repl
 		}
 
 		.cv section {
-			margin-top: 0.3rem;
+			margin-top: 0.18rem;
 		}
 
 		.cv p {
-			margin: 0 0 0.25rem;
+			margin: 0 0 0.18rem;
 		}
 
 		.cv ul {
@@ -559,7 +569,7 @@ const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').repl
 		}
 
 		.cv .skill-group {
-			margin-bottom: 0.35rem;
+			margin-bottom: 0.15rem;
 		}
 
 		/* The label costs a whole line per group when it sits above the tags.

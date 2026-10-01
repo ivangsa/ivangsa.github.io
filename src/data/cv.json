@@ -201,8 +201,18 @@
         "EventStorming",
         "Event-driven architecture",
         "Event-Driven Modular Monoliths",
+        "Hexagonal / Clean Architecture",
         "API governance",
         "Contract testing"
+      ]
+    },
+    {
+      "category": "AI-assisted development",
+      "items": [
+        "Spec-Driven Development (GitHub Spec Kit)",
+        "Claude Code",
+        "Codex",
+        "Grok Build"
       ]
     },
     {
@@ -211,9 +221,9 @@
         "JPA",
         "MongoDB",
         "Node.js",
+        "TypeScript",
         "Microservices",
-        "KarateDSL",
-        "Coding agents / MCP"
+        "KarateDSL"
       ]
     }
   ],
