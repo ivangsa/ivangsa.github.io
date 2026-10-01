@@ -119,4 +119,4 @@ That is what the [ZenWave Platform](https://www.zenwave360.io/) is built to do. 
 
 Today people navigate it to understand the system, and the Event Catalog website can make it visible to the whole organization. Coding agents can use it as context to read and fetch contents, so they work with the contracts that exist instead of inventing new ones.
 
-And because the manifest already knows every contract and every document each service owns, it can drive the next steps of the series, beginning with [Publishing to Apicurio and Generating an Event Catalog](/articles/arcadia/012-publishing-to-apicurio-and-event-catalog), where the same registry the manifest resolves against becomes the place the whole organization goes to discover what exists.
+And because the manifest already knows every contract and every document each service owns, it can drive the next steps of the series, beginning with [Arcadia Architecture Manifest meets Event Catalog](/articles/arcadia/012-arcadia-architecture-manifest-meets-event-catalog), where that same file becomes the site the whole organization can browse.
