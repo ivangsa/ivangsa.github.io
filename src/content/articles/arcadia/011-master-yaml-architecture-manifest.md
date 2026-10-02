@@ -29,7 +29,7 @@ You can write the first version by hand, but after that the tooling keeps it cur
 
 The manifest is an index of all your service artifacts. It describes the architecture as a tree of domains, subdomains and services. For each service it points at the artifacts that service already owns: the ZDL model, the OpenAPI contract, the provider and client AsyncAPI contracts, and the documents that travel with them, like the SUMMARY and the CHANGELOG. Every entry points to a file in the service's own repository, the same file the code is generated from, so the manifest never restates a schema, a channel or a topic. It only says where each one lives and how it fits into the larger whole.
 
-[zenwave-manifest](https://github.com/ZenWave360/zenwave-manifest), an open-source Kotlin Multiplatform library, contains the `json-schema` that validates the manifest, the rules to resolve each artifact type from different sources (`workspace`, `git`, `http`, `maven`, `artifactory`, `apicurio-registry`...), and utility functions to fetch the actual content of each file.
+[zenwave-architecture](https://github.com/ZenWave360/zenwave-architecture), an open-source Kotlin Multiplatform library, contains the `json-schema` that validates the manifest, the rules to resolve each artifact type from different sources (`workspace`, `git`, `http`, `maven`, `artifactory`, `apicurio-registry`...), and utility functions to fetch the actual content of each file.
 
 Here is the Orders Checkout corner of the Arcadia Editions manifest.
 
