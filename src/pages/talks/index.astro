@@ -6,7 +6,8 @@ const talks = (await getCollection('talks')).sort((a, b) => b.data.date.valueOf(
 
 function getYouTubeId(url: string | undefined) {
 	if (!url) return undefined;
-	return new URL(url).searchParams.get('v') ?? undefined;
+	const match = url.match(/[?&]v=([^&#]+)/) ?? url.match(/youtu\.be\/([^?&#]+)/);
+	return match ? match[1] : undefined;
 }
 
 function getTalkImage(talk: (typeof talks)[number]) {

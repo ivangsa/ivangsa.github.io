@@ -24,6 +24,7 @@ function getYouTubeId(url: string): string | null {
 }
 
 const videoId = entry.data.video ? getYouTubeId(entry.data.video) : null;
+const embeddedInBody = entry.body?.includes('youtube.com/embed') ?? false;
 ---
 
 <BaseLayout title={`${entry.data.title} | Talks`} description={entry.data.summary}>
@@ -47,16 +48,16 @@ const videoId = entry.data.video ? getYouTubeId(entry.data.video) : null;
 				{entry.data.event && <a href={entry.data.event}>Event</a>}
 			</div>
 		</header>
-		{videoId ? (
+		{videoId && !embeddedInBody ? (
 			<YouTubeEmbed videoId={videoId} />
-		) : (
+		) : !videoId && !embeddedInBody ? (
 			<p class="no-video">
 				Video not available.
 				{entry.data.event && (
 					<> <a href={entry.data.event}>View the event page</a>.</>
 				)}
 			</p>
-		)}
+		) : null}
 		<article class="content">
 			<Content />
 		</article>
@@ -116,5 +117,22 @@ const videoId = entry.data.video ? getYouTubeId(entry.data.video) : null;
 	.no-video {
 		color: var(--gray-400);
 		font-style: italic;
+	}
+
+	:global(.detail-page .content .youtube-embed) {
+		position: relative;
+		width: 100%;
+		padding-bottom: 56.25%;
+		height: 0;
+		overflow: hidden;
+	}
+
+	:global(.detail-page .content .youtube-embed iframe) {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		border: 0;
 	}
 </style>

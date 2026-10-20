@@ -48,16 +48,24 @@ const articlesEs = allArticles
 	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 	.slice(0, 3);
 
-const talks = (await getCollection('talks'))
-	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
-	.slice(0, 3);
+const allTalks = (await getCollection('talks')).sort(
+	(a, b) =>
+		b.data.date.valueOf() - a.data.date.valueOf() ||
+		a.id.localeCompare(b.id),
+);
+const featuredTalks = allTalks.filter((talk) => talk.data.featured).slice(0, 2);
+const talks = [
+	...featuredTalks,
+	...allTalks.filter((talk) => !talk.data.featured),
+].slice(0, 3);
 const projects = (await getCollection('projects'))
 	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf())
 	.slice(0, 3);
 
 function getYouTubeId(url: string | undefined) {
 	if (!url) return undefined;
-	return new URL(url).searchParams.get('v') ?? undefined;
+	const match = url.match(/[?&]v=([^&#]+)/) ?? url.match(/youtu\.be\/([^?&#]+)/);
+	return match ? match[1] : undefined;
 }
 
 function getTalkImage(talk: (typeof talks)[number]) {
