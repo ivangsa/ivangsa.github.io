@@ -115,10 +115,13 @@ function getTalkImage(talk: (typeof talks)[number]) {
 </Hero>
 
 				<picture>
-					<source srcset="/profile-picture-569x854.avif" type="image/avif">
-					<source srcset="/profile-picture-569x854.webp" type="image/webp">
-					
-					<img alt="Ivan Garcia Sainz-Aja" width="569" height="854" src="/profile-picture-569x854.png" loading="lazy"/>
+					<img
+						alt="Ivan Garcia Sainz-Aja speaking at Spring I/O 2025"
+						width="1200"
+						height="1600"
+						src="/SpringIO-2025_hero_12x16.webp"
+						loading="lazy"
+					/>
 				</picture>
 			</header>
 
@@ -355,9 +358,9 @@ function getTalkImage(talk: (typeof talks)[number]) {
 	}
 
 	header.hero img {
-		aspect-ratio: 3 / 4;
+		aspect-ratio: 4 / 3;
 		object-fit: cover;
-		object-position: top;
+		object-position: center;
 		border-radius: 1.5rem;
 		box-shadow: var(--shadow-md);
 	}
@@ -783,7 +786,8 @@ function getTalkImage(talk: (typeof talks)[number]) {
 
 		header.hero {
 			display: grid;
-			grid-template-columns: minmax(0, 6fr) minmax(320px, 4fr);
+			grid-template-columns: minmax(320px, 4fr) minmax(0, 6fr);
+			align-items: stretch;
 			padding-inline: 2.5rem;
 			gap: 3.75rem;
 		}
@@ -793,10 +797,22 @@ function getTalkImage(talk: (typeof talks)[number]) {
 			min-width: 0;
 		}
 
+		header.hero picture {
+			order: -1;
+			display: flex;
+			align-self: stretch;
+			min-height: 100%;
+		}
+
 		header.hero img {
-			aspect-ratio: 3 / 4;
+			display: block;
+			width: 100%;
+			min-height: 100%;
+			flex: 1 1 auto;
+			aspect-ratio: auto;
 			border-radius: 4.5rem;
 			object-fit: cover;
+			object-position: 38% center;
 		}
 
 		header.hero :global(h1.title) {

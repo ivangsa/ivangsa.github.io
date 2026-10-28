@@ -10,7 +10,10 @@ import { isAbsolute, join, resolve } from 'node:path';
  * Resolution order:
  *   1. $CV_PRIVATE_PATH  (a file, or a directory containing cv.private.json)
  *   2. ../PersonalDocuments/docs/cv/cv.private.json
- *   3. ./cv.private.json  (repo root, gitignored fallback)
+ *   3. ../PersonalDocuments.git/docs/cv/cv.private.json
+ *   4. ./cv.private.json  (repo root, gitignored fallback)
+ *
+ * Some checkouts retain the `.git` suffix in the working-tree directory.
  */
 
 const FILENAME = 'cv.private.json';
@@ -28,6 +31,7 @@ export function privatePathCandidates() {
 	}
 
 	candidates.push(resolve(repoRoot, '..', 'PersonalDocuments', 'docs', 'cv', FILENAME));
+	candidates.push(resolve(repoRoot, '..', 'PersonalDocuments.git', 'docs', 'cv', FILENAME));
 	candidates.push(join(repoRoot, FILENAME));
 
 	return candidates;

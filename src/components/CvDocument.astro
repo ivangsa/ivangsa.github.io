@@ -44,7 +44,7 @@ const talks = compact
 	: (await getCollection('talks')).sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
 
 const roleGroups = [
-	{ heading: 'Current', roles: cv.current },
+	{ heading: 'Latest', roles: cv.current },
 	{ heading: 'Selected experience', roles: cv.experience },
 ];
 
