@@ -15,7 +15,9 @@ video: https://youtu.be/S8Sknrdl1jM
 
 This is the second half of a pair of talks about API drift. [The first one](/talks/2026-10-26-stop-api-drift-generate-java-from-asyncapi) is about the code: you generate Java from AsyncAPI, and the compiler tells you when the implementation and the contract stop agreeing. This one is about the platform, the part of the API that lives in Kafka and that the compiler will never see.
 
-I wrote about the why some months ago, in [API First 360](/articles/2026-05-10-api-first-360-asyncapi-code-and-infrastructure/). In the talk I tell the same idea out loud, and then I show it running.
+> The open source toolkit behind this talk is [ZenWave AsyncAPI Ops](https://www.zenwave360.io/zenwave-sdk/plugins/asyncapi-ops/). It generates the Terraform for Kafka topics, schemas and ACLs from AsyncAPI.
+
+I wrote about the why some months ago, in [API First 360](/articles/api-first-360-asyncapi-code-and-infrastructure/). In the talk I tell the same idea out loud, and then I show it running.
 
 <div class="youtube-embed">
 <iframe src="https://www.youtube.com/embed/S8Sknrdl1jM" title="Stop API Drift: Provision Kafka from AsyncAPI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>

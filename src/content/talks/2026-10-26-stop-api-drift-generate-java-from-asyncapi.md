@@ -16,7 +16,9 @@ video: https://youtu.be/AwZoXxyQj9o
 
 This is the first of a pair of talks about API drift. This one is about the code: you generate Java from AsyncAPI, and the compiler tells you when the application still assumes the old contract. [The second one](/talks/2026-10-26-stop-api-drift-provision-kafka-from-asyncapi) is about the platform, the part of the API that lives in Kafka and that the compiler will never see.
 
-I wrote about the why some months ago, in [API First 360](/articles/2026-05-10-api-first-360-asyncapi-code-and-infrastructure/). In this talk I stay on the application side, and then I show the workflow running on a shopping cart.
+> The open source toolkit behind this talk is [ZenWave AsyncAPI Generator](https://www.zenwave360.io/zenwave-sdk/plugins/asyncapi-generator/). It generates the complete Java SDK from AsyncAPI: models, headers, typed producers, typed listeners and their Spring implementation.
+
+I wrote about the why some months ago, in [API First 360](/articles/api-first-360-asyncapi-code-and-infrastructure/). In this talk I stay on the application side, and then I show the workflow running on a shopping cart.
 
 <div class="youtube-embed">
 <iframe src="https://www.youtube.com/embed/AwZoXxyQj9o" title="Stop API Drift: Generate Java from AsyncAPI" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share" allowfullscreen></iframe>
