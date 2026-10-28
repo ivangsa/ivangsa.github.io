@@ -281,4 +281,4 @@ This architecture handles traffic routing and propagation cleanly. But it is wor
 
 These constraints are not flaws â€” they are deliberate scope decisions. The mechanism is intentionally minimal: one header, three modes, one filtering rule. That simplicity is what makes it uniformly adoptable across teams and technology stacks. But `PRODUCTION_ONLY` is not something every service should adopt by default. It is the protection mode for the existing production implementation of the same functionality being piloted, while consumers that are intentionally meant to see everything can stay on `ALL`.
 
-The companion post [Designing a header family for traffic segmentation: the decision process](/articles/2026-05-04-designing-header-family-traffic-segmentation) covers how we arrived at the header names and what alternatives were discarded along the way.
+The companion post [Designing a header family for traffic segmentation: the decision process](/articles/designing-header-family-traffic-segmentation) covers how we arrived at the header names and what alternatives were discarded along the way.

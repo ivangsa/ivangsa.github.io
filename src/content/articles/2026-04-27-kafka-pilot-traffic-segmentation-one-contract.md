@@ -16,7 +16,7 @@ readingTime: "12 min read"
 draft: true
 ---
 
-*Part 1 of 3: pilot-aware architecture in event-driven systems. Companion posts: [Part 2: why the header family looks like this](/articles/2026-05-04-designing-header-family-traffic-segmentation) Â· [Part 3: how propagation works across Kafka](/articles/2026-05-04-micrometer-baggage-kafka-pilot-context-propagation).*
+*Part 1 of 3: pilot-aware architecture in event-driven systems. Companion posts: [Part 2: why the header family looks like this](/articles/designing-header-family-traffic-segmentation) Â· [Part 3: how propagation works across Kafka](/articles/micrometer-baggage-kafka-pilot-context-propagation).*
 
 ---
 
@@ -363,6 +363,6 @@ The mechanism is intentionally minimal: one header, three modes, one filtering r
 
 ## In this mini-series: pilot-aware architecture in event-driven systems
 
-1. **[Traffic segmentation across REST and Kafka: one contract for canary, pilot, and blue/green](/articles/2026-04-27-kafka-pilot-traffic-segmentation-one-contract)** *(this post)*: the contract, the three modes, and the deployment playbooks
-2. **[Designing a header family for traffic segmentation: the decision process](/articles/2026-05-04-designing-header-family-traffic-segmentation)**: why the headers are named the way they are, and what was discarded
-3. **[The silent pilot-breaker: transparent context propagation across Kafka with Micrometer baggage](/articles/2026-05-04-micrometer-baggage-kafka-pilot-context-propagation)**: how Micrometer baggage propagates pilot context through agnostic services without application code
+1. **[Traffic segmentation across REST and Kafka: one contract for canary, pilot, and blue/green](/articles/kafka-pilot-traffic-segmentation-one-contract)** *(this post)*: the contract, the three modes, and the deployment playbooks
+2. **[Designing a header family for traffic segmentation: the decision process](/articles/designing-header-family-traffic-segmentation)**: why the headers are named the way they are, and what was discarded
+3. **[The silent pilot-breaker: transparent context propagation across Kafka with Micrometer baggage](/articles/micrometer-baggage-kafka-pilot-context-propagation)**: how Micrometer baggage propagates pilot context through agnostic services without application code
