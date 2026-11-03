@@ -107,4 +107,4 @@ When I was almost about to discontinue my efforts on ZenWave SDK and its first D
 
 But designing or understanding one bounded context at a time is not enough in this day and age of Agentic Engineering and the big design upfront required to take full advantage of agentic loops and Spec-Driven Development.
 
-We need a new companion language that can join together several bounded contexts in one or many business workflows. So stay tuned for the next article, because we are going to bring some structured output to process-level Event Storming workshops.
+We need a new companion language that can join together several bounded contexts in one or many business workflows. So stay tuned for the [next article](/articles/sdd-from-event-storming-to-a-model-your-agents-can-read/), because we are going to bring some structured output to process-level Event Storming workshops.
