@@ -36,6 +36,7 @@ export const collections = {
 		}),
 		schema: z.object({
 			title: z.string(),
+			titleHtml: z.string().optional(),
 			date: z.coerce.date(),
 			summary: z.string(),
 			tags: z.array(z.string()),

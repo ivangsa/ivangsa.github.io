@@ -58,7 +58,7 @@ function getArticleHref(article: CollectionEntry<'articles'>) {
 					})}
 				</time>
 			</p>
-			<h1>{entry.data.title}</h1>
+			<h1 set:html={entry.data.titleHtml ?? entry.data.title} />
 			{entry.data.showSummaryInArticleBody && <p>{entry.data.summary}</p>}
 			{entry.data.externalUrl && (
 				<p class="external-link">
@@ -116,6 +116,38 @@ function getArticleHref(article: CollectionEntry<'articles'>) {
 
 	h1 {
 		font-size: var(--text-3xl);
+	}
+
+	/* A same-color line through the middle of Rubik's "c" closes it into an "e".
+	   Keep the word upright and muted, and cross it with an ascending slash. */
+	h1 :global(s),
+	h1 :global(s i) {
+		font-style: normal;
+	}
+
+	h1 :global(s) {
+		position: relative;
+		display: inline-block;
+		text-decoration: none;
+		color: var(--gray-400);
+		padding-inline: 0.02em 0.08em;
+	}
+
+	h1 :global(s)::after {
+		content: "";
+		position: absolute;
+		left: -0.06em;
+		right: 0;
+		top: 0.64em;
+		height: 0.14em;
+		border-radius: 999px;
+		background: #e10600;
+		transform: translateY(-50%) rotate(-12deg);
+		pointer-events: none;
+	}
+
+	:global(:root.theme-dark) h1 :global(s)::after {
+		background: #ff2a2a;
 	}
 
 	header > p {

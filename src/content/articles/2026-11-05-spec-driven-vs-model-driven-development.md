@@ -1,14 +1,14 @@
 ---
 title: "Prose Specs vs Domain Models: Where Formal Verification Fits in Spec-Driven Development"
 summary: "Spec Kit, OpenSpec, BMAD and Doorstop put a lot of effort into keeping track of what the LLM interpreted from prose specs. The model-driven approach I use with ZenWave tries not to need that interpretation for most of the application. This is how both compare, and why only a structured model can be formally verified without going through an LLM."
-date: 2026-10-28
+date: 2026-11-05
 tags:
   - ddd
   - zenwave
   - architecture
   - ai
 featured: false
-featuredImage: assets/articles/2026-10-28-spec-driven-vs-model-driven-development.webp
+featuredImage: assets/articles/2026-11-05-spec-driven-vs-model-driven-development.webp
 featuredImageAlt: "Prose specifications interpreted by an LLM compared with structured domain models processed by deterministic generators and verifiers"
 readingTime: "8 min read"
 draft: true

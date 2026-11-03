@@ -1,13 +1,14 @@
 ---
-title: "How I Build with ZenWave and AI Agents"
+title: "Model Driven Development assisted by AI"
+titleHtml: "<s>Spec</s> Model Driven Development assisted by AI"
 summary: "Generating code with ZenWave SDK is cheap enough to experiment with, and AI agents make that loop even faster. This is the workflow I am using: discover the domain, model and prototype until the design fits, find what is missing with a gap report, plan the work, and let agents implement and verify it."
-date: 2026-10-18
+date: 2026-11-04
 tags:
   - ddd
   - zenwave
   - architecture
 featured: false
-featuredImage: assets/articles/2026-10-18-iterative-ai-assisted-model-driven-development.webp
+featuredImage: assets/articles/2026-11-04-iterative-ai-assisted-model-driven-development.webp
 featuredImageAlt: "Iterative, AI-assisted model-driven development with ZenWave: Research and Discovery, Iterative Model-Driven Prototyping, Gaps Report, Tasks and Kanban, and Agent Implementation and QA, with outputs for each stage and a continuous learning loop."
 readingTime: "5 min read"
 draft: true
@@ -17,7 +18,7 @@ In [A Software Engineering Hypothesis for the Age of Agents](/articles/a-softwar
 
 I wrote the full version as a page in the ZenWave docs: [Iterative, AI-Assisted Model-Driven Development with ZenWave SDK](https://www.zenwave360.io/docs/iterative-ai-assisted-development/). Here is the short version and why I think it works.
 
-![Seven steps of iterative, AI-assisted model-driven development with ZenWave: Research and Discovery, Model, Review and clarify, Generate with ZenWave SDK, Gaps Report, Tasks and Kanban, Agent implementation and QA, with loops to iterate until the design fits, run the gap report again, and keep learning](/assets/articles/2026-10-18-iterative-ai-assisted-workflow-vertical.webp)
+![Seven steps of iterative, AI-assisted model-driven development with ZenWave: Research and Discovery, Model, Review and clarify, Generate with ZenWave SDK, Gaps Report, Tasks and Kanban, Agent implementation and QA, with loops to iterate until the design fits, run the gap report again, and keep learning](/assets/articles/2026-11-04-iterative-ai-assisted-workflow-vertical.webp)
 
 ## Generating code should be cheap enough to experiment with it
 
