@@ -8,6 +8,8 @@ tags:
   - ddd
   - ai
 featured: false
+featuredImage: assets/articles/2026-11-05-sdd-two-loops-agentic-away-from-keyboard-loop.png
+featuredImageAlt: "Two loops side by side: on the left the human design loop, faded; on the right an orchestrator agent routes tasks from a board to implementer and reviewer agents while the human is away. The right loop is highlighted."
 readingTime: "5 min read"
 draft: true
 ---
@@ -27,6 +29,8 @@ Here the orchestrator starts by reading the whole approved spec:
 - and the generated code, if there is a generator for this stack.
 
 There is still prose in there, in the doc comments, the business policies of the ZDL and the ADRs. But there are no Markdown specs. The PRD and the research notes stayed upstream, in the HITL loop.
+
+![The orchestrator cycle: load the approved spec, pick a ready task, route it by difficulty, implement in a worktree, review in batches, integrate or fix first, and stop with a proposal when the model is wrong](/assets/articles/2026-11-05-sdd-two-loops-agentic-away-from-keyboard-loop/orchestrator-cycle.png)
 
 ## The task board
 
@@ -75,7 +79,7 @@ It writes a review report, with the range of commits it reviewed:
 
 Commits: 4f1c2a9..b77e0d3
 Scope: vertical slice payments-processing
-Verdict: FIX FIRST
+Verdict: FIX
 
 ## Findings
 
@@ -84,7 +88,7 @@ Verdict: FIX FIRST
 - R-2 · T-09 · no test for the `failed` retry inside the reservation window
 ```
 
-The report is always committed with the code. If the verdict is FIX FIRST, the orchestrator delivers the affected tasks again to the implementers, with the report.
+The report is always committed with the code. If the verdict is FIX, the orchestrator delivers the affected tasks again to the implementers, with the report.
 
 The reviewer can also write some regression tests, but that is optional, and those tests must be covered by the model or the test data. On a project without models, a reviewer that finds edge cases is very useful. With models, an edge case the model does not cover is a finding for me, not a test.
 
@@ -118,7 +122,7 @@ The proposal is written in the modeling language, so reviewing it takes me a min
 The batch is done when:
 
 - every task of the approved board is done;
-- the batch review is clean, with no FIX FIRST;
+- the batch review is clean, with no FIX;
 - the full suite, or the vertical slices, are green;
 - the structural assertions and the approved test data have not changed since the baseline;
 - and there are no open proposals.
@@ -131,4 +135,4 @@ What I get back is evidence: the review reports, the test results per branch, th
 
 Some of this is optional. The generator, the board backend, routing by difficulty and the reviewer regression tests are things I use, not rules. What I would not drop is that the model is the spec, agents don't edit it, and agents don't decide what passing means.
 
-The whole method, both loops, is in the ZenWave docs: [Two Loops: Model-Driven Development with Agents](https://www.zenwave360.io/docs/two-loops-model-driven-development/).
+The whole method, both loops, is in the ZenWave docs: [Two Loops: Model-Driven Development with Agents](https://www.zenwave360.io/docs/ai-assisted-model-driven-development/).

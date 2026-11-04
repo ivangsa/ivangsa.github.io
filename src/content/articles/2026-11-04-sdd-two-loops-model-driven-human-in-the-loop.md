@@ -8,6 +8,8 @@ tags:
   - ddd
   - ai
 featured: false
+featuredImage: assets/articles/2026-11-04-sdd-two-loops-model-driven-human-in-the-loop.png
+featuredImageAlt: "Two loops side by side: on the left a human, assisted by an agent, designs a domain model and reviews its diagrams; on the right agents work alone. The left loop is highlighted."
 readingTime: "5 min read"
 draft: true
 ---
@@ -50,6 +52,8 @@ There are two kinds of review going on in this loop.
 
 **I review projections of the model.** I don't review the model only by reading it. ZenWave Platform for IntelliJ and VS Code lets me explore what the model derives: the EventFlow diagram, one sequence diagram for every alternative branch of a ZFL flow, class diagrams and state machines for each aggregate, the commands and the domain events, the OpenAPI and AsyncAPI contracts.
 
+![One model, many projections: EventFlow, sequence diagrams per branch, class diagrams and state machines, OpenAPI, AsyncAPI, and generated code with tests](/assets/articles/2026-11-04-sdd-two-loops-model-driven-human-in-the-loop/projections.png)
+
 And the code is just another projection. ZenWave SDK generates the services, the APIs, the event handlers and a full set of tests. Those tests don't have proper test data or complete assertions yet, but they are a very good entry point: I can start a debug session, or write a few lines by hand, and see if what the model produces is complete enough for the requirements.
 
 When something is wrong I change the model and generate again. Early on I just throw the generated code away.
@@ -57,6 +61,8 @@ When something is wrong I change the model and generate again. Early on I just t
 ## The gate
 
 The HITL loop ends when a set of flows is ready to hand over. Not the whole system at once: the methodology is iterative, and while agents implement one batch I can keep designing the next one.
+
+![The gate between the two loops: a batch passes from Shape to Implement & Verify only when it is valid, reviewed, covered by test data, split into tasks and approved](/assets/articles/2026-11-04-sdd-two-loops-model-driven-human-in-the-loop/the-gate.png)
 
 A batch is ready when it is:
 
@@ -78,4 +84,4 @@ But when the generator matches your stack, it changes how much is left for the a
 
 On the other side of the gate, the agents take over: an orchestrator reads the approved models, picks tasks, routes them to implementer and reviewer subagents, and hands back evidence instead of a diff to read.
 
-That is the [next article](/articles/sdd-two-loops-agentic-away-from-keyboard-loop/). And if you want the whole method on one page, it is in the ZenWave docs: [Two Loops: Model-Driven Development with Agents](https://www.zenwave360.io/docs/two-loops-model-driven-development/).
+That is the [next article](/articles/sdd-two-loops-agentic-away-from-keyboard-loop/). And if you want the whole method on one page, it is in the ZenWave docs: [Two Loops: Model-Driven Development with Agents](https://www.zenwave360.io/docs/ai-assisted-model-driven-development/).
