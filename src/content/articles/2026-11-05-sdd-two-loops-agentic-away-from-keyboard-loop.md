@@ -1,6 +1,6 @@
 ---
 title: "Spec-Driven Development Two Loops: Agentic Away from Keyboard Loop"
-summary: "How the autonomous agentic loop works when the spec is a set of approved models: an orchestrator, a task board, implementer and reviewer subagents, and what happens when the model turns out to be wrong."
+summary: "How to build an autonomous agentic AFK loop based on your domain models and task list: an orchestrator, a task board, implementer and reviewer subagents, and what to do if the model turns out to be wrong."
 date: 2026-11-05
 tags:
   - zenwave
@@ -9,130 +9,127 @@ tags:
   - ai
 featured: false
 featuredImage: assets/articles/2026-11-05-sdd-two-loops-agentic-away-from-keyboard-loop.png
-featuredImageAlt: "Two loops side by side: on the left the human design loop, faded; on the right an orchestrator agent routes tasks from a board to implementer and reviewer agents while the human is away. The right loop is highlighted."
+featuredImageAlt: "Software development in two loops: Human in the loop and Away From Keyboard loop. This one is for the AFK loop"
 readingTime: "5 min read"
 draft: true
 ---
 
 This is the second half of [Spec-Driven Development Two Loops](/articles/sdd-two-loops-model-driven-human-in-the-loop/). The first half ended at the gate, with an approved batch of models, test data and tasks. This one is about what agents do with it while I am away from the keyboard.
 
-## What the loop starts from
+## The agent loop starting point
 
-An agentic loop is an orchestrator that picks work, hands it to subagents, checks the result, and repeats until everything is done or it is blocked.
+An agentic loop is an orchestrator that picks tasks, routes them to implementer and reviewer subagents, waits for results, and repeats until every task is done or blocked.
 
-Here the orchestrator starts by reading the whole approved spec:
+The orchestrator starts by reading all approved spec artifacts:
 
-- the models: ZFL flows, one ZDL per bounded context, OpenAPI and AsyncAPI;
-- the ADRs;
-- the validated test data for each use case;
-- the task board;
-- and the generated code, if there is a generator for this stack.
+- The models: ZFL flows, ZDLs for each bounded context, OpenAPI and AsyncAPI definitions.
+- ADRs already validated
+- Test data for each use case.
+- Task board.
+- Generated code, if there is a generator for this stack.
 
-There is still prose in there, in the doc comments, the business policies of the ZDL and the ADRs. But there are no Markdown specs. The PRD and the research notes stayed upstream, in the HITL loop.
+ZFL and ZDL are structured models that read familiar to any technical person, and can be understood by LLMs based on their semantics. This is where we avoid most of the Markdown prose typical of SDD.
 
-![The orchestrator cycle: load the approved spec, pick a ready task, route it by difficulty, implement in a worktree, review in batches, integrate or fix first, and stop with a proposal when the model is wrong](/assets/articles/2026-11-05-sdd-two-loops-agentic-away-from-keyboard-loop/orchestrator-cycle.png)
+![Orchestrator loop: task, route, implement, review, integrate and repeat](/assets/articles/2026-11-05-sdd-two-loops-agentic-away-from-keyboard-loop/orchestrator-cycle.png)
 
-## The task board
+## Creating the Kanban Board
 
-The tasks were split during HITL, by me with an agent helping. That agent started as the [zenwave-gap-report](https://github.com/ZenWave360/zenwave-sdd/tree/main/skills/zenwave-gap-report) skill: it compared the models with the code ZenWave SDK generated and listed what the generator had left for the developer, like mappers, service method bodies and tests.
+This is an AI-assisted / human-approved task. The board itself can live anywhere: a Markdown list, a folder with one file per task, Jira, GitHub issues, Linear. I use a Markdown list with this convention for the checkboxes, which is as good as any other: `[ ]` pending, `[/]` in progress, `[\]` in review, `[x]` done, `[!]` blocked.
 
-That made sense when the generator was a given, but it is not anymore. What I need now is a task list derived from the approved model: based on the generated code when there is some, and from a blank slate when there isn't.
+If you use ZenWave SDK, the [zenwave-gap-report](https://github.com/ZenWave360/zenwave-sdd/tree/main/skills/zenwave-gap-report) skill can help identify gaps in your project that need polishing or further implementation.
 
-The board itself can live anywhere: a Markdown list, a folder with one file per task, Jira, GitHub issues, Linear. What matters is what each task contains:
+If you are evolving an existing system or you have generated code with ZenWave SDK, you can ask an agent to analyze your spec and existing code and create a Kanban Board task list.
 
-```yaml
-id: T-07
-title: Implement authorizePayment
-module: payments-processing
-model:
-  - flows/place-order.zfl:84        # when OrderCreated do authorizePayment
-  - payments-processing/domain-model.zdl:121
-testData: test-data/place-order/authorize-payment/
-difficulty: high                    # three outcomes, external processor
-blockedBy: [T-03, T-05]
+Use task batches to group review tasks:
+
+```markdown
+## Place Order: batch 1
+
+- [x] T-03 · Listen to OrderCreated · orders-checkout · mechanical
+      model: flows/place-order.zfl:82
+- [x] T-05 · Implement reserveStock · catalog-inventory · bounded
+      model: flows/place-order.zfl:84, catalog-inventory/domain-model.zdl:98
+- [/] T-07 · Implement authorizePayment · payments-processing · multiple sources
+      model: flows/place-order.zfl:86, payments-processing/domain-model.zdl:121
+      test data: test-data/place-order/authorize-payment/
+      blocked by: T-03, T-05
+- [!] T-08 · Confirm stock reservations · catalog-inventory · bounded
+      model: catalog-inventory/domain-model.zdl:121
+      blocked: model gap, see proposal P-01
+- [ ] T-09 · Map PaymentAuthorized to order status · orders-checkout · mechanical
+      blocked by: T-07
 ```
 
-The task does not describe the behavior in prose. It points at the lines of the model that already describe it.
+Only the orchestrator writes to the board. Subagents report back to the orchestrator.
 
-Only the orchestrator writes to the board. Subagents report back to it.
+## Routing tasks to subagents
 
-## Pick and route
+Because I personally use multiple subscriptions, I instruct the orchestrator to route each task to a different model and agent based on its difficulty. From less to more difficult:
 
-The orchestrator picks the next task whose blockers are done, and routes it to a model according to its difficulty. Wiring an event listener or a mapper does not need the same model as `authorizePayment`, with its three outcomes and an external payment processor.
+| Difficulty | What it looks like | Example |
+|---|---|---|
+| **Mechanical** | Follows a pattern that already exists in the code. No decisions necessary. | Mappers, wiring an event listener (T-03, T-09) |
+| **Well defined** | One model element in one module, fully described by the model and the test data. | A service method with a single outcome |
+| **Bounded** | Several branches or a state machine, but everything it needs is inside one module. | `reserveStock` with its outcomes (T-05) |
+| **Multiple sources** | Needs to put together several models, modules, ADRs or an external API. | `authorizePayment`: the ZFL outcomes, the ZDL, the AsyncAPI, the retry ADR and the payment processor (T-07) |
+| **Code review** | A whole batch against the models and the test data, running the full suite. | The batch review |
 
-## Implement
+Cheaper and faster models go at the top of the table, and the strongest ones at the bottom. Reviews get the strongest model, because a finding that slips through costs more than the review.
 
-Each implementer subagent works on its own worktree. It reads the task, the model lines it points at, the ADRs and the test data, and nothing else.
 
-It runs only the focused tests for its task, not the entire suite.
+## Implementer subagents
 
-The expected results are not its to decide. The structural assertions come from the model: the events each outcome emits, the state transitions, the API responses. The expected values come from the test data I validated at the gate. When a test fails, the agent fixes the code, never the expectation.
+Implementer subagents work on their own worktree. The orchestrator passes as much context as needed, then it instructs the implementer to read the task, the model lines it points at, the ADRs and the test data.
+
+If you want to speed up development, implementers should run only the focused tests for their task, not the entire suite. This will save you a lot of waiting time.
+
+All required information should come from the model, the business rules, ADRs and test data.
 
 ## Review, in batches
 
-Reviews don't happen per task, they happen per batch. The reviewer subagent runs the entire suite, or the vertical slice of one module if the system is a modular monolith, and checks the changes against the model lines and the test data the tasks point at.
+As your project grows, so do its build and test times. It's better to review tasks in batches or you will spend most of the agents' time waiting for build and test results.
 
-It writes a review report, with the range of commits it reviewed:
+Use your strongest models for code reviews, and never use one model to review code written by itself, even if it is in a clean session. They tend to have different biases towards implementations and patterns.
 
-```markdown
-# Review: payments-processing, batch 2
-
-Commits: 4f1c2a9..b77e0d3
-Scope: vertical slice payments-processing
-Verdict: FIX
-
-## Findings
-
-- R-1 · T-07 · the `declined` outcome emits PaymentFailed instead of
-  PaymentDeclined (flows/place-order.zfl:88)
-- R-2 · T-09 · no test for the `failed` retry inside the reservation window
-```
-
-The report is always committed with the code. If the verdict is FIX, the orchestrator delivers the affected tasks again to the implementers, with the report.
-
-The reviewer can also write some regression tests, but that is optional, and those tests must be covered by the model or the test data. On a project without models, a reviewer that finds edge cases is very useful. With models, an edge case the model does not cover is a finding for me, not a test.
-
-## When the model is wrong
+## When your Model is wrong
 
 Sometimes the implementation shows that the approved model is wrong or incomplete. In the Arcadia Editions catalog-inventory service, the ZDL says there is one stock reservation per order line, but `confirmStockReservation(id)` takes the id of one single reservation, and an order has many.
 
-The agent does not work around it in code, and it never edits the model. It marks the task as blocked by the model, writes a proposal with one or more solutions, and the orchestrator moves on to other tasks that are ready.
+Agents should never edit model files on their own.
 
-```diff
-// Option A: confirm all the reservations of an order
--    confirmStockReservation(id) StockReservation withEvents StockReservationConfirmed
-+    confirmStockReservations(ConfirmStockReservationsInput) withEvents StockReservationsConfirmed
+You can instruct your agents to block the task with at least one proposal: why they need to block it and what would unblock it. The proposal is a report attached to the blocked task, not a change to the model:
 
-+input ConfirmStockReservationsInput {
-+    orderId String required
-+}
+```markdown
+## P-01 · T-08 blocked: model gap
 
-// Option B: one reservation per order, with lines
- entity StockReservation {
--    orderLineId String required
-+    orderId String required
-+    lines StockReservationLine[]
- }
+Problem: catalog-inventory/domain-model.zdl:27 says one reservation per
+order line, but confirmStockReservation(id) (domain-model.zdl:121) takes
+the id of a single StockReservation. An order has many.
+
+Evidence: test place-order/confirm-stock, order with 3 lines.
+
+Options:
+- A: confirm all the reservations of an order in one command, by orderId.
+- B: one StockReservation per order, with its lines inside.
 ```
 
-The proposal is written in the modeling language, so reviewing it takes me a minute. I choose an option or adjust it, update the model, generate again and approve the new baseline. Then the orchestrator reconciles the new generated code with the code that was already merged, and the blocked tasks are ready again.
+The report points at the lines of the model, so reviewing it takes me a few minutes. I choose an option or come up with a different one, and I change the model myself, back in the HITL loop. Then I generate again and approve the new baseline. The orchestrator reconciles the new generated code with the code that was already merged, and the blocked tasks are ready again.
 
-## When the batch is done
+## Exiting the loop
 
-The batch is done when:
+The AFK loop is done when:
 
 - every task of the approved board is done;
-- the batch review is clean, with no FIX;
+- the batch review is clean, with no FIX tasks;
 - the full suite, or the vertical slices, are green;
 - the structural assertions and the approved test data have not changed since the baseline;
 - and there are no open proposals.
 
 As an extra validation, once the board is cleared the reviewer can run the task-list agent again over the result. If it comes back empty, nothing is missing between the model and the code. It can also produce a traceability table: each ZFL step and ZDL operation, the code that implements it, and the test that covers each branch.
 
-What I get back is evidence: the review reports, the test results per branch, the open proposals if any, and the running application. I can read code where I want to, but I don't need to read every diff to know whether the batch does what I approved.
 
-## Not a framework
+## Not a framework, an open companion to the Model-Driven HITL loop
 
-Some of this is optional. The generator, the board backend, routing by difficulty and the reviewer regression tests are things I use, not rules. What I would not drop is that the model is the spec, agents don't edit it, and agents don't decide what passing means.
+This loop is not a framework you have to adopt. It is a companion to the Model-Driven HITL loop, and you can run it with whatever you already use: your own orchestrator and agents, your own task board, your own models and subscriptions. What it needs from the HITL loop is what came out of the gate: approved models, validated test data and an approved task list.
 
-The whole method, both loops, is in the ZenWave docs: [Two Loops: Model-Driven Development with Agents](https://www.zenwave360.io/docs/ai-assisted-model-driven-development/).
+Most of what I described is how I do it today, not a rule. The code generator, where the board lives, routing by difficulty and the reviewer regression tests are all optional. There are only three things I would not drop: the model is the spec, AFK agents never edit it, and they do not decide what passing test cases should look like.
