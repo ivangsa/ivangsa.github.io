@@ -17,7 +17,7 @@ draft: false
 
 In the first part of this series I talked about a problem that every team doing spec-driven development with agents will hit sooner or later. LLMs write Markdown faster than you can read it. And when you can not read and validate the spects, decisions slip into the implementation without anyone approving them, and what is worse, because the LLM believes it was aproved it took it as gospel, and it may as well spill all over the design and implementation.
 
-My answer to that problem is not new. It is model-driven development. Instead of describing the system in prose, you describe it with a model: the entities, the commands, the events, the APIs. You bring structure and concision.
+My answer to that problem is not new. It is **model-driven development**. Instead of describing the system in prose, you describe it with a model: the `entities`, the `commands`, the `events`, the APIs. You bring structure and concision.
 
 And this fits spec-driven development very well. The spec captures the design and the decisions. And a model does exactly that, but in a compact form arround the building blocks of Domain Driven Design: aggregates, services, commands, domain events.
 
@@ -69,11 +69,13 @@ when OrderCreated do authorizePayment {
 }
 ```
 
-The comment is the business rule. The block under it is the same rule in a form a tool can follow.
+The comment text is the business rule, `when OrderCreated do authorizePayment` is th id. The policy body is what the command will perform as part of this rule. It may `call` other services and wait for a response, return a `response` and/or `emits` domain events.
 
-`authorizePayment` places the hold. The processor reserves the funds. Nothing has been transferred to us yet.
+`OrderCreated` is the event the business rule matches against.
 
-`@outcome` names each branch. `authorized` means the hold is in place. `declined` means the processor rejected the card outright: we will not retry, and the customer needs to act. `failed`, marked `@failure`, means a technical error on our side or the processor's. We retry that one inside the reservation window.
+`authorizePayment` is the command to exec when the business rule is true. Here it reserves the funds. Nothing has been transferred to us yet.
+
+`@outcome` names each branch. `authorized` means the payment hold is in place. `declined` means the processor rejected the card outright: we will not retry, and the customer needs to act. `failed`, marked `@failure`, means a technical error on our side or the processor's. We retry that one inside the reservation window.
 
 The **command** `authorizePayment` and the **service** that runs it `PaymentsProcessing.PaymentsProcessingService` are declared separately. The reason is that the business flow definitions comes first as part of an EventStorming session, and `service` is optional while the flow is being discovered.
 
@@ -84,7 +86,7 @@ Once `services` are being discovered the ZFL can give as new view: all the comma
 
 ## Easier to read, for humans and for LLMs
 
-Reading and understanding these models, by a human architect or by an LLM, is way easier than reading the big amount of markdown files that LLMs can generate.
+Reading and understanding these models, by a human architect or by an LLM, is way easier than reading the big amount of markdown files that LLMs can generate. I have read and wrote many ZDL files in production projects. ZFL models still need to prove their place in production, but all they seem to hold very well all the proof tests I've made.
 
 They were inpired by [JHipster JDL](https://www.jhipster.tech/jdl/getting-started) syntax, to be developer friendly, flexible and very compact.
 
