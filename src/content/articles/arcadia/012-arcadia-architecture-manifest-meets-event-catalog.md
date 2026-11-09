@@ -11,6 +11,7 @@ featured: false
 featuredImage: assets/articles/arcadia-editions/012-arcadia-architecture-manifest-meets-event-catalog.jpg
 featuredImageAlt: "The Arcadia architecture manifest shown as an Event Catalog of domains, services, and events"
 draft: false
+disclaimer: arcadia
 ---
 
 The [master YAML](/articles/arcadia/011-master-yaml-architecture-manifest) is where we record the Arcadia architecture, in a file called `zenwave-architecture.yml`. Tools can read it easily, but most people in the company will never open it.

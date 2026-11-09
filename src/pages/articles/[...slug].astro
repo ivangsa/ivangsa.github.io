@@ -1,6 +1,7 @@
 ---
 import { type CollectionEntry, getCollection, render } from 'astro:content';
 import BaseLayout from '../../layouts/BaseLayout.astro';
+import { disclaimers } from '../../data/disclaimers';
 
 interface Props {
 	entry: CollectionEntry<'articles'>;
@@ -16,6 +17,7 @@ export async function getStaticPaths() {
 
 const { entry } = Astro.props;
 const { Content } = await render(entry);
+const disclaimerHtml = entry.data.disclaimer ? disclaimers[entry.data.disclaimer] : undefined;
 const isArcadiaArticle = entry.data.tags.some((tag) => tag.toLowerCase() === 'arcadia');
 const backLinkHref = isArcadiaArticle ? '/articles/arcadia/' : '/articles/';
 const backLinkText = isArcadiaArticle ? 'Back to Arcadia Editions series...' : 'Back to articles';
@@ -77,6 +79,7 @@ function getArticleHref(article: CollectionEntry<'articles'>) {
 					loading="lazy"
 				/>
 			)}
+			{disclaimerHtml && <p class="article-disclaimer" set:html={disclaimerHtml} />}
 		</header>
 		{!entry.data.externalOnly && (
 			<article class="content">
@@ -152,6 +155,20 @@ function getArticleHref(article: CollectionEntry<'articles'>) {
 
 	header > p {
 		color: var(--gray-300);
+	}
+
+	header > .article-disclaimer {
+		margin-top: 0.75rem;
+		padding: 0.5rem 0 0.5rem 0.875rem;
+		border-left: 2px solid var(--gray-700);
+		color: var(--gray-400);
+		font-size: var(--text-sm);
+		line-height: 1.6;
+	}
+
+	.article-disclaimer :global(strong) {
+		color: var(--gray-300);
+		font-weight: 600;
 	}
 
 	.article-image {

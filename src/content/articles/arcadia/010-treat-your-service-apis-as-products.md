@@ -11,6 +11,7 @@ featured: false
 featuredImage: assets/articles/arcadia-editions/010-treat-your-service-apis-as-products.webp
 featuredImageAlt: "The Orders Checkout API packaged and versioned as a product that consumers derive clients from"
 draft: false
+disclaimer: arcadia
 ---
 
 > ⚠️ This article is part of Arcadia Editions, a project being built in public. Some of the links point to workflows and articles that are still in progress. They will become available as the series evolves. 🏗️

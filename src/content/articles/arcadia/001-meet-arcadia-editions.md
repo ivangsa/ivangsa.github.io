@@ -14,6 +14,7 @@ featuredImageAlt: "Arcadia Editions - Logo"
 readingTime: "4 min read"
 
 draft: false
+disclaimer: arcadia
 ---
 
 Arcadia Editions is not a real company. I made it up.

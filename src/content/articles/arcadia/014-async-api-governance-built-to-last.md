@@ -12,6 +12,7 @@ featured: false
 featuredImage: assets/articles/arcadia-editions/014-async-api-governance-built-to-last.png
 featuredImageAlt: "AsyncAPI and Avro as the source of truth, with the Kafka platform and the application code kept aligned over the years."
 draft: false
+disclaimer: arcadia
 ---
 
 Most API governance processes start well, with a good wiki page, some naming rules and a review board. And after two or three years nobody remembers them, the documentation says one thing and the Kafka cluster says another, and nobody knows anymore who is reading from which topic.

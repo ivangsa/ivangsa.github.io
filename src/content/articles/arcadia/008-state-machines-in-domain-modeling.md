@@ -11,6 +11,7 @@ featured: false
 featuredImage: assets/articles/2026-03-28-ZenWave_DSL_now_supports_State_Machines/state-machines.excalidraw.svg
 featuredImageAlt: "ZDL domain model for the Orders bounded context in Arcadia Editions"
 draft: false
+disclaimer: arcadia
 ---
 
 If you have been following the series, by now we have generated the scaffold for all five service repos, one per bounded context. The AI read the ZFL, understood the business context, and produced a grounded starting point for each one.

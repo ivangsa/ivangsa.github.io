@@ -11,6 +11,7 @@ featured: false
 featuredImage: assets/articles/arcadia-editions/011-master-yaml-architecture-manifest.webp
 featuredImageAlt: "The Arcadia Editions architecture manifest pointing at the models and contracts each service owns"
 draft: false
+disclaimer: arcadia
 ---
 
 As Arcadia Editions grows, no single person knows the whole system anymore. Services multiply, and each team knows its own piece well, but nobody can see how the pieces fit together.

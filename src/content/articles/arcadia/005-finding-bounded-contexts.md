@@ -13,6 +13,7 @@ featuredImageAlt: ""
 readingTime: "4 min read"
 
 draft: false
+disclaimer: arcadia
 ---
 
 After the Event Storming session, we had a wall full of events.

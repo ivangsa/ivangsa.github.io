@@ -11,6 +11,7 @@ featured: false
 featuredImage: assets/articles/arcadia-editions/009-dsl-modeling-for-apis-generate-openapi-and-asyncapi-from-zdl.png
 featuredImageAlt: "OpenAPI and AsyncAPI generated from the Arcadia Orders Checkout ZDL model"
 draft: false
+disclaimer: arcadia
 ---
 
 Turning ZDL into APIs was one of the first things ZenWave SDK ever did, back when we still wrote all of it by hand. The idea was that you spend your time modeling the domain and then let the APIs come out of that model, because an API contract is structured information too, and going from one structure to another is the kind of work a generator should be doing instead of you. And since a DSL is built to be compact, it says far more with far less than YAML ever will. Friends don't let friends write YAML by hand.

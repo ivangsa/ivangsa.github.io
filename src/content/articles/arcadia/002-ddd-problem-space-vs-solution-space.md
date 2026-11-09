@@ -12,6 +12,7 @@ featuredImage: assets/articles/arcadia-editions/002-ddd-problem-space-vs-solutio
 featuredImageAlt: "Event Storming board for the PlaceOrder flow of Arcadia Editions"
 readingTime: "3 min read"
 draft: false
+disclaimer: arcadia
 ---
 
 The core idea of DDD is simple: understand the problem space first.

@@ -11,6 +11,7 @@ featured: false
 featuredImage: assets/articles/arcadia-editions/007-from-zfl-to-zdl-ai-assisted-domain-model-scaffolding.png
 featuredImageAlt: "AI generated ZDL scaffolding for Arcadia Editions"
 draft: false
+disclaimer: arcadia
 ---
 
 > **Update, November 2026:** this skill was a first attempt and has been replaced. The current skills are in [ZenWave SDD](https://github.com/ZenWave360/zenwave-sdd).

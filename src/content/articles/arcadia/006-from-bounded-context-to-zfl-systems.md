@@ -12,6 +12,7 @@ featuredImage: assets/articles/arcadia-editions/006-from-bounded-context-to-zfl-
 featuredImageAlt: "ZFL flow with service fields filled in for Arcadia Editions"
 readingTime: "6 min read"
 draft: false
+disclaimer: arcadia
 ---
 
 In the [previous post](/articles/arcadia/005-finding-bounded-contexts/) we found the main centers of gravity inside the PlaceOrder flow. Catalog Inventory, Orders Checkout, Payments Processing, Fulfillment Shipping, and Notifications Consumer.

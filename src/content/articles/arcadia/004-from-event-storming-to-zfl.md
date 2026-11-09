@@ -12,6 +12,7 @@ featuredImage: assets/articles/arcadia-editions/004-from-event-storming-to-zfl.p
 featuredImageAlt: "Event Storming board for the PlaceOrder flow of Arcadia Editions"
 readingTime: "8 min read"
 draft: false
+disclaimer: arcadia
 ---
 
 In the [previous post](/articles/arcadia/003-event-storming-arcadia-editions) we ran an Event Storming session for the PlaceOrder flow of Arcadia Editions. We have the board. We have the sticky notes. We understand what happens when a collector clicks reserve during a hot drop.

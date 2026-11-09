@@ -11,6 +11,7 @@ featured: false
 featuredImage: assets/articles/arcadia-editions/013-infrastructure-provisioning-asyncapi-terraform.webp
 featuredImageAlt: "AsyncAPI as the source of truth, through GitHub Actions and Terraform plan and apply, to a Kafka platform with topics, schemas and ACLs"
 draft: false
+disclaimer: arcadia
 ---
 
 When we talk about API First we usually think about the code. We generate models and clients from the API, we validate messages against it, and we test that producers and consumers do what the spec says.
