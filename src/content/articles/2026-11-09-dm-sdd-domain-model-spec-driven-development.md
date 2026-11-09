@@ -1,5 +1,5 @@
 ---
-title: "Spec-driven development with domain models instead of Markdown"
+title: "Domain-Model Spec-driven development: use domain models instead of Markdown"
 summary: "A specification is a domain-model blueprint, not a Markdown document. Give AI agents models, not Markdown: a spec that humans can read and approve, and agents can validate and follow."
 date: 2026-11-09
 tags:
