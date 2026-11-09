@@ -1,16 +1,18 @@
 ---
-title: "Domain-Model Spec-Driven Development: using domain models instead of Markdown as the spec for coding agents"
+title: "Spec-driven development with domain models instead of Markdown"
 summary: "A specification is a domain-model blueprint, not a Markdown document. Give AI agents models, not Markdown: a spec that humans can read and approve, and agents can validate and follow."
-date: 2026-11-07
+date: 2026-11-09
 tags:
   - zenwave
   - architecture
   - ddd
   - ai
 featured: false
+featuredImage: assets/articles/2026-11-09-dm-sdd-domain-model-spec-driven-development/SDD-without-markdown-featured-image.webp
+featuredImageAlt: Spec-driven development with domain models instead of Markdown
 readingTime: "9 min read"
 lang: en
-draft: true
+draft: false
 ---
 
 As AI agents have become better and faster than humans at writing code, the real challenge is no longer how we write the code, but how we reach a shared understanding with agents, and how we communicate and review our intent.
@@ -19,7 +21,7 @@ Spec-Driven Development is a response to the limitations of prompt-first develop
 
 Write all that prose yourself, and you may end up writing more text than the code required to implement it.
 
-Or you ask an LLM to help you write all that Markdown, and then you end up in a situation where you cannot possibly read and validate it at the speed of an agent. Colin Eberhardt [put Spec Kit through its paces](https://blog.scottlogic.com/2025/11/26/putting-spec-kit-through-its-paces-radical-idea-or-reinvented-waterfall.html) and one CRUD feature produced about 2,577 lines of Markdown for 689 lines of code. Reviewing it took around three and a half hours. At Marmelab, François Zaninotto [got 8 files and 1,300 lines of text](https://marmelab.com/blog/2025/11/12/spec-driven-development-waterfall-strikes-back.html) for showing the current date in an app. And when you don't read and approve the written spec, decisions slip unnoticed, and the agents take them as gospel into the implementation.
+Or you ask an LLM to help you write all that Markdown, and then you end up in a situation where you cannot possibly read and validate it at the speed of an agent. Colin Eberhardt [put Spec Kit through its paces](https://blog.scottlogic.com/2025/11/26/putting-spec-kit-through-its-paces-radical-idea-or-reinvented-waterfall.html) and one CRUD feature produced about 2,577 lines of Markdown for 689 lines of code. Reviewing it took around three and a half hours. At Marmelab, François Zaninotto [cites a Spec Kit example](https://marmelab.com/blog/2025/11/12/spec-driven-development-waterfall-strikes-back.html) that produced 8 files and 1,300 lines of text just to show the current date in an app. And when you don't read and approve the written spec, decisions slip unnoticed, and the agents take them as gospel into the implementation.
 
 Now compare Markdown prose to a structured domain model, where you can describe an entire microservice in [about 130 lines](https://github.com/ZenWave360/zenwave-playground/blob/main/examples/order-fulfillment-kotlin/zenwave-model.zdl), in a language and a format that any software engineer, and any coding agent for that matter, can read in one sitting, and then challenge or validate.
 
@@ -96,7 +98,7 @@ service OrderService for (Order) {
 }
 ```
 
-From these lines we derive the OpenAPI and AsyncAPI contracts, [291 and 302 lines of YAML](https://github.com/ZenWave360/zenwave-playground/tree/main/examples/order-fulfillment-kotlin/src/main/resources/public/apis) that nobody had to write by hand.
+From these lines we derive the OpenAPI and AsyncAPI contracts, [291 and 303 lines of YAML](https://github.com/ZenWave360/zenwave-playground/tree/main/examples/order-fulfillment-kotlin/src/main/resources/public/apis) that nobody had to write by hand.
 
 ### What makes a model work as a spec
 
@@ -141,7 +143,7 @@ It repeats until the model is ready:
 - **Probe.** If you have a generator for your stack, generate the code from your models ([ZenWave SDK](https://www.zenwave360.io/docs/zenwave-sdk/) does this for Spring Boot). Run a test or start a debug session, and see if what the model produces matches the requirements. This code becomes another projection and because it's cheap to generate you can throw it away while you are iterating the models.
 - **Prepare test data.** Prepare fixtures and test data for each use case and alternative branch. This becomes part of the specification. Agents can draft it from the models.
 
-![One model, many projections: EventFlow, sequence diagrams per branch, class diagrams and state machines, OpenAPI, AsyncAPI, and generated code with tests](/assets/articles/2026-11-04-sdd-two-loops-model-driven-human-in-the-loop/projections.png)
+![One model, many projections: EventFlow, sequence diagrams per branch, class diagrams and state machines, OpenAPI, AsyncAPI, and generated code with tests](/assets/articles/2026-11-04-sdd-two-loops-model-driven-human-in-the-loop/projections.webp)
 
 Once the model is approved, delete the PRD. The model is the spec now, and an old requirements document only misleads the next agent that finds it.
 
@@ -156,7 +158,7 @@ Design ends with a **baseline**. You can consider the Design is ready when it is
 
 A task backlog can go with it, ideally sliced vertically and with the happy path first acting as tracer bullet.
 
-![DM-SDD Consumer Design Loop](/assets/articles/2026-11-07-dm-sdd-domain-model-spec-driven-development/DM-SDD-Consumer-Design-Loop.png)
+![DM-SDD Consumer Design Loop](/assets/articles/2026-11-09-dm-sdd-domain-model-spec-driven-development/DM-SDD-Consumer-Design-Loop.webp)
 
 DM-SDD is not about who implements the baseline, or how. My own choice is an [away-from-keyboard agentic loop](/articles/sdd-two-loops-agentic-away-from-keyboard-loop/), with an orchestrator that hands tasks to implementer and reviewer agents. But you can also feed those tasks to [Spec Kit](https://github.com/github/spec-kit), [BMAD](https://github.com/bmad-code-org/BMAD-METHOD) or [Sandcastle](https://www.aihero.dev/sandcastle/branch-strategies), or hand them to a team.
 
@@ -198,15 +200,15 @@ Some parts are closer to spec-as-source if you use ZenWave SDK as a code generat
 
 So it is a variant of SDD and it can sit in front of the existing SDD tools.
 
-**Compared with MDA.** At first this may look like MDA again. MDA required CASE tools and the model to be complete enough for a transformer.
+**Compared with MDA.** At first this may look like MDA again. The difference is who reads the model.
 
-DM-SDD models are structured text that can be versioned, diffed and edited by any editor or agent, and they need to be clear enough to convey the information for an agent to follow and for a human to review first.
+In MDA the reader is a transformer, so the model has to be complete enough to generate code from it, and every gap breaks the pipeline. In DM-SDD the readers are a human who approves the model and an agent who implements it. Both can work with a model that is incomplete: the agent fills in what the model leaves open, and when it can't, it stops and sends a proposal back (rule 3 above).
 
 In practice this means:
 
-- The model does not have to be complete. It provides structure and information that prose cannot convey on its own.
-- The languages are plain text that reads as code, not UML diagrams in a CASE tool, so they live in git with the rest of the system.
+- The model does not have to be complete. It provides the structure and the information that prose cannot convey on its own, and the business rules inside each command are left to agents and people, checked against the test data.
 - Generation is optional, so the model does not need a perfect transformation to pay off.
+- The languages read as code, not UML diagrams in a CASE tool, so they live in git with the rest of the system.
 
 ## Limits
 

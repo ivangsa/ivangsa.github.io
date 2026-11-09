@@ -14,6 +14,8 @@ readingTime: "5 min read"
 draft: false
 ---
 
+> This is one consumer loop for a [Domain-Model Spec-Driven Development (DM-SDD)](/articles/dm-sdd-domain-model-spec-driven-development/) baseline; any SDD loop that takes domain models as its spec can take its place.
+
 This is the second half of [Spec-Driven Development Two Loops](/articles/sdd-two-loops-model-driven-human-in-the-loop/). The first half ended at hand over from the human to the agentic loop.
 
 ## The agent loop starting point

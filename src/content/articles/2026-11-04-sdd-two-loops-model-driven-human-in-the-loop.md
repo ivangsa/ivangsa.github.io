@@ -14,6 +14,8 @@ readingTime: "5 min read"
 draft: false
 ---
 
+> This loop now has a name: [Domain-Model Spec-Driven Development (DM-SDD)](/articles/dm-sdd-domain-model-spec-driven-development/). This article is DM-SDD in practice.
+
 In the [first article](/articles/sdd-markdown-is-the-bottleneck/) of this series I wrote that I cannot read Markdown at the speed an LLM writes it, and that when I don't read everything, decisions slip into the implementation as if I had already approved them. In the [second one](/articles/sdd-from-event-storming-to-a-model-your-agents-can-read/) I wrote that designing one bounded context at a time is not enough anymore, because agentic loops need a big design upfront.
 
 This article is about how to create Model-Driven specifications humans can read and validate, while leveraging AI agents to help you with the task.
@@ -64,7 +66,7 @@ There are two ways to review these domain models:
 
 - **Humans review projections of the model**: Models can be converted to different representations, easy to read and validate by experienced software engineers and architects: flowchart diagrams, sequence diagrams for each alternative branch of a ZFL flow, class diagrams and state machines for each aggregate, the commands and the domain events, and the OpenAPI and AsyncAPI contracts.
 
-![One model, many projections: EventFlow, sequence diagrams per branch, class diagrams and state machines, OpenAPI, AsyncAPI, and generated code with tests](/assets/articles/2026-11-04-sdd-two-loops-model-driven-human-in-the-loop/projections.png)
+![One model, many projections: EventFlow, sequence diagrams per branch, class diagrams and state machines, OpenAPI, AsyncAPI, and generated code with tests](/assets/articles/2026-11-04-sdd-two-loops-model-driven-human-in-the-loop/projections.webp)
 
 And source code is just another projection. [ZenWave SDK](https://www.zenwave360.io/docs/zenwave-sdk/) can generate Spring Boot backend services, APIs, event handlers and full test suites. This is very effective and efficient: you can review the code your models produce in a matter of seconds and validate whether that entity, endpoint signature, or domain events fit what you have in mind while developing. You can even fire a debug session with one of those unit or integration tests or write a few lines by hand, and see if what the model produces matches the requirements.
 
