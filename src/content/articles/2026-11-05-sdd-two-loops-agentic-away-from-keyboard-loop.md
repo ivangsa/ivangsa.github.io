@@ -18,7 +18,7 @@ This is the second half of [Spec-Driven Development Two Loops](/articles/sdd-two
 
 ## The agent loop starting point
 
-An agentic loop is an orchestrator: picks tasks, routes each task to the best implementer and the result to a reviewer subagent, if review is not a PASS sends the task back to the implementer with the review report until it gets a PASS. Repeating the loop until every task is done or blocked waiting for humnan input.
+An agentic loop is an orchestrator: picks tasks, routes each task to the best implementer and each finished slice to a reviewer subagent, if review is not a PASS sends the work back to the implementer with the review report until it gets a PASS. Repeating the loop until every task is done or blocked waiting for human input. One loop per business flow.
 
 The handover artifacts the orchestrator receives are:
 
@@ -38,11 +38,9 @@ This is an AI-assisted / human-approved task. You can implement the Board anywhe
 
 I use a Markdown list with this convention for the checkboxes, which is as good as any other: `[ ]` pending, `[/]` in progress, `[\]` in review, `[x]` done, `[!]` blocked.
 
-If you use ZenWave SDK, the [zenwave-gap-report](https://github.com/ZenWave360/zenwave-sdd/tree/main/skills/zenwave-gap-report) skill can help identify gaps in your project that need polishing or further implementation.
-
 If you are evolving an existing system or you have generated code with ZenWave SDK, you can ask an agent to analyze your spec and existing code and create a Kanban Board task list.
 
-Use task batches to group review tasks:
+Slice tasks vertically, along the paths of the flow, happy path first, and review them slice by slice:
 
 ```markdown
 ## Place Order
@@ -71,7 +69,7 @@ Because I personally use multiple agent subscriptions, I have the orchestrator t
 | Difficulty | Description |
 |---|---|
 | **Mechanical** | Mechanical tasks where the agent need to make no decisions, and follows a pattern already present in the code |
-| **Well defined** | The task is fully described by the model and the test data. |
+| **Bounded** | The task is fully described by the model and the test data. |
 | **Advanced** | Needs to put together several models, modules, ADRs or an external API. |
 | **Code review** | Reviewing code should be routed to your best models. |
 
@@ -80,9 +78,11 @@ Routing to cheaper models will save you from running out of subscription usage. 
 
 ## Subagents: The Implementer
 
-I find that development time improves when the Reviewer perform its job on full batches, not on individual tasks.
+I find that development time improves when the Reviewer perform its job on full vertical slices, not on individual tasks.
 
 Implementer subagents work on their own worktree. The orchestrator passes as much context as needed, then it instructs the implementer to read the task, the model lines it points at, the ADRs and the test data.
+
+Test first: the implementer writes a failing test from the approved test data, then the code. It cannot change the test data to fit its code.
 
 If you want to speed up development, implementers should run only the focused tests for their task, not the entire suite. This will save you a lot of waiting time.
 
@@ -90,7 +90,7 @@ All required information should come from the model, the business rules, ADRs an
 
 ## Subagents: The Reviewer
 
-As your project grows, so do its build and test times. It's better to review tasks in batches or you will spend most of the agents' time waiting for build and test results.
+As your project grows, so do its build and test times. It's better to review each vertical slice as a whole, running the full suite once, or you will spend most of the agents' time waiting for build and test results.
 
 Use your strongest models for code reviews, and never use one model to review code written by itself, even if it is in a clean session. They tend to have different biases towards implementations and patterns.
 
@@ -118,16 +118,22 @@ Options:
 
 With a solution proposal, you can ask an agent to assist you editing the models, but never allow the AFK loop to modify de models, api contracts or test-data on its own.
 
+## The orchestrator is a coworker
+
+I like the idea to use the orchestrator as a coworker and talk to it from my phone most of the time: I pass it my findings, change priorities, ask how far it is.
+
 ## Exiting the loop
 
 The AFK loop is finished when:
 
 - all tasks are either done or blocked
-- the batch review is clean, with no FIX tasks
-- the full suite, or the vertical slices, are green
+- every slice review is clean, with no FIX tasks
+- the full suite is green
 - and there are no open proposals
 
 If after exiting the loop you can perform as an extra validation step, to generate a task-list comparing the spec and existing code. If the result is an empty list, then nothing is missing from the model and code.
+
+The agents commit to their own branch. I review it and sign the merge.
 
 Formal verification is another huge topic that need further investigation.
 

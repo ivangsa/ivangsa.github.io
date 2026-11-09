@@ -48,7 +48,9 @@ Business Discovery is a discrete task that starts before any loop. Here are some
 
 The first HITL loop starts with those as inputs: text, diagrams, pictures from EventStorming, and online whiteboard tools.
 
-The next step is to convert those findings into structured documents, and that's when the HITL loop starts.
+I adapted that grilling interview to ZenWave models in [zenwave-sdd](https://github.com/ZenWave360/zenwave-sdd).
+
+The next step is to convert those findings into structured documents, and that's when the HITL loop starts. One business flow at a time.
 
 ## The HITL loop: writing structured models, reviewing projections, not text
 
@@ -86,10 +88,12 @@ HITL is ready when:
 - **Models are Valid.** Models can be parsed, no linting errors and all projections can be rendered. This is deterministic, no LLM involved.
 - **Human and Agent Reviewed.** You have reviewed all the projections and diagrams, and the agents have no open questions left.
 - **Covered by test data.** For each use case and each branch of the flow, you need to create and validate test data. This is something an LLM can assist with, but you must validate that it conforms with the domain and requirements, as it will be part of the gate of the second loop.
-- **Task Backlog.** Ask an agent to assist you in splitting work into tasks. The result can be a list, a graph, Markdown files, remote tickets...
-- **Approved and Tagged.** Commit and tag models and backlog as the baseline.
+- **Task Backlog.** Ask an agent to assist you in splitting work into tasks. The result can be a list, a graph, Markdown files, remote tickets... Slice it vertically, happy path first.
+- **Approved and Tagged.** Commit and tag models, test data and backlog as the baseline.
 
 Approved and Tagged is very important so agents take that as the valid handoff they cannot edit or modify.
+
+Once the models are approved, delete the PRD. The models are the spec now, and an old requirements document only misleads the next agent that finds it.
 
 ## ZenWave SDK is an (optional) accelerator
 

@@ -13,6 +13,8 @@ featuredImageAlt: "AI generated ZDL scaffolding for Arcadia Editions"
 draft: false
 ---
 
+> **Update, November 2026:** this skill was a first attempt and has been replaced. The current skills are in [ZenWave SDD](https://github.com/ZenWave360/zenwave-sdd).
+
 We have already translated EventStorming, a process-modeling technique, into a structured language: [ZFL Flow Language](https://www.zenwave360.io/docs/event-driven-design/zenwave-flow-language/). It describes how commands and events move across services as part of a business flow.
 
 We want to treat each service API and its models as products in their own right, with their own repositories, linting, validation, and publishing pipelines.
