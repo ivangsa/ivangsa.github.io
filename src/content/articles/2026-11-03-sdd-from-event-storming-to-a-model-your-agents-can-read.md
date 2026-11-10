@@ -9,8 +9,8 @@ tags:
   - architecture
   - ai
 featured: false
-featuredImage: assets/articles/2026-11-03-sdd-from-event-storming-to-a-model-your-agents-can-read/zfl-eventflow-and-systems.png
-featuredImageAlt: ZFL with EventFLow and Systems diagrams
+featuredImage: assets/articles/sdd/event-storming-to-domain-dsl-featured.webp
+featuredImageAlt: "From EventStorming to a Domain Model DSL: sticky notes from a workshop wall become compact flow and domain model code that a robot and a person can read"
 readingTime: "4 min read"
 draft: false
 ---
@@ -81,8 +81,10 @@ The **command** `authorizePayment` and the **service** that runs it `PaymentsPro
 
 Once `services` are being discovered the ZFL can give as new view: all the commands an events arround each service, and those services can be defines using a ZDL Domain definition.
 
-![ZFL Systems Diagram](/assets/articles/2026-11-03-sdd-from-event-storming-to-a-model-your-agents-can-read/zfl-systems.png)
+![ZFL Systems Diagram](/assets/articles/sdd/event-storming-zfl-systems.png)
 
+
+![ZFL EventFlow and Systems diagrams](/assets/articles/sdd/event-storming-zfl-eventflow-and-systems.webp)
 
 ## Easier to read, for humans and for LLMs
 
@@ -101,10 +103,10 @@ But another important point is that they derive multiple different artifacts on 
 You can explore them using [ZenWave Platform IDE](https://www.zenwave360.io/plugin/) integrations for editing, exploring, validating and running cli plugins...
 
 - Aggregate class diagram and State Machine from ZDL
-![ZDL Aggregate and State Machine Diagram](/assets/articles/2026-11-03-sdd-from-event-storming-to-a-model-your-agents-can-read/zdl-aggregate-and-state-machine.png)
+![ZDL Aggregate and State Machine Diagram](/assets/articles/sdd/event-storming-zdl-aggregate-and-state-machine.png)
 
 - Multiple Sequence Diagrams for all your alternative paths
-![ZFL Sequence Diagrams](/assets/articles/2026-11-03-sdd-from-event-storming-to-a-model-your-agents-can-read/zfl-sequence-diagrams.png)
+![ZFL Sequence Diagrams](/assets/articles/sdd/event-storming-zfl-sequence-diagrams.png)
 
 
 ## It connects everything

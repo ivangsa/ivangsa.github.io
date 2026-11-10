@@ -1,0 +1,47 @@
+## What is DM-SDD?
+
+**Domain-Model Spec-Driven Development (DM-SDD)** is a specification-driven
+methodology for AI coding agents in which the specification is a *domain
+model* — a typed DSL artifact with a metamodel, explicit constraints, and a
+validator — rather than a Markdown document.
+
+> **DM-SDD**: a specification is a domain-model blueprint, not a Markdown
+> document.
+
+In DM-SDD the model is the source of truth. Agents read the model itself, not
+prose that describes the model. Because the artifact has a grammar, it can be
+checked before it is consumed: a spec either conforms or it does not, and the
+failure surfaces at review time rather than as plausible-looking code.
+
+ZenWave, the reference implementation, derives source code, tests, and API
+contracts (OpenAPI, AsyncAPI) from the model. The specification is therefore
+executable rather than advisory: it is not a description of intent that an
+agent interprets freely, but an artifact from which the deliverables are
+generated.
+
+### Relationship to MDSD
+
+DM-SDD does not introduce model-driven generation; MDSD established that
+decades ago.
+
+> DM-SDD is MDSD plus agentic workflows on top.
+
+Three things change when the reader is an agent:
+
+- The spec must be reviewable by humans and verifiable by machines at the same
+  time.
+- Free-form prose becomes a liability: it is readable but not checkable, so the
+  agent fills the gaps by inference.
+- The dominant failure mode is Markdown, not compiled code. A wrong model fails
+  loudly; a vague document fails quietly, producing output that looks correct.
+
+### Relationship to Spec-Driven Development
+
+DM-SDD is a variant of Spec-Driven Development, not a replacement.
+
+> SDD made the specification the unit of work. DM-SDD changes what the
+> specification is: a readable blueprint instead of a document nobody opens.
+
+Where current SDD tooling (Kiro, Spec Kit) structures Markdown — requirement
+notation, task lists — DM-SDD replaces the document with a formal model. EARS
+notation adds structure to prose; a metamodel removes prose altogether.

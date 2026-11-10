@@ -8,7 +8,7 @@ tags:
   - ddd
   - ai
 featured: false
-featuredImage: assets/articles/2026-11-04-sdd-two-loops-model-driven-human-in-the-loop.png
+featuredImage: assets/articles/sdd/two-loops-human-in-the-loop-featured.png
 featuredImageAlt: "Software development in two loops: Human in the loop and Away From Keyboard loop. This one if for HITL"
 readingTime: "5 min read"
 draft: false
@@ -66,7 +66,7 @@ There are two ways to review these domain models:
 
 - **Humans review projections of the model**: Models can be converted to different representations, easy to read and validate by experienced software engineers and architects: flowchart diagrams, sequence diagrams for each alternative branch of a ZFL flow, class diagrams and state machines for each aggregate, the commands and the domain events, and the OpenAPI and AsyncAPI contracts.
 
-![One model, many projections: EventFlow, sequence diagrams per branch, class diagrams and state machines, OpenAPI, AsyncAPI, and generated code with tests](/assets/articles/2026-11-04-sdd-two-loops-model-driven-human-in-the-loop/projections.webp)
+![One model, many projections: EventFlow, sequence diagrams per branch, class diagrams and state machines, OpenAPI, AsyncAPI, and generated code with tests](/assets/articles/sdd/two-loops-model-projections.webp)
 
 And source code is just another projection. [ZenWave SDK](https://www.zenwave360.io/docs/zenwave-sdk/) can generate Spring Boot backend services, APIs, event handlers and full test suites. This is very effective and efficient: you can review the code your models produce in a matter of seconds and validate whether that entity, endpoint signature, or domain events fit what you have in mind while developing. You can even fire a debug session with one of those unit or integration tests or write a few lines by hand, and see if what the model produces matches the requirements.
 
@@ -83,7 +83,7 @@ When you are happy with your domain models, it is time to:
 - Generate the full backend project if it fits your technical stack, and
 - Ask an AI agent to produce a detailed backlog of tasks from those models, and code.
 
-![HITL handover to the AFK loop](/assets/articles/2026-11-04-sdd-two-loops-model-driven-human-in-the-loop/the-gate.png)
+![HITL handover to the AFK loop](/assets/articles/sdd/two-loops-hitl-handover-gate.png)
 
 HITL is ready when:
 

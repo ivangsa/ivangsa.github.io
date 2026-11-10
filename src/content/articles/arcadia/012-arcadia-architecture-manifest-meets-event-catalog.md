@@ -8,7 +8,7 @@ tags:
   - EventCatalog
   - zenwave
 featured: false
-featuredImage: assets/articles/arcadia-editions/012-arcadia-architecture-manifest-meets-event-catalog.jpg
+featuredImage: assets/articles/arcadia-editions/012-arcadia-architecture-manifest-meets-event-catalog.webp
 featuredImageAlt: "The Arcadia architecture manifest shown as an Event Catalog of domains, services, and events"
 draft: false
 disclaimer: arcadia

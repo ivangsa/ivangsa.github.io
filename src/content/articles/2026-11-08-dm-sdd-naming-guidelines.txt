@@ -1,0 +1,145 @@
+# DM-SDD — Naming and Writing Guidelines
+
+Internal rules. Apply them in the README, docs, talks, issues, CFP submissions
+and papers, without exception. Naming consistency is the cheapest form of
+credibility.
+
+## 1. Canonical form
+
+> Domain-Model Spec-Driven Development (DM-SDD)
+
+- Hyphenated in the full name (`Domain-Model`) and in the acronym (`DM-SDD`).
+  The hyphen is the composition, not decoration: it shows Domain-Model + SDD.
+- Always give the full name plus the acronym on first use in any document.
+- After first use, `DM-SDD` is fine in writing.
+- Voiced as "DM-SDD", never spelled out letter by letter unless asked.
+- `DMSDD` is not a written form. The only exception is identifiers where a
+  hyphen is impossible: domains, handles, package names, hashtags. There, and
+  only there, use lowercase `dmsdd`.
+
+## 2. Why the hyphen
+
+The acronym is a sum: DM (Domain-Model) + SDD (Spec-Driven Development). SDD
+already carries its own two D's, so nothing is duplicated and nothing is
+collapsed. The hyphen makes that visible in a single token, which is why the
+five letters stop reading as a typo.
+
+The precedent is MDD, which keeps both D's, the one in *Driven* and the one in
+*Development*. A family that does not collapse its D's cannot collapse these.
+
+Ready answer, one sentence:
+
+> It is DM plus SDD, and SDD already has both D's.
+
+Then stop. Explaining the arithmetic a second time is what makes it look
+defensive.
+
+## 3. The gloss
+
+One line, verbatim, wherever the acronym appears without its full name:
+
+> **DM-SDD**: a specification is a domain-model blueprint, not a Markdown
+> document.
+
+Do not improvise variants. Slight rewording across pages is what makes a term
+look invented rather than established.
+
+## 4. Positioning lines
+
+Against MDSD, for audiences that know it:
+
+> DM-SDD is MDSD with the agent as the consumer.
+
+Against SDD, for audiences that know the current tooling:
+
+> SDD made the specification the unit of work. DM-SDD changes what the
+> specification is: a readable blueprint instead of a document nobody opens.
+
+Two sentences maximum each. Do not stack the three comparisons in one
+paragraph; they are for different rooms.
+
+## 5. The argument, in fixed order
+
+Never reorder these. Never skip the concession in step 1.
+
+1. Concede, first and plainly: this could also be done in Markdown.
+2. At the level of detail required, writing that spec by hand costs more than
+   writing the code.
+3. So it gets generated, and a generated spec is long: thousands of lines.
+4. Therefore nobody reads it. The review that never happens is where design
+   decisions slip through.
+5. A model blueprint is short: a real microservice design fits in roughly 130
+   lines, covering REST APIs, events and the persistence model.
+6. What that buys: a human can read it and reason about it, and an agent can
+   cross-reference it against every contract at once.
+7. Honest limit: correlation gaps are surfaced by an explicit review skill, not
+   by the DSL on its own. Without the skill they surface during
+   implementation, exactly as before.
+
+The 130-line figure and the multi-thousand-line Markdown figure are the two
+load-bearing numbers. Attribute the second to its published source; never
+present it as a benchmark of the tool.
+
+## 6. Vocabulary
+
+Use these words, and use them the same way every time:
+
+- *blueprint* — the model as a readable design artifact
+- *model spec* — the artifact itself, lowercase, no acronym
+- *flow model* and *contract models* — the two DSLs, named consistently
+- *correlation* — the presence of the identifiers an operation needs to
+  reference its subject
+- *review skill* — the explicit, named check that hunts implementation gaps
+- *deterministic generation* — describes the generator, never the review
+
+Never use:
+
+- `DMSD` — four letters, indefensible once someone counts.
+- `Model Spec-Driven Development` / `Model-Spec Driven` — ambiguous parsing and
+  collides with the OpenAI Model Spec.
+- `Model-Anchored`, or *anchor* as a metaphor — static, and it does not say what
+  the model does.
+- `Typed Spec` — the spec is not typed; the DSL is. Say "typed DSL" or "model
+  with a metamodel".
+- `Structured Spec` — every SDD tool already claims this. It distinguishes
+  nothing.
+- `Executable spec` as a name — legitimate as a *property*, misleading as a
+  category, since BDD already owns the term for Gherkin scenarios.
+- *paradigm*, *revolution*, *framework* — say methodology, method, or design
+  language.
+
+### Additions
+
+- Write `DM-SDD`. Never `DMSDD` in prose, slides or titles.
+- Lowercase `dmsdd` is permitted in identifiers only, never as a display name.
+- When someone writes the four-letter `DMSD`, correct it to `DM-SDD`, not to
+  `DMSDD`. The corrected form should be the one with the visible sum.
+
+## 7. Three-level brand architecture
+
+| Level | Name | Role |
+|---|---|---|
+| Method | DM-SDD | The methodology, vendor-neutral |
+| Artifact | *model spec* | The domain-model blueprint used as a specification |
+| Implementation | ZenWave | Reference implementation |
+
+Do not use "ZenWave" as the name of the method, and do not use "model spec" as
+the name of the method either. One concept, one label.
+
+## 8. Consistency checklist before publishing
+
+- [ ] Full name plus acronym present on first use.
+- [ ] Acronym written as `DM-SDD`, with the hyphen, everywhere in prose.
+- [ ] No `DMSDD` in any title, slide or README. No `DMSD` anywhere at all.
+- [ ] If a domain, handle or package uses `dmsdd`, it is lowercase and the
+      display name next to it still reads `DM-SDD`.
+- [ ] Hyphen in `Domain-Model`.
+- [ ] Gloss present in the abstract, the README and any landing page.
+- [ ] One positioning sentence against MDSD, and a different one against SDD.
+- [ ] The concession ("this could be done in Markdown") appears before the
+      critique, not after.
+- [ ] The word `Markdown` appears as the named failure mode, not as a style
+      preference.
+- [ ] The correlation gap is credited to the review skill, not to the model.
+- [ ] ZenWave referred to as implementation, never as the method.
+- [ ] Numbers carry their source.

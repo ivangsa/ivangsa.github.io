@@ -8,7 +8,7 @@ tags:
   - ddd
   - ai
 featured: false
-featuredImage: assets/articles/2026-11-05-sdd-two-loops-agentic-away-from-keyboard-loop.png
+featuredImage: assets/articles/sdd/two-loops-afk-featured.png
 featuredImageAlt: "Software development in two loops: Human in the loop and Away From Keyboard loop. This one is for the AFK loop"
 readingTime: "5 min read"
 draft: false
@@ -32,7 +32,7 @@ The handover artifacts the orchestrator receives are:
 
 ZFL and ZDL are structured models that read familiar to any technical person, and can be understood by LLMs based on their semantics. This is where we avoid most of the Markdown prose typical of SDD.
 
-![Orchestrator loop: task, route, implement, review, integrate and repeat](/assets/articles/2026-11-05-sdd-two-loops-agentic-away-from-keyboard-loop/orchestrator-cycle.png)
+![Orchestrator loop: task, route, implement, review, integrate and repeat](/assets/articles/sdd/two-loops-afk-orchestrator-cycle.png)
 
 ## Creating the Kanban Board
 

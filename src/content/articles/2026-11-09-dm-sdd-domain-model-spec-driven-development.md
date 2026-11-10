@@ -7,9 +7,9 @@ tags:
   - architecture
   - ddd
   - ai
-featured: false
-featuredImage: assets/articles/2026-11-09-dm-sdd-domain-model-spec-driven-development/SDD-without-markdown-featured-image.webp
-featuredImageAlt: Spec-driven development with domain models instead of Markdown
+featured: true
+featuredImage: assets/articles/sdd/dm-sdd-featured-text.webp
+featuredImageAlt: "Give agents models, not Markdown: a towering stack of Markdown pages next to a compact domain model that a person and a coding agent read as a blueprint"
 readingTime: "9 min read"
 lang: en
 draft: false
@@ -143,7 +143,7 @@ It repeats until the model is ready:
 - **Probe.** If you have a generator for your stack, generate the code from your models ([ZenWave SDK](https://www.zenwave360.io/docs/zenwave-sdk/) does this for Spring Boot). Run a test or start a debug session, and see if what the model produces matches the requirements. This code becomes another projection and because it's cheap to generate you can throw it away while you are iterating the models.
 - **Prepare test data.** Prepare fixtures and test data for each use case and alternative branch. This becomes part of the specification. Agents can draft it from the models.
 
-![One model, many projections: EventFlow, sequence diagrams per branch, class diagrams and state machines, OpenAPI, AsyncAPI, and generated code with tests](/assets/articles/2026-11-04-sdd-two-loops-model-driven-human-in-the-loop/projections.webp)
+![One model, many projections: EventFlow, sequence diagrams per branch, class diagrams and state machines, OpenAPI, AsyncAPI, and generated code with tests](/assets/articles/sdd/two-loops-model-projections.webp)
 
 Once the model is approved, delete the PRD. The model is the spec now, and an old requirements document only misleads the next agent that finds it.
 
@@ -158,7 +158,7 @@ Design ends with a **baseline**. You can consider the Design is ready when it is
 
 A task backlog can go with it, ideally sliced vertically and with the happy path first acting as tracer bullet.
 
-![DM-SDD Consumer Design Loop](/assets/articles/2026-11-09-dm-sdd-domain-model-spec-driven-development/DM-SDD-Consumer-Design-Loop.webp)
+![DM-SDD Consumer Design Loop](/assets/articles/sdd/dm-sdd-consumer-design-loop.webp)
 
 DM-SDD is not about who implements the baseline, or how. My own choice is an [away-from-keyboard agentic loop](/articles/sdd-two-loops-agentic-away-from-keyboard-loop/), with an orchestrator that hands tasks to implementer and reviewer agents. But you can also feed those tasks to [Spec Kit](https://github.com/github/spec-kit), [BMAD](https://github.com/bmad-code-org/BMAD-METHOD) or [Sandcastle](https://www.aihero.dev/sandcastle/branch-strategies), or hand them to a team.
 

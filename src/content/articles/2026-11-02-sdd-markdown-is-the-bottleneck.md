@@ -8,7 +8,7 @@ tags:
   - ddd
   - ai
 featured: false
-featuredImage: assets/articles/2026-11-02-sdd-markdown-is-the-bottleneck.png
+featuredImage: assets/articles/sdd/markdown-is-the-bottleneck-featured.webp
 featuredImageAlt: Mapping Event Storming to ZenWave Domain Language
 readingTime: "3 min read"
 draft: false
