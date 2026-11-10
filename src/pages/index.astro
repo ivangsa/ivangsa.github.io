@@ -19,10 +19,16 @@ const allArticlesEn = allArticles
 const nonArcadiaArticlesEn = allArticlesEn.filter((article) => !hasArcadiaTag(article));
 const arcadiaArticles = allArticlesEn.filter(hasArcadiaTag);
 
-const featuredArticle = nonArcadiaArticlesEn.find((a) => a.data.featured) ?? nonArcadiaArticlesEn[0];
-const latestArticles = nonArcadiaArticlesEn
-	.filter((a) => a.id !== featuredArticle?.id)
-	.slice(0, 2);
+// Top row: 2 newest `featured: true` articles (newest first), topped up with the newest others.
+const featuredPicks = nonArcadiaArticlesEn.filter((a) => a.data.featured).slice(0, 2);
+const featuredArticles = [
+	...featuredPicks,
+	...nonArcadiaArticlesEn.filter((a) => !featuredPicks.includes(a)),
+]
+	.slice(0, 2)
+	.sort((a, b) => b.data.date.valueOf() - a.data.date.valueOf());
+// Bottom row: 3 newest articles that are not in the top row.
+const latestArticles = nonArcadiaArticlesEn.filter((a) => !featuredArticles.includes(a)).slice(0, 3);
 const arcadiaStartArticle = arcadiaArticles.find((article) => article.id.startsWith('arcadia/001-'));
 const arcadiaStripArticles = [...arcadiaArticles]
 	.sort((a, b) => getArcadiaSequenceNumber(a) - getArcadiaSequenceNumber(b))
@@ -189,35 +195,9 @@ function getTalkImage(talk: (typeof talks)[number]) {
 					<h2>Latest Articles</h2>
 					<a href="/articles/">View all</a>
 				</div>
-				<div class="articles-layout">
-					{featuredArticle && (
-						<div class="card featured">
-							{featuredArticle.data.featuredImage && (
-								<img
-									class="card-image"
-									src={featuredArticle.data.featuredImage}
-									alt={featuredArticle.data.featuredImageAlt ?? ''}
-									loading="lazy"
-								/>
-							)}
-							<div class="card-tags">
-								{featuredArticle.data.tags.slice(0, 3).map((tag) => (
-									<span class="card-tag">#{tag}</span>
-								))}
-							</div>
-							<h3><a href={`/articles/${featuredArticle.id}/`}>{featuredArticle.data.title}</a></h3>
-							<div class="card-meta">
-								<time datetime={featuredArticle.data.date.toISOString()}>
-									{featuredArticle.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
-								</time>
-								{featuredArticle.data.readingTime && <span>· {featuredArticle.data.readingTime}</span>}
-							</div>
-							<p class="card-description">{featuredArticle.data.summary}</p>
-							<a class="card-cta" href={`/articles/${featuredArticle.id}/`}>→ Read article</a>
-						</div>
-					)}
-					<div class="latest-stack">
-						{latestArticles.map((article) => (
+					<div class="articles-layout">
+						<div class="articles-row articles-row-featured">
+							{featuredArticles.map((article) => (
 							<div class="card">
 								{article.data.featuredImage && (
 									<img
@@ -242,9 +222,37 @@ function getTalkImage(talk: (typeof talks)[number]) {
 								<p class="card-description">{article.data.summary}</p>
 								<a class="card-cta" href={`/articles/${article.id}/`}>→ Read article</a>
 							</div>
-						))}
+							))}
+						</div>
+						<div class="articles-row articles-row-latest">
+							{latestArticles.map((article) => (
+							<div class="card">
+								{article.data.featuredImage && (
+									<img
+										class="card-image"
+										src={article.data.featuredImage}
+										alt={article.data.featuredImageAlt ?? ''}
+										loading="lazy"
+									/>
+								)}
+								<div class="card-tags">
+									{article.data.tags.slice(0, 3).map((tag) => (
+										<span class="card-tag">#{tag}</span>
+									))}
+								</div>
+								<h3><a href={`/articles/${article.id}/`}>{article.data.title}</a></h3>
+								<div class="card-meta">
+									<time datetime={article.data.date.toISOString()}>
+										{article.data.date.toLocaleDateString('en-US', { year: 'numeric', month: 'short' })}
+									</time>
+									{article.data.readingTime && <span>· {article.data.readingTime}</span>}
+								</div>
+								<p class="card-description">{article.data.summary}</p>
+								<a class="card-cta" href={`/articles/${article.id}/`}>→ Read article</a>
+							</div>
+							))}
+						</div>
 					</div>
-				</div>
 			</section>
 
 
@@ -485,20 +493,21 @@ function getTalkImage(talk: (typeof talks)[number]) {
 		gap: 1rem;
 	}
 
-	.articles-layout {
+	.articles-row {
 		display: grid;
 		gap: 1rem;
 		grid-template-columns: 1fr;
 	}
 
-	.latest-stack {
+	.articles-layout {
 		display: flex;
 		flex-direction: column;
 		gap: 1rem;
 	}
 
-	.latest-stack .card {
-		flex: 1;
+	.articles-layout .card-image {
+		aspect-ratio: 16 / 9;
+		height: auto;
 	}
 
 	.card {
@@ -529,10 +538,6 @@ function getTalkImage(talk: (typeof talks)[number]) {
 		border: 1px solid var(--gray-800);
 		background: var(--gray-900);
 		margin-bottom: 0.5rem;
-	}
-
-	.card.featured .card-description {
-		-webkit-line-clamp: 4;
 	}
 
 	.card-tags {
@@ -824,8 +829,12 @@ function getTalkImage(talk: (typeof talks)[number]) {
 			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
 
-		.articles-layout {
-			grid-template-columns: 2fr 1fr;
+		.articles-row-featured {
+			grid-template-columns: repeat(2, minmax(0, 1fr));
+		}
+
+		.articles-row-latest {
+			grid-template-columns: repeat(3, minmax(0, 1fr));
 		}
 
 		.arcadia-hero {
