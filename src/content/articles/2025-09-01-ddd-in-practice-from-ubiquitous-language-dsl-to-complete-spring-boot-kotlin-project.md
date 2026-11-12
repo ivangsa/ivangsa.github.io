@@ -8,7 +8,7 @@ tags:
   - spring-boot
   - zenwave-sdk
   - event-storming
-featured: true
+featured: false
 featuredImage: assets/articles/DSL_to_Complete_spring-Boot_Kotlin-750.png
 featuredImageAlt: "DDD In Practice: From Ubiquitous Language DSL to Complete Spring-Boot Kotlin Project"
 readingTime: "20 min read"

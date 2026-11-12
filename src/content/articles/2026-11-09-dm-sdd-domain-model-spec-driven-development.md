@@ -204,11 +204,13 @@ So it is a variant of SDD and it can sit in front of the existing SDD tools.
 
 In MDA the reader is a transformer, so the model has to be complete enough to generate code from it, and every gap breaks the pipeline. In DM-SDD the readers are a human who approves the model and an agent who implements it. Both can work with a model that is incomplete: the agent fills in what the model leaves open, and when it can't, it stops and sends a proposal back (rule 3 above).
 
+And there is a second difference, which I think explains why MDA fell short. An MDA tool can understand structure, but it cannot understand semantics. For instance, take a command called `reserveStock`: with MDA you can generate a method, a class, an API endpoint, a database call... It can generate the structure, but it can never understand what reserving stock means, so it can never give you the concrete implementation. LLMs can. The model provides the lexicon and the structure, and the LLM fills in the semantics.
+
 In practice this means:
 
-- The model does not have to be complete. It provides the structure and the information that prose cannot convey on its own, and the business rules inside each command are left to agents and people, checked against the test data.
-- Generation is optional, so the model does not need a perfect transformation to pay off.
-- The languages read as code, not UML diagrams in a CASE tool, so they live in git with the rest of the system.
+- The model does not have to be complete, it is enough that it has structure. It provides the structure and the information that prose cannot convey on its own.
+- Deterministic generation is optional. It is still a transformation that pays off, but the model does not depend on it.
+- **What truly changes is the last mile: the semantics of the model can now be interpreted and completed by LLMs and agents.**
 
 ## Limits
 
@@ -223,7 +225,7 @@ I have only used this on enterprise backends: DDD, event-driven systems and Spri
 ## Related work
 
 - **Spec-Driven Development.** [Spec Kit](https://github.com/github/spec-kit) and [Kiro](https://kiro.dev/docs/specs/feature-specs/) structure Markdown, and Kiro writes requirements in EARS notation. EARS adds structure to the prose, while a domain model replaces it. [Böckeler](https://martinfowler.com/articles/exploring-gen-ai/sdd-3-tools.html) describes the review burden plainly: "I'd rather review code than all these markdown files".
-- **MDA and model-driven software development.** The same idea of the model at the center, with a different completeness condition, as explained above.
+- **MDA and model-driven software development.** The same idea of the model at the center, but the model does not need to be complete, and LLMs complete the semantics that MDA tools could never interpret, as explained above.
 - **[Context Mapper](https://contextmapper.org/)**, by Stefan Kapferer and Olaf Zimmermann. A DSL for strategic and tactical DDD that generates contracts, diagrams and Spring Boot applications. The closest antecedent at the domain level.
 - **[JHipster JDL](https://www.jhipster.tech/jdl/)**, by Julien Dubois and the JHipster team. A domain language for entities and relationships that generates full applications. ZDL is heavily influenced by it.
 - **[Miragon's Event Storming Modeler](https://github.com/Miragon/modeler-suite).** A plain-text `.storm` format for Event Storming boards. A good discovery format at the flow level, without a derivation chain into the domain.

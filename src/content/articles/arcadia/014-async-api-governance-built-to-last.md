@@ -1,5 +1,5 @@
 ---
-title: "Async API Governance Built to Last"
+title: "AsyncAPI Governance Built to Last"
 summary: "Using automation can keep the API and the Platform in sync without much policy or enforcement. When the AsyncAPI and Avro files are the source of truth, the Kafka topics, schemas and permissions are provisioned from them with an open source toolkit, and the application code is generated from the same files: The more the teams use it, the more the API, the platform and the source code describe the same thing, and that is a governance process built to last."
 date: 2026-10-28
 tags:

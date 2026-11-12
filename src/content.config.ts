@@ -51,7 +51,7 @@ export const collections = {
 			externalSite: z.string().optional(),
 			externalOnly: z.boolean().or(z.undefined()).default(false),
 			lang: z.enum(['en', 'es']).or(z.undefined()).default('en'),
-			disclaimer: z.enum(['arcadia']).optional(),
+			disclaimer: z.enum(['arcadia', 'ai-edited']).optional(),
 		}),
 	}),
 	tutorials: defineCollection({
