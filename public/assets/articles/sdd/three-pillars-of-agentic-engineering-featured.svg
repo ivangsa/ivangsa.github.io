@@ -1,0 +1,49 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1600" height="900" viewBox="0 0 1600 900" font-family="'Segoe UI', Inter, system-ui, -apple-system, Helvetica, Arial, sans-serif">
+  <defs>
+    <pattern id="dots" width="28" height="28" patternUnits="userSpaceOnUse">
+      <circle cx="14" cy="14" r="1.3" fill="#e2e5ee"/>
+    </pattern>
+  </defs>
+  <rect width="1600" height="900" fill="#fbfbfd"/>
+  <rect width="1600" height="900" fill="url(#dots)"/>
+
+  <path d="M70 315H1530 M70 585H1530" stroke="#dfe2ec" stroke-width="2.5"/>
+
+  <!-- 1. Domain-Driven Design -->
+  <g transform="translate(160 180) scale(1.3)">
+    <rect x="-60" y="-60" width="120" height="120" rx="22" fill="#cfdff8" stroke="#1e2547" stroke-width="3.5"/>
+    <g stroke="#1e2547" stroke-width="3.5" stroke-linejoin="round">
+      <path d="M0 -14V2 M-24 14V2H24V14" fill="none"/>
+      <rect x="-12" y="-38" width="24" height="24" rx="4" fill="#e9e1fa"/>
+      <rect x="-36" y="14" width="24" height="24" rx="4" fill="#e9e1fa"/>
+      <rect x="12" y="14" width="24" height="24" rx="4" fill="#e9e1fa"/>
+    </g>
+  </g>
+  <text x="290" y="166" font-size="66" font-weight="700" fill="#151a3b">Domain-Driven Design</text>
+  <text x="290" y="230" font-size="38" fill="#4a5070">Understand the business: concepts, boundaries, behaviour and rules.</text>
+
+  <!-- 2. Formal Verification -->
+  <g transform="translate(160 450) scale(1.3)">
+    <rect x="-60" y="-60" width="120" height="120" rx="22" fill="#e1d6f6" stroke="#1e2547" stroke-width="3.5"/>
+    <g stroke="#1e2547" stroke-width="3.5" stroke-linejoin="round" stroke-linecap="round">
+      <path d="M0 -36L30 -24V-2C30 18 16 30 0 37C-16 30 -30 18 -30 -2V-24Z" fill="#ffffff"/>
+      <path d="M-7 -6V-12A7 7 0 0 1 7 -12V-6" fill="none"/>
+      <rect x="-12" y="-6" width="24" height="20" rx="3" fill="#1e2547"/>
+    </g>
+    <circle cx="0" cy="5" r="3" fill="#ffffff"/>
+  </g>
+  <text x="290" y="436" font-size="66" font-weight="700" fill="#151a3b">Formal Verification</text>
+  <text x="290" y="500" font-size="38" fill="#4a5070">Prove the design satisfies its rules in every possible execution.</text>
+
+  <!-- 3. Specification by Example -->
+  <g transform="translate(160 720) scale(1.3)">
+    <rect x="-60" y="-60" width="120" height="120" rx="22" fill="#cdeedd" stroke="#1e2547" stroke-width="3.5"/>
+    <rect x="-40" y="-36" width="80" height="72" rx="8" fill="#ffffff" stroke="#1e2547" stroke-width="3"/>
+    <rect x="-30" y="-25" width="38" height="10" rx="5" fill="#5b8def"/>
+    <rect x="-30" y="-5" width="38" height="10" rx="5" fill="#b07ee8"/>
+    <rect x="-30" y="15" width="38" height="10" rx="5" fill="#3fd0b0"/>
+    <path d="M15 -20l5 5l9 -10 M15 0l5 5l9 -10 M15 20l5 5l9 -10" fill="none" stroke="#1f9d55" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
+  </g>
+  <text x="290" y="706" font-size="66" font-weight="700" fill="#151a3b">Specification by Example</text>
+  <text x="290" y="770" font-size="38" fill="#4a5070">Concrete examples, approved by humans, executed against the code.</text>
+</svg>
