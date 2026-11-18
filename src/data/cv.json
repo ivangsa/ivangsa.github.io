@@ -16,10 +16,9 @@
     "location": "A Coruña, Spain",
     "summary": [
       "I am a Software Architect and Technical Lead specializing in event-driven architectures, API governance, domain-driven design, and API-first development.",
-      "I design and build product and platform software from the domain outwards, around Kafka, AsyncAPI, OpenAPI, Java and Spring Boot, and the tooling that turns models and contracts into running software.",
+      "I design and build software from the Domain, around Kafka, AsyncAPI, OpenAPI, Java and Spring Boot.",
       "At a major bank I led the design and drove the technical implementation of the governance model for event-driven APIs: built to provide automatic auditability, prevent drift between contracts and production, and grant access only to consumers declared in the contracts.",
-      "I build ZenWave SDK and ZenWave Platform: API-first contracts and domain models connected in a navigable knowledge graph, and deterministic generators that turn them into Spring Boot services without losing the language and structure of the domain. In practice the tooling generates most of the backend, and coding agents take the rest.",
-      "I use those agents to build product software, and ZenWave Platform itself, which I could not have taken on before. They build what I have already decided to build.",
+      "My current focus is applying **Domain-Driven Design as Code** to **Spec-Driven Development** for event-driven backend systems built with Spring Boot. Teams capture the spec as domain models and API contracts, and deterministic generators and coding agents implement it. ZenWave SDK and ZenWave Platform are the open-source tools I build to bring DDD as Code into agentic SDD loops. I also mentor teams on domain modeling techniques.",
       "AsyncAPI TSC member and Ambassador. Speaker at Spring I/O and Codemotion."
     ],
     "profiles": [
@@ -207,9 +206,11 @@
       ]
     },
     {
-      "category": "AI-assisted development",
+      "category": "Agentic development",
       "items": [
-        "Spec-Driven Development (GitHub Spec Kit)",
+        "Spec-Driven Development",
+        "Domain models as executable specs (DDD/EventStorming as Code)",
+        "Custom agent factory built on reusable skills",
         "Claude Code",
         "Codex",
         "Grok Build"

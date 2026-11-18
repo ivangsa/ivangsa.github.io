@@ -62,6 +62,14 @@ const showLocationLine = !(showContact && cv.basics.address);
  * "https://www.zenwave360.io/" -> "zenwave360.io"
  */
 const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').replace(/\/$/, '');
+
+/** Escapes HTML, then turns **text** into <strong>text</strong>. */
+const bold = (text: string) =>
+	text
+		.replace(/&/g, '&amp;')
+		.replace(/</g, '&lt;')
+		.replace(/>/g, '&gt;')
+		.replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>');
 ---
 
 <main class="wrapper stack gap-8 cv">
@@ -90,7 +98,7 @@ const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').repl
 	</header>
 
 	<section class="summary">
-		{summary.map((paragraph) => <p>{paragraph}</p>)}
+		{summary.map((paragraph) => <p set:html={bold(paragraph)} />)}
 	</section>
 
 	<section>
@@ -123,13 +131,13 @@ const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').repl
 									{role.client && <span class="client"> · {role.client}</span>}
 									{role.period && <span class="period"> · {role.period}</span>}
 								</p>
-								<p>{role.summary}</p>
+								<p set:html={bold(role.summary)} />
 							</div>
 							{highlights && (
 								<ul>
 									{highlights.map((highlight) =>
 										typeof highlight === 'string' ? (
-											<li>{highlight}</li>
+											<li set:html={bold(highlight)} />
 										) : (
 											<li>
 												<strong>{highlight.lead}</strong> {highlight.text}
@@ -155,7 +163,7 @@ const displayUrl = (url: string) => url.replace(/^https?:\/\/(www\.)?/, '').repl
 						<span class="url"> · {displayUrl(project.url)}</span>
 					</h3>
 					{[pick(project.summary, project.summaryCompact)].flat().map((paragraph) => (
-						<p>{paragraph}</p>
+						<p set:html={bold(paragraph)} />
 					))}
 				</article>
 			))
