@@ -170,6 +170,119 @@ pre.astro-code {
 	overflow-x: auto;
 }
 
+/* Line highlight: ```lang {3,5-6} */
+pre.astro-code.has-highlighted .line {
+	opacity: 0.45;
+	transition: opacity 0.25s ease;
+}
+
+pre.astro-code.has-highlighted .line.highlighted {
+	opacity: 1;
+}
+
+/* Code steps: <div class="code-steps"> wrapping several fenced blocks.
+   Without JS every step shows stacked; the script turns them into a stepper.
+   Only the active step is rendered, so the box height follows the step. */
+.code-steps {
+	margin-block: 1.5rem;
+}
+
+.code-steps > pre.astro-code {
+	font-size: 0.95rem;
+	line-height: 1.55;
+}
+
+.code-steps.is-ready > pre.astro-code {
+	margin: 0 !important;
+}
+
+.code-steps.is-ready > pre.astro-code:not(.is-active) {
+	display: none;
+}
+
+.code-steps.is-ready > pre.astro-code.is-active {
+	animation: code-step-in 0.25s ease;
+}
+
+/* Generic steps (images): <div class="steps"> wrapping several ![](src "title") */
+.steps {
+	margin-block: 1.5rem;
+}
+
+.steps.is-ready > :is(p, figure) {
+	margin: 0 !important;
+}
+
+.steps.is-ready > :is(p, figure):not(.is-active) {
+	display: none;
+}
+
+.steps.is-ready > :is(p, figure).is-active {
+	animation: code-step-in 0.25s ease;
+}
+
+.steps img {
+	display: block;
+	max-width: 100%;
+	height: auto;
+	border-radius: 0.5rem;
+	cursor: pointer;
+}
+
+@keyframes code-step-in {
+	from {
+		opacity: 0;
+	}
+}
+
+.code-steps-nav {
+	display: flex;
+	align-items: center;
+	gap: 0.5rem;
+	margin: 0 0 0.75rem !important;
+	font-size: var(--text-sm);
+	color: var(--gray-300);
+}
+
+.code-steps-nav > * {
+	margin-top: 0 !important;
+}
+
+.code-steps-nav button {
+	min-width: 2rem;
+	height: 2rem;
+	padding: 0 0.5rem;
+	border: 1px solid var(--gray-700);
+	border-radius: 999px;
+	background: var(--gray-999);
+	color: var(--gray-200);
+	font: inherit;
+	cursor: pointer;
+}
+
+.code-steps-nav button:hover:not(:disabled) {
+	border-color: var(--accent-regular);
+	color: var(--accent-regular);
+}
+
+.code-steps-nav button:disabled {
+	opacity: 0.4;
+	cursor: default;
+}
+
+.code-steps-nav .code-steps-count {
+	font-variant-numeric: tabular-nums;
+}
+
+.code-steps-nav .code-steps-title {
+	margin-top: 0 !important;
+	flex: 1;
+}
+
+:root.theme-dark .code-steps-nav button {
+	background: var(--gray-900);
+}
+
 :not(pre) > code {
 	border-radius: 0.25rem;
 	background: var(--gray-800);

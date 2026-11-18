@@ -101,6 +101,48 @@ function getArticleHref(article: CollectionEntry<'articles'>) {
 			</nav>
 		)}
 	</main>
+	{/class="(code-)?steps"/.test(entry.body ?? '') && (
+		<script is:inline>
+			document.querySelectorAll('.code-steps, .steps').forEach((box) => {
+				const steps = [...box.querySelectorAll(':scope > pre, :scope > p, :scope > figure')];
+				if (steps.length < 2) return;
+				const nav = document.createElement('div');
+				nav.className = 'code-steps-nav';
+				nav.innerHTML =
+					'<button type="button" aria-label="Previous step">&larr;</button>' +
+					'<button type="button" aria-label="Next step">&rarr;</button>' +
+					'<span class="code-steps-count"></span><span class="code-steps-title"></span>';
+				const [prev, next] = nav.querySelectorAll('button');
+				const count = nav.querySelector('.code-steps-count');
+				const title = nav.querySelector('.code-steps-title');
+				let i = 0;
+				const show = (n) => {
+					i = Math.max(0, Math.min(steps.length - 1, n));
+					steps.forEach((s, k) => {
+						s.classList.toggle('is-active', k === i);
+						s.toggleAttribute('inert', k !== i);
+					});
+					prev.disabled = i === 0;
+					next.disabled = i === steps.length - 1;
+					count.textContent = i + 1 + ' / ' + steps.length;
+					title.textContent = steps[i].dataset.title || steps[i].querySelector('img')?.title || '';
+				};
+				prev.onclick = () => show(i - 1);
+				next.onclick = () => show(i + 1);
+				box.addEventListener('click', (e) => {
+					if (e.target.tagName === 'IMG') show(i === steps.length - 1 ? 0 : i + 1);
+				});
+				box.tabIndex = 0;
+				box.addEventListener('keydown', (e) => {
+					if (e.key === 'ArrowRight') show(i + 1);
+					else if (e.key === 'ArrowLeft') show(i - 1);
+				});
+				box.prepend(nav);
+				box.classList.add('is-ready');
+				show(0);
+			});
+		</script>
+	)}
 </BaseLayout>
 
 <style>
