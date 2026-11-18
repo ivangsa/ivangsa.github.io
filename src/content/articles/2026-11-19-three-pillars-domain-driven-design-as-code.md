@@ -308,7 +308,7 @@ Because each ZDL has a state machine and ZFL links all of them into one flow, wi
 
 - [github.com/arcadia-editions](https://github.com/arcadia-editions):
   - the ZFL in [arcadia-editions-architecture](https://github.com/arcadia-editions/arcadia-editions-architecture)
-  - the ZFLs in [arcadia-editions-modulith-api](https://github.com/arcadia-editions/arcadia-editions-modulith-api)
+  - the ZDLs in [arcadia-editions-modulith-api](https://github.com/arcadia-editions/arcadia-editions-modulith-api)
 - [Modular monolith with Kotlin + Spring Boot](https://github.com/arcadia-editions/arcadia-editions-modulith-service-kotlin) implementation built from from those models
 - [zenwave-sdd](https://github.com/ZenWave360/zenwave-sdd): skills to draft ZFL from your discovery and one draft repo + ZDL per system from the ZFL
 - [ZenWave Platform](https://www.zenwave360.io/zenwave-platform/) IDE plugins for editing and previewing ZFL and ZDL
