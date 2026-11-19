@@ -35,7 +35,7 @@
   <text x="290" y="436" font-size="66" font-weight="700" fill="#151a3b">Formal Verification</text>
   <text x="290" y="500" font-size="38" fill="#4a5070">Prove the design satisfies its rules in every possible execution.</text>
 
-  <!-- 3. Specification by Example -->
+  <!-- 3. Behaviour Validation -->
   <g transform="translate(160 720) scale(1.3)">
     <rect x="-60" y="-60" width="120" height="120" rx="22" fill="#cdeedd" stroke="#1e2547" stroke-width="3.5"/>
     <rect x="-40" y="-36" width="80" height="72" rx="8" fill="#ffffff" stroke="#1e2547" stroke-width="3"/>
@@ -44,6 +44,6 @@
     <rect x="-30" y="15" width="38" height="10" rx="5" fill="#3fd0b0"/>
     <path d="M15 -20l5 5l9 -10 M15 0l5 5l9 -10 M15 20l5 5l9 -10" fill="none" stroke="#1f9d55" stroke-width="3.5" stroke-linecap="round" stroke-linejoin="round"/>
   </g>
-  <text x="290" y="706" font-size="66" font-weight="700" fill="#151a3b">Specification by Example</text>
-  <text x="290" y="770" font-size="38" fill="#4a5070">Concrete examples, approved by humans, executed against the code.</text>
+  <text x="290" y="706" font-size="66" font-weight="700" fill="#151a3b">Behaviour Validation</text>
+  <text x="290" y="770" font-size="38" fill="#4a5070">Examples and properties, approved by humans, run against the code.</text>
 </svg>

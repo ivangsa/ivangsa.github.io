@@ -9,7 +9,7 @@ tags:
   - ai
   - formal-verification
 featuredImage: assets/articles/sdd/three-pillars-of-agentic-engineering-featured.webp
-featuredImageAlt: "The three pillars of agentic engineering: Domain-Driven Design, Formal Verification and Specification by Example."
+featuredImageAlt: "The three pillars of agentic engineering: Domain-Driven Design, Formal Verification and Behaviour Validation."
 readingTime: "3 min read"
 lang: en
 draft: false
@@ -28,7 +28,7 @@ Both strategic and tactical: bounded contexts, context maps, aggregate boundarie
 
 Now the challenge is not only understanding the business, but to create specs with those findings, concise enough for a human engineer to design and review it, and expressive enough for an AI agent to get a complete understanding. That is the idea behind DDD as Code: specs as model blueprints both humans and agents can understand.
 
-![The three pillars of agentic engineering: an architect, a scientist and a site inspector carry crates labelled Domain-Driven Design, Formal verification and Spec by Example into a robot machine, whose fast stream of code is filtered by an examples gate.](/assets/articles/sdd/three-pillars-of-agentic-engineering-comic.webp)
+![The three pillars of agentic engineering: an architect, a scientist and a site inspector carry crates labelled Domain-Driven Design, Formal verification and Behaviour Validation into a robot machine, whose fast stream of code passes through a validation gate that sends the failing pieces to the bin.](/assets/articles/sdd/three-pillars-of-agentic-engineering-comic.webp)
 
 ## 2. Proving the design is correct: Formal Verification
 
@@ -56,4 +56,4 @@ This is the first post of a series, one post per pillar:
 
 - Three pillars: Domain-Driven Design as code (coming next)
 - Three pillars: Formal verification in the age of agentic engineering (coming next)
-- Three pillars: Specification by Example (coming next)
+- Three pillars: Behaviour Validation (coming next)

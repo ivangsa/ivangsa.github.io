@@ -1,5 +1,5 @@
 ---
-title: "Three pillars: Domain-Driven Design as code"
+title: "Three pillars: Domain-Driven Design as Code"
 summary: "Domain-Driven Design gives us the tools and the mental frame to understand the business. The challenge now is to write those findings down as a spec both humans and agents can work on. EventStorming in its two sizes: process-level and design-level, and two languages that turn them into code: ZFL and ZDL."
 date: 2026-11-19
 tags:
@@ -11,7 +11,7 @@ featuredImage: assets/articles/sdd/domain-driven-design-as-code-featured.webp
 featuredImageAlt: "Domain Driven Design as code: Event Storming boards, state machines and class diagrams become two text files, place-order.zfl at process level and payments-processing.zdl at design level, linked by the authorizePayment name."
 readingTime: "10 min read"
 lang: en
-draft: true
+draft: false
 featured: false
 ---
 
