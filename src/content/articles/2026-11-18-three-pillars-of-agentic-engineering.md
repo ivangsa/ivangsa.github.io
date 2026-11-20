@@ -43,7 +43,7 @@ That is something that requires discipline and technique, and that is what Forma
 
 This is a design-time task, before we hand the specification to the agent.
 
-## 3. Validating the result: Specification by Example
+## 3. Validating the result: Behaviour Validation
 
 Specification by Example (SbE) is a collaborative approach to specifying the expected behaviour of a system using concrete examples of business scenarios, with specific inputs, initial conditions and expected outcomes.
 

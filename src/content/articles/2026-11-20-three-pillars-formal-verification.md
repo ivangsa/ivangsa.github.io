@@ -1,6 +1,6 @@
 ---
 title: "Three pillars: Formal Verification in the age of agentic engineering"
-summary: "What can formal verification tell us about our designs that tests can't? An introduction to formal verification for event-driven architectures and an exploration of how far the domain models we already write can take us towards TLA+. A first independent experiment with ZFL and ZDL suggests about a third of the way today, and two thirds or more with a few additional conventions, with caveats."
+summary: "What can formal verification tell us about our designs before we start coding? An introduction to formal verification for event-driven architectures and an exploration of how far the domain models we already write can take us towards TLA+. A first independent experiment with ZFL and ZDL suggests about a third of the way today, and two thirds or more with a few additional conventions, with caveats."
 date: 2026-11-20
 tags:
   - zenwave
@@ -13,7 +13,7 @@ featuredImage: assets/articles/sdd/three-pillars-formal-verification-featured.we
 featuredImageAlt: "When correct pieces behave incorrectly: five event-driven services, each with a green check mark, unfold into a blueprint of possible states, where an engineer with a magnifying glass finds the one red path that ends in a bad state."
 readingTime: "7 min read"
 lang: en
-draft: true
+draft: false
 featured: false
 ---
 
@@ -193,4 +193,3 @@ That wouldn't replace TLA+, or the expertise of someone who knows how to verify 
 
 That is the hypothesis, and this post is the starting point. I've since changed the Arcadia design to fix the three defects, but haven't rerun the exploration yet. Next come the follow-up posts on the experiment, and the third pillar: Specification by Example.
 
-Back to [the three pillars of agentic engineering](/articles/three-pillars-of-agentic-engineering/).
